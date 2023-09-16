@@ -1,61 +1,64 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Agape.Azure.Cosmos;
-using AgapeModelAuction = Agape.Auctions.Models.Auctions;
-using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Model = DataAccessLayer.Models;
 
 namespace Agape.Auctions.Auction.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AuctionController 
+    public class AuctionController
     {
-        private readonly ICosmosRepository<AgapeModelAuction.Auction, AgapeModelAuction.Auction> cosmosRepository;
-
-        public AuctionController(ICosmosRepository<AgapeModelAuction.Auction, AgapeModelAuction.Auction> cosmosRepositoryServices)
+        private readonly Model.AuctionDbContext _context;
+        public AuctionController(Model.AuctionDbContext context)
         {
-            cosmosRepository = cosmosRepositoryServices;
+            _context = context;
         }
 
         // GET: api/<AuctionController>
         [HttpGet]
-        public async Task<IEnumerable<AgapeModelAuction.Auction>> Get()
+        public async Task<IEnumerable<Model.Auction>> Get()
         {
-            Expression<Func<AgapeModelAuction.Auction, bool>> funcAuction = c => !(string.IsNullOrEmpty(c.Id) && c.Type=="Auction" && c.Deleted == false);
-            var result = await cosmosRepository.GetItemsAsync(funcAuction);
-            return result.Resource;
+            Expression<Func<Model.Auction, bool>> funcAuction = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Auction" && c.Deleted == false);
+            var result = await _context.Auctions.Where(funcAuction).ToListAsync();
+            return result;
         }
 
         // GET api/<AuctionController>/5
         [HttpGet("{id}")]
-        public async Task<AgapeModelAuction.Auction> Get(string id)
+        public async Task<Model.Auction> Get(string id)
         {
-            var result = await cosmosRepository.GetAsync(id);
-            return result.Resource;
+            var result = await _context.Auctions.FindAsync(id);
+            return result;
         }
 
         // POST api/<AuctionController>
         [HttpPost]
-        public async Task Post([FromBody] AgapeModelAuction.Auction auction)
+        public async Task Post([FromBody] Model.Auction auction)
         {
-            await cosmosRepository.CreateAsync(auction);
+            await _context.Auctions.AddAsync(auction);
+            await _context.SaveChangesAsync();
         }
 
         // PUT api/<AuctionController>/5
         [HttpPut("{id}")]
-        public async Task Put(string id, [FromBody] AgapeModelAuction.Auction auction)
+        public async Task Put(string id, [FromBody] Model.Auction auction)
         {
-            await cosmosRepository.UpdateAsync(id, auction);
+            _context.Entry(auction).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<AuctionController>/5
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await cosmosRepository.DeleteAsync(id);
+            _context.Auctions.RemoveRange(_context.Auctions.Where(c => c.Id == id));
+            await _context.SaveChangesAsync();
         }
-       
+
     }
 }

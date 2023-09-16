@@ -1,21 +1,19 @@
 ﻿using Agape.Auctions.UI.Cars.Admin.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Security.Claims;
 using AgapeAPI.Core;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-//using AgapeModelDealer = Agape.Auctions.Models.Dealers;
-using AgapeModelUser = Agape.Auctions.Models.Users;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+//using AgapeModelDealer = DataAccessLayer.Models;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.Admin.Utilities;
 using Microsoft.Extensions.Logging;
 
@@ -85,7 +83,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 {
                     if (item.Address == null)
                     {
-                        item.Address = new Auctions.Models.Address();
+                        item.Address = new DALModels.Address();
                     }
                 }
                 return View(lstDealers);
@@ -126,7 +124,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 {
                     if (item.Address == null)
                     {
-                        item.Address = new Auctions.Models.Address();
+                        item.Address = new DALModels.Address();
                     }
                 }
             }
@@ -211,10 +209,11 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         }
 
         //PUT - Update the User
-        public async Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUser(AgapeModelUser.User user)
         {
             try
             {
+                user.ConfirmPassword = user.Password;
                 using HttpClient client =new HttpClient(new CustomHttpClientHandler(_configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
                 string endpoint = apiBaseUrlUser + user.Id;

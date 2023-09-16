@@ -34,7 +34,7 @@ namespace Agape.Auctions.Functions.Cars.Email
             mail.To.Add("krish@agapeworks.org");
             mail.IsBodyHtml = true;
             mail.Subject = "New Car added " + documentId;
-            mail.Body = "New Car added . Car ID - " + documentId + "  Thanks, BadAssCarz Team";
+            mail.Body = "New Car added . Car ID - " + documentId + "  Thanks, ShopCarHere Team";
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
             smtp.UseDefaultCredentials = false;

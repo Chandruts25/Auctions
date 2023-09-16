@@ -1,6 +1,8 @@
 using Agape.Azure.Cosmos;
+using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,9 +28,10 @@ namespace Agape.Auctions.Cars
             {
                 services.AddControllers();
                 services.AddControllersWithViews();
-                services.AddSingleton<ICosmosRepository<AgapeModel.Car, AgapeModel.Car>>(InitializeCosmosRepositaryInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddControllersWithViews(); services.AddDbContext<AuctionDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                //services.AddSingleton<ICosmosRepository<AgapeModel.Car, AgapeModel.Car>>(InitializeCosmosRepositaryInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

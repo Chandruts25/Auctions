@@ -9,15 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Views\Car\AddEditCar.cshtml" />
     <None Include="Views\Car\Controls\_AddEditCar.cshtml" />
-    <None Include="Views\Car\details.cshtml" />
     <None Include="Views\Car\Index.cshtml" />
     <None Include="Views\Car\Purchase.cshtml" />
     <None Include="Views\Car\Search.cshtml" />
     <None Include="Views\Car\View.cshtml" />
     <None Include="Views\Dealers\Dealer.cshtml" />
-    <None Include="Views\Dealers\Index.cshtml" />
     <None Include="Views\Home\Contact.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
@@ -49,12 +46,9 @@
     <None Include="Views\Shared\_Amount.cshtml" />
     <None Include="Views\Shared\_Filter.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_Layout_Page.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\User\ApprovedCarz.cshtml" />
     <None Include="Views\User\CanceledCarz.cshtml" />
-    <None Include="Views\User\MyDealership.cshtml" />
-    <None Include="Views\User\MyProfile.cshtml" />
     <None Include="Views\User\Profile.cshtml" />
     <None Include="Views\User\SoldCarz.cshtml" />
     <None Include="Views\User\UnsoldCarz.cshtml" />
@@ -111,11 +105,13 @@
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.23.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NLog" Version="5.0.0-rc2" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0-rc2" />
+    <!--<PackageReference Include="NLog" Version="5.0.0-rc2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0-rc2" />-->
     <PackageReference Include="Stripe.net" Version="39.92.0" />
     <PackageReference Include="Syncfusion.EJ" Version="19.4.0.53" />
     <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
+	<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+	<PackageReference Include="FirebaseAuthentication.net" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -265,6 +261,10 @@
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Offers\" />
     <Folder Include="Views\Shared\Components\Dealers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

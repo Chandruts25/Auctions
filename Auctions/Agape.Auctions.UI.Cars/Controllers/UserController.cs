@@ -11,21 +11,22 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgapeModelCar = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Agape.Auctions.UI.Cars.Models;
 using AgapeAPI.Core;
 using Microsoft.Extensions.Logging;
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelOffer = Agape.Auctions.Models.Offers;
+using AgapeModelPayment = DataAccessLayer.Models;
+using AgapeModelPurchase = DataAccessLayer.Models;
+using AgapeModelOffer = DataAccessLayer.Models;
 using Model = Agape.Auctions.UI.Cars.Models;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
-using AgapeModel = Agape.Auctions.Models;
+using ModelAuctions = DataAccessLayer.Models;
+using AgapeModelBid = DataAccessLayer.Models;
+using AgapeModel = DataAccessLayer.Models;
 using Stripe;
 using Stripe.Checkout;
 using Microsoft.AspNetCore.Http;
@@ -57,9 +58,10 @@ namespace Agape.Auctions.UI.Cars.Controllers
         private readonly string paymentErrorRedirectUrl;
         private IHttpContextAccessor _httpContextAccessor;
         private readonly AzureStorageConfig storageConfig = null;
+        private readonly FireBaseStorageConfig _firebaseConfig;
 
 
-        public UserController(IConfiguration configuration, IServiceManager serviceManager, ILogger<UserController> logger, IHttpContextAccessor httpContextAccessor, IOptions<AzureStorageConfig> config)
+        public UserController(IConfiguration configuration, IOptions<FireBaseStorageConfig> firebaseConfig, IServiceManager serviceManager, ILogger<UserController> logger, IHttpContextAccessor httpContextAccessor, IOptions<AzureStorageConfig> config)
         {
             _logger = logger;
             _configure = configuration;
@@ -83,6 +85,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
             _httpContextAccessor = httpContextAccessor;
 
             StripeConfiguration.ApiKey = stripeAPIKey;
+            _firebaseConfig = firebaseConfig.Value;
         }
 
         public async Task<IActionResult> PaymentSummary()
@@ -179,31 +182,18 @@ namespace Agape.Auctions.UI.Cars.Controllers
                     {
                         if (files[0].Length > 0)
                         {
-                            using (Stream stream = files[0].OpenReadStream())
+                            imageUrl = await StorageHelper.UploadFileToStorage(files[0], _firebaseConfig);
+                            if (!string.IsNullOrEmpty(imageUrl))
                             {
-
-                                var fileExtension = System.IO.Path.GetExtension(files[0].FileName);
-                                imageUrl = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + userIdp + "/" + userIdp + fileExtension;
-
-                                var lstImages = new List<string>();
-                                lstImages.Add(userIdp + fileExtension);
-                                var result = await StorageHelper.RemoveFileFromStorage(lstImages, userIdp, storageConfig);
-
-                                uploadResult = await StorageHelper.UploadFileToStorage(stream, userIdp + fileExtension, userIdp, storageConfig);
-
-                                if (uploadResult)
-                                {
-                                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                                    var user = await GetUserByIdentity(userId);
-                                    var purchases = new List<string>();
-                                    purchases.Add(imageUrl);
-                                    user.Purchases = purchases;
-
-                                    //Call the api to save the data in to cosmosdb
-                                    var response = await UpdateDealerDetails(user);
-                                    if (!response)
-                                        return Json(new { result = false, message = "Error while upload the user profile photo, Please try again later", count = files.Count });
-                                }
+                                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                                var user = await GetUserByIdentity(userId);
+                                //var purchases = new List<string>();
+                                //purchases.Add(imageUrl);
+                                user.ProfileUrl = imageUrl;
+                                //Call the api to save the data in to cosmosdb
+                                var response = await UpdateDealerDetails(user);
+                                if (!response)
+                                    return Json(new { result = false, message = "Error while upload the user profile photo, Please try again later", count = files.Count });
                             }
                         }
                     }
@@ -226,7 +216,6 @@ namespace Agape.Auctions.UI.Cars.Controllers
             }
             return Json(new { result = true, message = "success", count = files.Count, imageUrl = imageUrl });
         }
-
 
         public async Task<IActionResult> Profile()
         {
@@ -610,6 +599,8 @@ namespace Agape.Auctions.UI.Cars.Controllers
                 dealer.Email = Request.Form["hdnEmailAddress"];
                 dealer.UserType = "user";
                 dealer.Idp = Request.Form["hdnIdp"];
+                dealer.Password = Request.Form["hdnPassword"];
+                dealer.ProfileUrl = Request.Form["hdnProfileUrl"];
 
                 var paymentMethod = new List<string>();
                 paymentMethod.Add(Request.Form["hdnCountryId"]);
@@ -617,7 +608,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
 
                 dealer.PaymentMethods = paymentMethod;
 
-                var address = new AgapeModel.Address();
+                var address = new AgapeModelUser.Address();
                 address.Country = Request.Form["hdnCountryValue"];
                 address.Street = Request.Form["txtStreet"];
                 address.City = Request.Form["txtCity"];
@@ -649,8 +640,10 @@ namespace Agape.Auctions.UI.Cars.Controllers
                 dealer.Email = Request.Form["hdnEmailAddress"];
                 dealer.UserType = "user";
                 dealer.Idp = Request.Form["Idp"];
+                dealer.Password = Request.Form["hdnPassword"];
+                dealer.ProfileUrl = Request.Form["hdnProfileUrl"];
 
-                var address = new AgapeModel.Address();
+                var address = new AgapeModelUser.Address();
                 address.Country = Request.Form["hdnCountryValue"];
                 address.Street = Request.Form["txtStreet"];
                 address.City = Request.Form["txtCity"];
@@ -690,7 +683,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                                       Currency = "usd",
                                       ProductData = new SessionLineItemPriceDataProductDataOptions
                                       {
-                                        Name = "BADASS Carz",
+                                        Name = "ShopCarHere",
                                         Description = "DealerShip Charges"
                                       },
 
@@ -780,6 +773,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         public async Task<bool> UpdateDealerDetails(AgapeModelUser.User dealer)
         {
             var status = false;
+            dealer.ConfirmPassword = dealer.Password;
             try
             {
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(_configure));
@@ -862,7 +856,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         public async Task<AgapeModelUser.User> GetDealerDetails(string id)
         {
             var dealer = new AgapeModelUser.User();
-            dealer.Address = new Auctions.Models.Address();
+            dealer.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(_configure)))
@@ -875,7 +869,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                         {
                             dealer = await Response.Content.ReadAsAsync<AgapeModelUser.User>();
                             if (dealer.Address == null)
-                                dealer.Address = new Auctions.Models.Address();
+                                dealer.Address = new DALModels.Address();
                         }
                         else
                         {
@@ -894,7 +888,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(_configure)))
@@ -909,7 +903,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else
@@ -935,7 +929,9 @@ namespace Agape.Auctions.UI.Cars.Controllers
                 var dealerDetails = Request.Form["User"];
                 var jsonSerializer = new JsonSerializer();
                 var reader = new StringReader(dealerDetails);
-                var user = (AgapeModelUser.User)jsonSerializer.Deserialize(reader, typeof(AgapeModelUser.User));
+                var user = jsonSerializer.Deserialize<AgapeModel.User>(new JsonTextReader(reader));
+
+                user.ConfirmPassword = user.Password;
 
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(_configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
@@ -1004,6 +1000,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                 var jsonSerializer = new JsonSerializer();
                 var reader = new StringReader(dealerDetails);
                 var dealer = (AgapeModelUser.User)jsonSerializer.Deserialize(reader, typeof(AgapeModelUser.User));
+                dealer.ConfirmPassword = dealer.Password;
 
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(_configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(dealer), Encoding.UTF8, "application/json");

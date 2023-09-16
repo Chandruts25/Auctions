@@ -12,6 +12,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.AspNetCore.Http.Features;
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Agape.Auctions.UI.Cars
 {
@@ -38,17 +39,25 @@ namespace Agape.Auctions.UI.Cars
 
             services.AddControllersWithViews();
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-                // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
-                options.HandleSameSiteCookieCompatibility();
-            });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+            //    // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
+            //    options.HandleSameSiteCookieCompatibility();
+            //});
+
+            services.AddAuthentication(
+           CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(option =>
+           {
+               option.LoginPath = "/Account/LogIn";
+               option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+           });
 
             // Configuration to sign-in users with Azure AD B2C
-            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, Constants.AzureAdB2C);
+            //services.AddMicrosoftIdentityWebAppAuthentication(Configuration, Constants.AzureAdB2C);
 
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
@@ -57,7 +66,8 @@ namespace Agape.Auctions.UI.Cars
 
             //Configuring appsettings section AzureAdB2C, into IOptions
             services.AddOptions();
-            services.Configure<OpenIdConnectOptions>(Configuration.GetSection("AzureAdB2C"));
+            //services.Configure<OpenIdConnectOptions>(Configuration.GetSection("AzureAdB2C"));
+            services.Configure<FireBaseStorageConfig>(Configuration.GetSection("FireBaseStorageConfig"));
 
             var bidRefreshUrl = Configuration.GetValue<string>("FunctionBidRefreshUrl");
 
@@ -117,7 +127,7 @@ namespace Agape.Auctions.UI.Cars
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
-            
+
 
             app.UseEndpoints(endpoints =>
             {

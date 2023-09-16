@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Users.User
+﻿@model DataAccessLayer.Models.User
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
     {
@@ -137,6 +137,8 @@
                                         <input type="hidden" name="hdnEmailAddress" value="@Model.Email" />
                                         <input type="hidden" name="UserType" value="@Model.UserType" />
                                         <input type="hidden" name="Idp" value="@Model.Idp" />
+                                        <input type="hidden" name="hdnPassword" value="@Model.Password" />
+                                        <input type="hidden" name="hdnProfileUrl" value="@Model.ProfileUrl" />
                                         <input type="hidden" name="hdnCountryValue" value="@CountryId" />
                                         <input type="hidden" name="txtStreet" value="@Model.Address.Street" />
                                         <input type="hidden" name="txtCity" value="@Model.Address.City" />

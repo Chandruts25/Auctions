@@ -8,11 +8,11 @@ using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModels = Agape.Auctions.Models;
+using AgapeModelCar = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelPurchase = DataAccessLayer.Models;
+using AgapeModelPayment = DataAccessLayer.Models;
+using AgapeModels = DataAccessLayer.Models;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -201,22 +201,52 @@ namespace Agape.Auctions.UI.Cars.Controllers
                         if (defaultImage != null && defaultImage.Any())
                         {
                             defaultImageUrl = defaultImage.FirstOrDefault().Url;
-                           
+
                         }
-                       
+
                     }
                     if (string.IsNullOrEmpty(defaultImageUrl))
                     {
                         defaultImageUrl = defaultCarImageUrl;
                     }
                     car.Thumbnail = defaultImageUrl;
+                    var options = new SessionCreateOptions
+                    {
+                        LineItems = new List<SessionLineItemOptions>
+                        {
+                            new SessionLineItemOptions
+                            {
+                            PriceData = new SessionLineItemPriceDataOptions
+                            {
+                                UnitAmountDecimal = (decimal)(car.SalePrice*100*0.05),
+                                Currency = "usd",
+                                ProductData = new SessionLineItemPriceDataProductDataOptions
+                                {
+                                Name = "ShopCarHere",
+                                Description = "Car Price"
+                                },
+
+                            },
+                            Quantity = 1,
+                            },
+                        },
+                        Mode = "payment",
+                        SuccessUrl = paymentSuccessRedirectUrl,
+                        CancelUrl = paymentErrorRedirectUrl,
+                    };
+
+                    var service = new SessionService();
+                    Session session = service.Create(options);
+
+                    Response.Headers.Add("Location", session.Url);
+                    return new StatusCodeResult(303);
                 }
             }
             catch (Exception ex)
             {
                 logHelper.LogError(ex.ToString());
             }
-            return View(car);
+            return View("Error");
         }
 
         public async Task<IActionResult> Receipt(string carId)
@@ -462,7 +492,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                                       Currency = "usd",
                                       ProductData = new SessionLineItemPriceDataProductDataOptions
                                       {
-                                        Name = "BADASS Carz",
+                                        Name = "ShopCarHere",
                                         Description = carDetails.Description
                                       },
 

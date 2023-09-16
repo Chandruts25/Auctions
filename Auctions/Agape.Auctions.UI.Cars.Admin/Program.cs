@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NLog.Web;
+//using NLog.Web;
 
 namespace Agape.Auctions.UI.Cars.Admin
 {
@@ -26,7 +26,7 @@ namespace Agape.Auctions.UI.Cars.Admin
                 {
                     logging.ClearProviders();
                     logging.SetMinimumLevel(LogLevel.Trace);
-                })
-                .UseNLog();
+                });
+                //.UseNLog();
     }
 }

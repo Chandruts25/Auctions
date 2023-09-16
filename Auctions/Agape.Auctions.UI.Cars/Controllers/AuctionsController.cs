@@ -11,12 +11,13 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
-using AgageModelCarReview = Agape.Auctions.Models.Cars.CarReview;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgapeModelBid = DataAccessLayer.Models;
+using AgageModelCarReview = DataAccessLayer.Models.CarReview;
+using ModelAuctions = DataAccessLayer.Models;
 using System.Security.Claims;
 using System.Text;
 using Stripe;
@@ -602,7 +603,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(configure)))
@@ -617,7 +618,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else
@@ -687,7 +688,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         //                              Currency = "usd",
         //                              ProductData = new SessionLineItemPriceDataProductDataOptions
         //                              {
-        //                                Name = "BADASS Carz"
+        //                                Name = "ShopCarHere"
         //                              },
 
         //                            },

@@ -8,11 +8,11 @@ using System.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModels = Agape.Auctions.Models;
+using AgapeModelCar = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelPurchase = DataAccessLayer.Models;
+using AgapeModelPayment = DataAccessLayer.Models;
+using AgapeModels = DataAccessLayer.Models;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -459,7 +459,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                                       Currency = "usd",
                                       ProductData = new SessionLineItemPriceDataProductDataOptions
                                       {
-                                        Name = "BADASS Carz",
+                                        Name = "ShopCarHere",
                                         Description = carDetails.Description
                                       },
 

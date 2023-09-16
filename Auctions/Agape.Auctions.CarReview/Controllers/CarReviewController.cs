@@ -2,69 +2,77 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Agape.Azure.Cosmos;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
+using CarReviewModel = DataAccessLayer.Models;
 using System.Linq.Expressions;
 using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agape.Auctions.CarReview.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CarReviewController
     {
-        private readonly ICosmosRepository<AgapeModelCar.CarReview, AgapeModelCar.CarReview> cosmosRepository;
+        private readonly CarReviewModel.AuctionDbContext _context;
 
-        public CarReviewController(ICosmosRepository<AgapeModelCar.CarReview, AgapeModelCar.CarReview> cosmosRepositoryServices)
+        public CarReviewController(CarReviewModel.AuctionDbContext context)
         {
-            cosmosRepository = cosmosRepositoryServices;
+            _context = context;
         }
 
         // GET: api/<OffersController>
         [HttpGet]
-        public async Task<IEnumerable<AgapeModelCar.CarReview>> Get()
+        public async Task<IEnumerable<CarReviewModel.CarReview>> Get()
         {
-            Expression<Func<AgapeModelCar.CarReview, bool>> funcOffer = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Review" && c.Deleted == false);
-            var result = await cosmosRepository.GetItemsAsync(funcOffer);
-            return result.Resource;
+            Expression<Func<CarReviewModel.CarReview, bool>> funcOffer = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Review" && c.Deleted == false);
+            var result = await _context.CarReviews
+                .Where(funcOffer)
+                .ToListAsync();
+            return result;
         }
 
         // GET api/<OffersController>/5
         [HttpGet("{id}")]
-        public async Task<AgapeModelCar.CarReview> Get(string id)
+        public async Task<CarReviewModel.CarReview> Get(string id)
         {
-            var result = await cosmosRepository.GetAsync(id);
-            return result.Resource;
+            var result = await _context.CarReviews.FindAsync(id);
+            return result;
         }
 
         // POST api/<OffersController>
         [HttpPost]
-        public async Task Post([FromBody] AgapeModelCar.CarReview review)
+        public async Task Post([FromBody] CarReviewModel.CarReview review)
         {
-            await cosmosRepository.CreateAsync(review);
+            await _context.CarReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
         }
 
         // PUT api/<OffersController>/5
         [HttpPut("{id}")]
-        public async Task Put(string id, [FromBody] AgapeModelCar.CarReview review)
+        public async Task Put(string id, [FromBody] CarReviewModel.CarReview review)
         {
-            await cosmosRepository.UpdateAsync(id, review);
+            _context.Entry(review).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<OffersController>/5
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await cosmosRepository.DeleteAsync(id);
+            _context.CarReviews.RemoveRange(_context.CarReviews.Where(c => c.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         // GET api/GetReviewByCar/5
         [HttpGet("GetReviewByCar/{carId}")]
-        public async Task<IEnumerable<AgapeModelCar.CarReview>> GetReviewByCar(string carId)
+        public async Task<IEnumerable<CarReviewModel.CarReview>> GetReviewByCar(string carId)
         {
-            Expression<Func<AgapeModelCar.CarReview, bool>> funCarReview = c => c.CarId == carId;
-            var result = await cosmosRepository.FindAsync(funCarReview);
-            return result.Resource;
+            Expression<Func<CarReviewModel.CarReview, bool>> funCarReview = c => c.CarId == carId;
+            var result = await _context.CarReviews
+                .Where(funCarReview)
+                .ToListAsync();
+            return result;
         }
-
     }
 }

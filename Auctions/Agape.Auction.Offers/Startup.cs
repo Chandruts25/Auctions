@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using Agape.Azure.Cosmos;
 using AgapeModelOffers = Agape.Auctions.Models.Offers;
+using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agape.Auction.Offers
 {
@@ -22,8 +24,8 @@ namespace Agape.Auction.Offers
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddControllersWithViews();
-            services.AddSingleton<ICosmosRepository<AgapeModelOffers.Offer, AgapeModelOffers.Offer>>(InitializeCosmosRepositaryInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddControllersWithViews(); services.AddDbContext<AuctionDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddSingleton<ICosmosRepository<AgapeModelOffers.Offer, AgapeModelOffers.Offer>>(InitializeCosmosRepositaryInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

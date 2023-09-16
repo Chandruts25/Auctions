@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Agape.Auctions.Models.Users.User>
+﻿@model IEnumerable<DataAccessLayer.Models.User>
 
 @{
     ViewData["Title"] = "Dealers";
@@ -35,11 +35,9 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
 <style type="text/css">
-    .inSectionBlock
-    {
-        min-height : 50px !important;
+    .inSectionBlock {
+        min-height: 50px !important;
     }
-
 </style>
 
 <div class="section">
@@ -99,7 +97,10 @@
                                                 @{
                                                     foreach (var item in distinctStates)
                                                     {
-                                                        <option value="@item">@item</option>
+                                                        if (item != null)
+                                                        {
+                                                            <option value="@item">@item</option>
+                                                        }
                                                     }
                                                 }
                                             </select>
@@ -107,7 +108,10 @@
                                             <select class="form-control mt-5" size="14" id="cmbDealers" onchange="bindDealerInfo()">
                                                 @foreach (var item in Model)
                                                 {
-                                                    <option value="@item.Id">@item.CompanyName</option>
+                                                    if (!string.IsNullOrWhiteSpace(item.CompanyName))
+                                                    {
+                                                        <option value="@item.Id">@item.CompanyName</option>
+                                                    }
                                                 }
                                             </select>
 
@@ -139,32 +143,39 @@
 
                     @foreach (var item in lstAllDealers)
                     {
-                        <div class="sectionBlock inSectionBlock">
-                            <h5 class="stitle">@item.DealerState</h5>
-                            <div class="sectionContent">
+                        if (!string.IsNullOrWhiteSpace(item.DealerState))
+                        {
+                            <div class="sectionBlock inSectionBlock">
+                                <h5 class="stitle">@item.DealerState</h5>
+                                <div class="sectionContent">
 
-                                <div class="col-xs-12">
+                                    <div class="col-xs-12">
 
-                                    <table class="table table-striped">
+                                        <table class="table table-striped">
 
-                                        <tbody>
-                                            @foreach (var dealers in item.Dealers)
-                                            {
-                                                <tr>
-                                                    <td class="dealTableAreaLink"><a asp-controller="Dealers" asp-action="Dealer" asp-route-id="@dealers.Id">@dealers.DealerCompanyName</a></td>
-                                                    <td class="dealTableAreaLink" width="20%"> <a href="#"> Featured </a> </td>
+                                            <tbody>
+                                                @foreach (var dealers in item.Dealers)
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(dealers.DealerCompanyName))
+                                                    {
 
-                                                </tr>
-                                            }
+                                                        <tr>
+                                                            <td class="dealTableAreaLink"><a asp-controller="Dealers" asp-action="Dealer" asp-route-id="@dealers.Id">@dealers.DealerCompanyName</a></td>
+                                                            <td class="dealTableAreaLink" width="20%"> <a href="#"> Featured </a> </td>
 
-                                        </tbody>
-                                    </table>
+                                                        </tr>
+                                                    }
+                                                }
 
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
 
                                 </div>
-
                             </div>
-                        </div>
+                        }
                     }
 
 
@@ -236,7 +247,7 @@
                         map: map
                     });
                     markers.push(marker);
-                   
+
                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
                             if (previnfowindow) {
@@ -254,7 +265,6 @@
                         }
                     })(marker, i));
                 }
-                console.log(markers);
             });
         }
 
@@ -282,7 +292,7 @@
                             newOptions.push({ name: v.companyName, id: v.id });
                             companyNames.push(v.companyName);
                         }
-                       
+
                     });
                 });
             }
@@ -333,18 +343,14 @@
     function populateDealerInfo(selectedState) {
         var lstDealers = '@Html.Raw(Json.Serialize(lstAllDealers))';
         var dealersJson = $.parseJSON(lstDealers);
-        console.log(dealersJson);
         var strContent = "";
-        if (selectedState == null || selectedState == "" || selectedState == undefined || selectedState =="0") {
+        if (selectedState == null || selectedState == "" || selectedState == undefined || selectedState == "0") {
             $(dealersJson).each(function (i, v) {
                 strContent += "<div class='sectionBlock inSectionBlock'><h5 class='stitle'>" + v.dealerState + "</h5><div class='sectionContent'><div class='col-xs-12'>";
                 strContent += "<table class='table table-striped'><tbody>"
-                console.log(v.dealerState);
                 $(v.dealers).each(function (j, d) {
                     strContent += "<tr><td class='dealTableAreaLink'><a href='/Dealers/Dealer/" + d.id + "'>" + d.dealerCompanyName + "</a></td>";
                     strContent += "<td class='dealTableAreaLink' width='20%'><a href='#'>Featured</a></td></tr>";
-                    console.log(d.id);
-                    console.log(d.dealerCompanyName);
                 });
                 strContent += "</tbody></table></div></div></div>";
             });
@@ -354,20 +360,15 @@
                 if (selectedState == v.dealerState) {
                     strContent += "<div class='sectionBlock inSectionBlock'><h5 class='stitle'>" + v.dealerState + "</h5><div class='sectionContent'><div class='col-xs-12'>";
                     strContent += "<table class='table table-striped'><tbody>"
-                    console.log(v.dealerState);
                     $(v.dealers).each(function (j, d) {
                         strContent += "<tr><td class='dealTableAreaLink'><a href='/Dealers/Dealer/" + d.id + "'>" + d.dealerCompanyName + "</a></td>";
                         strContent += "<td class='dealTableAreaLink' width='20%'><a href='#'>Featured</a></td></tr>";
-                        console.log(d.id);
-                        console.log(d.dealerCompanyName);
                     });
                     strContent += "</tbody></table></div></div></div>";
                  }
               });
         }
         $("#divAllDealersSection").empty();
-        console.log(strContent);
         $("#divAllDealersSection").append(strContent);
     }
-
 </script>

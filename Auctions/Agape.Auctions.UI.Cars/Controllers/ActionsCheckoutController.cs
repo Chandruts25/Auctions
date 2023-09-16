@@ -14,12 +14,12 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
-using AgapeModel = Agape.Auctions.Models.Users;
-using AgapeModelAddress = Agape.Auctions.Models;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelAddress = DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
+using AgapeModelBid = DataAccessLayer.Models;
+using ModelAuctions = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.ViewComponents;
 
 namespace Agape.Auctions.UI.Cars.Controllers
@@ -91,6 +91,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         {
             try
             {
+                user.ConfirmPassword = user.Password;
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
                 string endpoint = apiBaseUrlUser + user.Id;
@@ -306,7 +307,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
             if (IsLoggedWithGmail())
                 return AllClaimsFromAzure()[5];
             else
-                return AllClaimsFromAzure()[4];
+                return AllClaimsFromAzure()[1];
         }
 
         public string GetCurrentCountryFromAzureClaims()

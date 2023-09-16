@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Cars.Car
+﻿@model DataAccessLayer.Models.Car
 
 @{
     ViewData["Title"] = "Edit Car";
@@ -493,7 +493,7 @@
             );
         }
         else {
-            showMessage("Please select the images to upload", "alert alert-danger");
+            showMessage("Please select the images to upload", "error");
         }
     }
 
@@ -759,7 +759,7 @@
 
     function saveCar() {
         if (!validateCarSave()) {
-            showMessage("Please fill all required fields", "alert alert-danger")
+            showMessage("Please fill all required fields", "error")
         }
         else {
             var id = $("#hdnId").val();

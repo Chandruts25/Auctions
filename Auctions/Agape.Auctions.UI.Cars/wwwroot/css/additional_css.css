@@ -104,8 +104,6 @@ div#pagination li a {
 }
 
 .rounded-0 {
-    width: 25px;
-    height: 25px;
     margin-left: 2px;
     line-height: 1.42857143;
 }

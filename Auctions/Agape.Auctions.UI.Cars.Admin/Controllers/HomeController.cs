@@ -12,11 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
-using Newtonsoft.Json;
-using System.Text;
-using AgapeModel = Agape.Auctions.Models.Users;
-using AgapeModelAddress = Agape.Auctions.Models;
-
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelAddress = DataAccessLayer.Models;
 
 namespace Agape.Auctions.UI.Cars.Admin.Controllers
 {
@@ -128,12 +125,12 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
             ServiceReference.Content model = new ServiceReference.Content();
             try
             {
-                string error = await ValidateAndAddUser();
-                if (!string.IsNullOrEmpty(error))
-                {
-                    ViewBag.Error = error;
-                    logHelper.LogError(error);
-                }
+                //string error = await ValidateAndAddUser();
+                //if (!string.IsNullOrEmpty(error))
+                //{
+                //    ViewBag.Error = error;
+                //    logHelper.LogError(error);
+                //}
                 model = await _serviceManager.GetPage((int)AgapePageEnum.About);
             }
             catch (Exception ex)
@@ -242,31 +239,32 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         //POST - Create New User
         public async Task<bool> AddNewUser(AgapeModel.User user)
         {
-            try
-            {
-                user.Id = Guid.NewGuid().ToString();
-                using HttpClient client = new HttpClient(new CustomHttpClientHandler(configure));
-                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-                string endpoint = apiBaseUrlUser;
+            return true;
+            //try
+            //{
+            //    user.Id = Guid.NewGuid().ToString();
+            //    using HttpClient client = new HttpClient(new CustomHttpClientHandler(configure));
+            //    StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+            //    string endpoint = apiBaseUrlUser;
 
-                using (var Response = await client.PostAsync(endpoint, content))
-                {
-                    if (Response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        logHelper.LogError(Response.ReasonPhrase + " " + "Error from User Service");
-                        return false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logHelper.LogError(ex.ToString());
-                return false;
-            }
+            //    using (var Response = await client.PostAsync(endpoint, content))
+            //    {
+            //        if (Response.StatusCode == System.Net.HttpStatusCode.OK)
+            //        {
+            //            return true;
+            //        }
+            //        else
+            //        {
+            //            logHelper.LogError(Response.ReasonPhrase + " " + "Error from User Service");
+            //            return false;
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logHelper.LogError(ex.ToString());
+            //    return false;
+            //}
         }
 
         public async Task<(List<AgapeModel.User>, string)> GetUserByIdentity(string id)

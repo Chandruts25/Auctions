@@ -15,11 +15,16 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgageModelCarReview = Agape.Auctions.Models.Cars.CarReview;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgageModelCarReview = DataAccessLayer.Models;
+using Microsoft.AspNetCore.Hosting;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace Agape.Auctions.UI.Cars.Controllers
 {
@@ -36,14 +41,15 @@ namespace Agape.Auctions.UI.Cars.Controllers
         private readonly string defaultCarImageUrl;
         private readonly string apiBaseUrlUser;
         private readonly string apiBaseUrlCarReview;
-
+        private readonly FireBaseStorageConfig _firebaseConfig;
         // private readonly string apiBaseUrlCarSearch;
         private LogHelper logHelper;
 
-        public CarController(IConfiguration configuration, IOptions<AzureStorageConfig> config, ILogger<CarController> logger)
+        public CarController(IConfiguration configuration, IOptions<FireBaseStorageConfig> firebaseConfig, IOptions<AzureStorageConfig> config, ILogger<CarController> logger, IWebHostEnvironment hostingEnvironment)
         {
             configure = configuration;
-            storageConfig = config.Value;
+            storageConfig = config.Value; 
+            _firebaseConfig = firebaseConfig.Value;
             apiBaseUrl = configure.GetValue<string>("WebAPIBaseUrlCar");
             apiBaseUrlCarImage = configure.GetValue<string>("WebAPIBaseUrlCarImage");
             apiBaseUrlVin = configure.GetValue<string>("WebAPIBaseUrlVin");
@@ -147,7 +153,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
 
         public async Task<JsonResult> SaveCarReview(string message,string carId,int rate,string type,string title)
         {
-            var reviewDetails = new AgageModelCarReview();
+            var reviewDetails = new AgageModelCarReview.CarReview();
             
             //var carDetails = Request.Form["carReview"];
             //var jsonSerializer = new JsonSerializer();
@@ -195,7 +201,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
         public async Task<IActionResult> Ratings(string carId)
         {
             var carReviews =await  GetReviewsAndComments(carId);
-            var rating = new List<AgageModelCarReview>();
+            var rating = new List<AgageModelCarReview.CarReview>();
             decimal rate = 0.0M;
             foreach(var review in carReviews)
             {
@@ -254,7 +260,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
             return lstCarReview;
         }
 
-        public async Task<bool> UpdateReviewsAndComments(AgageModelCarReview carReview)
+        public async Task<bool> UpdateReviewsAndComments(AgageModelCarReview.CarReview carReview)
         {
             using HttpClient client = new HttpClient(new CustomHttpClientHandler(configure));
             StringContent content = new StringContent(JsonConvert.SerializeObject(carReview),
@@ -308,10 +314,10 @@ namespace Agape.Auctions.UI.Cars.Controllers
         #endregion
 
 
-        public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
+        public async Task<AgapeModel.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(configure)))
@@ -321,12 +327,12 @@ namespace Agape.Auctions.UI.Cars.Controllers
                     {
                         if (Response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            var lstUser = await Response.Content.ReadAsAsync<List<AgapeModelUser.User>>();
-                            if (lstUser != null && lstUser.Any())
+                            var lstUser = await Response.Content.ReadAsAsync<List<AgapeModel.User>>();
+                            if (lstUser != null)
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else
@@ -654,7 +660,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                     car.Properties = deResponse.carProperties;
                     car.Owner = User.FindFirstValue(ClaimTypes.NameIdentifier); //logged in user id
 
-                    using HttpClient client = new HttpClient(new CustomHttpClientHandler(configure));
+                    using HttpClient client = new HttpClient(/*new CustomHttpClientHandler(configure)*/);
                     StringContent content = new StringContent(JsonConvert.SerializeObject(car), Encoding.UTF8, "application/json");
                     string endpoint = apiBaseUrl + car.Id;
 
@@ -916,11 +922,12 @@ namespace Agape.Auctions.UI.Cars.Controllers
 
         #region CarImages
 
+       
         [HttpPost]
         public async Task<IActionResult> UploadCarImages(IList<IFormFile> files)
         {
-            bool uploadResult = false;
-           
+            string filePath = "";
+
             try
             {
                 if (files.Count == 0)
@@ -939,40 +946,27 @@ namespace Agape.Auctions.UI.Cars.Controllers
                         {
                             if (formFile.Length > 0)
                             {
-                                using (Stream stream = formFile.OpenReadStream())
+                                filePath = await StorageHelper.UploadFileToStorage(formFile, _firebaseConfig);
+
+                                if (!string.IsNullOrEmpty(filePath))
                                 {
-                                    var imageUrl = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName;
-
-                                    if (lstCarImages != null && lstCarImages.Any())
+                                    //Call the api to save the data in to cosmosdb
+                                    var carImage = new AgapeModelImage.Image()
                                     {
-                                        var findImage = lstCarImages.Where(i => i.Url == imageUrl);
-                                        if (findImage != null && findImage.Any())
-                                        {
-                                            var findImageId = findImage.FirstOrDefault().Id;
-                                            var removeImageResult = await RemoveCarImageByCarImageId(carId, findImageId, imageUrl);
-                                            // var removeImageResult = await RemoveCarImageFromStorage(carId, imageUrl);
-                                        }
-                                    }
-                                    uploadResult = await StorageHelper.UploadFileToStorage(stream, formFile.FileName, carId, storageConfig);
-
-                                    if (uploadResult)
-                                    {
-                                        //Call the api to save the data in to cosmosdb
-                                        var carImage = new AgapeModelImage.Image()
-                                        {
-                                            // Id = Guid.NewGuid().ToString(),
-                                            Url = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName,
-                                            // Type = "Image",
-                                            Owner = carId,
-                                            IsProcessed = true,
-                                            Order = currentImageCount + 1
-                                        };
-                                        currentImageCount = currentImageCount + 1;
-                                        var response = await SaveCarImages(carImage);
-                                        if (!response.Item1)
-                                            return Json(new { result = false, message = response.Item2, count = files.Count });
-                                    }
+                                        // Id = Guid.NewGuid().ToString(),
+                                        //Url = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName,
+                                        Url = filePath,
+                                        // Type = "Image",
+                                        Owner = carId,
+                                        IsProcessed = true,
+                                        Order = currentImageCount + 1
+                                    };
+                                    currentImageCount = currentImageCount + 1;
+                                    var response = await SaveCarImages(carImage);
+                                    if (!response.Item1)
+                                        return Json(new { result = false, message = response.Item2, count = files.Count });
                                 }
+                                //}
                             }
                         }
                         else
@@ -993,7 +987,7 @@ namespace Agape.Auctions.UI.Cars.Controllers
                 logHelper.LogError(ex.ToString());
                 return Json(new { result = false, message = ex.Message, count = files.Count });
             }
-            return Json(new { result = true, message = "success",count = files.Count });
+            return Json(new { result = true, message = "success", count = files.Count });
         }
 
         public async Task<(bool, string)> SaveCarImages(AgapeModelImage.Image carImage)

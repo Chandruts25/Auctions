@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Agape.Auctions.Models.Users.User>
+﻿@model IEnumerable<DataAccessLayer.Models.User>
 
 @{
 
@@ -225,7 +225,7 @@
                         map: map
                     });
                     markers.push(marker);
-                   
+
                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
                             if (previnfowindow) {
@@ -271,7 +271,7 @@
                             newOptions.push({ name: v.companyName, id: v.id });
                             companyNames.push(v.companyName);
                         }
-                       
+
                     });
                 });
             }

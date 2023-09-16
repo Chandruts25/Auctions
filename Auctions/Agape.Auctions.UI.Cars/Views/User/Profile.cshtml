@@ -1,9 +1,7 @@
 ﻿@model dynamic
 @using System.Globalization;
 
-@using Agape.Auctions.Models.Images
-@using Agape.Auctions.Models.Cars
-@using Agape.Auctions.Models.Users
+@using DataAccessLayer.Models
 @{
     ViewData["Title"] = "Myaccount";
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
@@ -17,9 +15,9 @@
 
     var profilePhotoUrl = "/images/customer-3-104x104.jpg";
 
-    var userProfile = (Agape.Auctions.Models.Users.User)Model.Profile;
-    if (userProfile != null && userProfile.Purchases != null && userProfile.Purchases.Any() && !string.IsNullOrEmpty(userProfile.Purchases[0]))
-        profilePhotoUrl = userProfile.Purchases[0] + "?t=" + new DateTime();
+    var userProfile = Model.Profile;
+    if (!string.IsNullOrEmpty(userProfile.ProfileUrl))
+        profilePhotoUrl = userProfile.ProfileUrl/* + "?t=" + new DateTime()*/;
 }
 @*<link href="~/css/gflexslider.css" rel="stylesheet">
     <link href="~/css/superslides.css" rel="stylesheet">

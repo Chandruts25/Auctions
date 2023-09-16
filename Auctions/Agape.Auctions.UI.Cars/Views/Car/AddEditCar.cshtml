@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Cars.Car
+﻿@model DataAccessLayer.Models.Car
 
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
@@ -31,6 +31,7 @@
         top: 15%;
         left: 40%;
     }
+
     .close2 {
         right: 12px;
         top: 2px;
@@ -66,7 +67,6 @@
         padding: 10px;
         padding-bottom: 20px;
     }
-
 </style>
 <div class="top3-wrapper novi-background bg-cover">
     <div class="container">
@@ -410,7 +410,7 @@
                                                         <div class="float-right">
 
                                                             <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
-                                                            <button type="button" id="videosubmit" class="btn btn-success" onclick="saveCar1()">Submit</button>
+                                                            <button type="button" id="videosubmit" class="btn btn-success" onclick="saveCar()">Submit</button>
 
                                                         </div>
                                                     </div>
@@ -437,6 +437,31 @@
 
         </div>
 
+    </div>
+</div>
+
+
+<!-- Video popup -->
+
+<div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -565,7 +590,7 @@
 
     function handleMenuClick() {
         $("#ulTabMenus li").click(function (e) {
-           
+
             if ($(this).attr("id") == "menuItem2" || $(this).attr("id") == "menuItem3") {
                 //if (!vinValidated) {
                 //    showMessage("please enter the valid vin", "error");
@@ -625,12 +650,14 @@
         //    }
         //});
 
-        $('#txtVin').keyup(function (e) {
-            if ($("#txtVin").val() && $("#txtVin").val().length == 17) {
-                getVehicleDetails();
+        $('#txtVin').on('change', function () {
+            let vin = $(this).val().trim();
+            console.log(vin)
+            if (vin) {
+                getVehicleDetails(vin);
             }
         });
-        
+
     });
 
 
@@ -663,7 +690,7 @@
 
     }
 
-    
+
 
     function bindCarModel(modelId) {
         if ($("#cmbMake").val() && $("#cmbMake").val() != "0") {
@@ -716,7 +743,7 @@
 
     }
 
-    function getVehicleDetails() {
+    function getVehicleDetails(vin) {
         var year = 0;
         if (!$("#cmbYear").val() || $("#cmbYear").val() == "0") {
             //showMessage("Please enter year first then enter the vin details", "error");
@@ -900,7 +927,7 @@
     }
 
     function saveCar1() {
-      
+
         if (!validateCarSave()) {
             showMessage("Please fill all the required fields", "error")
         }
@@ -910,7 +937,7 @@
             var messageText = "Saved"
             var pUrl = "/Car/AddCar";
             var vinModified = false;
-            if (requestType != null && requestType == "Update") {   
+            if (requestType != null && requestType == "Update") {
                 pUrl = "/Car/EditCar";
                 messageText = "Updated"
             }
@@ -1100,28 +1127,3 @@
 
 
 </script>
-
-
-<!-- Video popup -->
-
-<div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-            </div>
-        </div>
-    </div>
-</div>

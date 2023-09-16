@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - BADASSCARZ</title>
+    <title>@ViewBag.Title - SHOPCARHERE</title>
     <meta name="description" content="@ViewBag.Description">
     <meta name="keywords" content="@ViewBag.Keywords" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700%7COpen+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
@@ -100,7 +100,7 @@
 
                         <ul>
 
-                            <li><form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
+                            <li><form method="get" asp-controller="Account" asp-action="LogOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
 
                         </ul>
 
@@ -114,11 +114,11 @@
 
 
                 <div class="logo">
-                    <img src="~/images/logo.png" />
+                    <img src="~/images/ShopCarHereLogo.png" />
                 </div>
                 <div class="menu">
                     <ul>
-                        <li id="vsble_signout" style="display:none;"><form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
+                        <li id="vsble_signout" style="display:none;"><form method="get" asp-controller="Account" asp-action="LogOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
                     </ul>
                 </div>
 

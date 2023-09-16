@@ -14,8 +14,9 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
-using AgapeModel = Agape.Auctions.Models.Users;
-using AgapeModelAddress = Agape.Auctions.Models;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelAddress = DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Agape.Auctions.UI.Cars.Controllers
 {
@@ -124,12 +125,12 @@ namespace Agape.Auctions.UI.Cars.Controllers
             ServiceReference.Content model= new ServiceReference.Content();
             try
             {
-                string error = await ValidateAndAddUser();
-                if(!string.IsNullOrEmpty(error))
-                {
-                    ViewBag.Error = error;
-                    logHelper.LogError(error);
-                }
+                //string error = await ValidateAndAddUser();
+                //if(!string.IsNullOrEmpty(error))
+                //{
+                //    ViewBag.Error = error;
+                //    logHelper.LogError(error);
+                //}
                 model = await _serviceManager.GetPage((int)AgapePageEnum.About);
             }
             catch (Exception ex)

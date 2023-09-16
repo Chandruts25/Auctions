@@ -49,21 +49,21 @@ namespace Agape.Auctions.UI.Cars.Admin.Utilities
                                                            AzureStorageConfig storageConfig)
         {
             var finalResult = true;
-            foreach(var imageFileName in fileNames)
-            {
-                // Create a URI to the blob
-                var blobUri = new Uri("https://" + storageConfig.AccountName +
-                                      ".blob.core.windows.net/" + storageConfig.ImageContainer +
-                                      "/" + carId + "/" + imageFileName);
+            //foreach(var imageFileName in fileNames)
+            //{
+            //    // Create a URI to the blob
+            //    var blobUri = new Uri("https://" + storageConfig.AccountName +
+            //                          ".blob.core.windows.net/" + storageConfig.ImageContainer +
+            //                          "/" + carId + "/" + imageFileName);
 
-                var storageCredentials = new StorageSharedKeyCredential(storageConfig.AccountName, storageConfig.AccountKey);
+            //    var storageCredentials = new StorageSharedKeyCredential(storageConfig.AccountName, storageConfig.AccountKey);
 
-                var blobClient = new BlobClient(blobUri, storageCredentials);
-                // Delete the file
-                var response = blobClient.DeleteIfExists();
-                if (!response.Value)
-                    finalResult = false;
-            }
+            //    var blobClient = new BlobClient(blobUri, storageCredentials);
+            //    // Delete the file
+            //    var response = blobClient.DeleteIfExists();
+            //    if (!response.Value)
+            //        finalResult = false;
+            //}
             return finalResult;
         }
     }

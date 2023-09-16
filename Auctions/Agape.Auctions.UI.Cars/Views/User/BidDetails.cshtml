@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Biddings.Bid
+﻿@model DataAccessLayer.Models.Bid
 @using System.Globalization;
 
 @{
@@ -10,8 +10,8 @@
     {
         Layout = "_Layout_Page";
     }
-    var carDetails = (Agape.Auctions.Models.Cars.Car)ViewBag.CarDetail;
-    var userDetail = (Agape.Auctions.Models.Users.User)ViewBag.UserDetail;
+    var carDetails = (DataAccessLayer.Models.Car)ViewBag.CarDetail;
+    var userDetail = (DataAccessLayer.Models.User)ViewBag.UserDetail;
 }
 <script src="~/js/emailvalidation.js"></script>
 

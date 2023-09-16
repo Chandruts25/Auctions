@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "_Layout_Profile";
+}
+
+@{
+    ViewData["Title"] = "LOGIN";
+}
+
+<div>
+    <div class="formDiv p-3">
+        <div class="logo">
+            <img src="~/images/ShopCarHereLogo.png" />
+        </div>
+        <div class="form mt-3 mx-3">
+            <h4 class="my-4 text-center">LOGIN</h4>
+            @if (!string.IsNullOrEmpty(ViewBag.LoginError))
+            {
+                <div id="loginError" class="text-danger d-flex justify-content-center">@ViewBag.LoginError</div>
+            }
+            <form asp-action="Login" asp-controller="Account" id="loginForm">
+                <div class="mb-3">
+                    <label class="ms-1" for="floatingPassword">Username*</label>
+                    <input id="userName" type="email" name="userid" class="form-control" placeholder="Username*">
+                    <span id="usernameError" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="ms-1" for="floatingPassword">Password*</label>
+                    <input id="password" type="password" name="password" class="form-control" placeholder="Password*">
+                    <span id="passwordError" class="text-danger"></span>
+                </div>
+                <div class="form-check mb-3 ms-1">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Show password
+                    </label>
+                </div>
+                <div class="mb-3 submitbtn">
+                    <button type="submit" class="loginBtn">Login</button>
+                </div>
+                <input type="hidden" class="returnUrl" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+            </form>
+            <div class="signup">
+                <a href="/Account/register?returnUrl=@ViewBag.ReturnUrl">sign up</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section script{
+    <script>
+        $(document).ready(function () {
+            $(".loginBtn").on('click', function (e) {
+                e.preventDefault();
+                let emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+                $("#usernameError , #passwordError, #loginError").text("")
+                var username = $("#userName").val();
+                var password = $("#password").val();
+                if (!username) {
+                    $("#usernameError").text("Username is required.");
+                }
+                else {
+                    if (!emailRegex.test(username)) {
+                        $("#usernameError").text("Invalid user name.");
+                    }
+                }
+                if (!password) {
+                    $("#passwordError").text("Password is required.");
+                }
+
+                if (username && password && emailRegex.test(username)) {
+                    $('#loginForm').submit();
+                }
+            });
+
+            //show password
+            $('#flexCheckDefault').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#password').attr("type", "text");
+                }
+                else {
+                    $('#password').attr("type", "password");
+                }
+            });
+        });
+    </script>
+}

@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Users.User
+﻿@model DataAccessLayer.Models.User
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
     {
@@ -13,12 +13,12 @@
 
     var profilePhotoUrl = "";
     var displayPhotoUrl = "";
-    if (Model != null && Model.Purchases != null && Model.Purchases.Any() && !string.IsNullOrEmpty(Model.Purchases[0]))
+    if (!string.IsNullOrEmpty(Model.ProfileUrl))
     {
-        profilePhotoUrl = Model.Purchases[0];
-        displayPhotoUrl = Model.Purchases[0] + "?t=" + new DateTime();
+        profilePhotoUrl = Model.ProfileUrl;
+        displayPhotoUrl = Model.ProfileUrl /*+ "?t=" + new DateTime()*/;
     }
-   }
+}
 }
 
 <div class="top3-wrapper novi-background bg-cover">
@@ -109,6 +109,8 @@
                                                 <input type="hidden" id="hdnUserIdP" value="@Model.Idp" />
                                                 <input type="hidden" id="hdnCompanyName" value="@Model.CompanyName" />
                                                 <input type="hidden" id="hdnCompanyPhone" value="@Model.Phone" />
+                                                <input type="hidden" id="hdnPassword" value="@Model.Password" />
+                                                <input type="hidden" id="hdnProfileUrl" value="@Model.ProfileUrl" />
                                                 <input type="hidden" id="hdnCity" value="@Model.Address.City" />
                                                 <input type="hidden" id="hdnState" value="@Model.Address.State" />
                                                 <input type="hidden" id="hdnStreet" value="@Model.Address.Street" />
@@ -214,11 +216,12 @@
         else {
             var id = $("#hdnUserId").val();
             var pUrl = "/User/EditUser";
-          
+
             var firstName = $("#txtFirstName").val();
             var lastName = $("#txtLastName").val();
             var userCountry = $("#txtUserCountry").val();
             var userEmail = $("#txtUserEmail").val();
+            var userPassword = $("#hdnPassword").val();
 
             var companyName = $("#hdnCompanyName").val();
             var companyPhone = $("#hdnCompanyPhone").val();
@@ -231,11 +234,11 @@
 
             console.log($("#hdnProfilePhoto").val());
 
-            purchases = [];
-            var profilePhotoUrl = $("#hdnProfilePhoto").val();
-            if (profilePhotoUrl) {
-                var purchases = [profilePhotoUrl];
-            }
+            //purchases = [];
+            var profilePhotoUrl = encodeURIComponent($("#hdnProfilePhoto").val());
+            //if (profilePhotoUrl) {
+            //    var purchases = [profilePhotoUrl];
+            //}
 
             var userType = "dealer";
             if ($("#hdnUserType").val() != "dealer")
@@ -247,7 +250,7 @@
             var userDetail = {
                 FirstName: firstName, LastName: lastName,
                 Email: userEmail, Address: userAddress, Id: $("#hdnUserId").val(), Idp: $("#hdnUserIdP").val(), UserType: userType,
-                CompanyName: companyName, Phone: companyPhone, Purchases: purchases
+                CompanyName: companyName, Phone: companyPhone, /*Purchases: purchases,*/ ProfileUrl: profilePhotoUrl, Password: userPassword
             }
 
             var jStr = "User=" + JSON.stringify(userDetail);

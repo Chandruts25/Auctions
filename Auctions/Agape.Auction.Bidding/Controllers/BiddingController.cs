@@ -6,72 +6,77 @@ using AgapeModelBidding = Agape.Auctions.Models.Biddings;
 using System.Linq.Expressions;
 using System;
 using System.Linq;
+using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agape.Auction.Bidding.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class BiddingController 
+    public class BiddingController
     {
-        private readonly ICosmosRepository<AgapeModelBidding.Bid, AgapeModelBidding.Bid> cosmosRepository;
+        private readonly AuctionDbContext _context;
 
-        public BiddingController(ICosmosRepository<AgapeModelBidding.Bid, AgapeModelBidding.Bid> cosmosRepositoryServices)
+        public BiddingController(AuctionDbContext context)
         {
-            cosmosRepository = cosmosRepositoryServices;
+            _context = context;
         }
 
         // GET: api/<BiddingController>
         [HttpGet]
-        public async Task<IEnumerable<AgapeModelBidding.Bid>> Get()
+        public async Task<IEnumerable<Bid>> Get()
         {
-            Expression<Func<AgapeModelBidding.Bid, bool>> funcBid = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Bid" && c.Deleted == false);
-            var result = await cosmosRepository.GetItemsAsync(funcBid);
-            return result.Resource;
+            Expression<Func<Bid, bool>> funcBid = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Bid" && c.Deleted == false);
+            var result = await _context.Bids
+                .Where(funcBid)
+                .ToListAsync();
+            return result;
         }
 
         // GET api/<BiddingController>/5
         [HttpGet("{id}")]
-        public async Task<AgapeModelBidding.Bid> Get(string id)
+        public async Task<Bid> Get(string id)
         {
-            var result = await cosmosRepository.GetAsync(id);
-            return result.Resource;
+            var result = await _context.Bids.FindAsync(id);
+            return result;
         }
 
         [HttpGet("GetHighestBid/{id}")]
         public async Task<decimal> GetHighestBid(string id)
         {
             decimal MaxBid = 0;
-            var result = await cosmosRepository.FindAsync(li => li.CarId == id);
+            var result = await _context.Bids.Where(li => li.CarId == id).ToListAsync();
             if (result != null)
             {
-                if (result.Resource.Any())
-                    MaxBid = result.Resource.ToList().Max(x => x.BiddingAmount);
-
+                if (result.Any())
+                    MaxBid = result.Max(x => x.BiddingAmount);
             }
-
             return MaxBid;
 
         }
 
         // POST api/<BiddingController>
         [HttpPost]
-        public async Task Post([FromBody] AgapeModelBidding.Bid offer)
+        public async Task Post([FromBody] Bid offer)
         {
-            await cosmosRepository.CreateAsync(offer);
+            await _context.Bids.AddAsync(offer);
+            await _context.SaveChangesAsync();
         }
 
         // PUT api/<BiddingController>/5
         [HttpPut("{id}")]
-        public async Task Put(string id, [FromBody] AgapeModelBidding.Bid offer)
+        public async Task Put(string id, [FromBody] Bid offer)
         {
-            await cosmosRepository.UpdateAsync(id, offer);
+            _context.Entry(offer).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<BiddingController>/5
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await cosmosRepository.DeleteAsync(id);
+            _context.Bids.RemoveRange(_context.Bids.Where(c => c.Id == id));
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,30 +1,20 @@
-﻿using Agape.Auctions.UI.Cars.Models;
-using AgapeAPI.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Security.Claims;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
+using AgapeModelImage = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.Utilities;
 using Microsoft.Extensions.Logging;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
-
-
-
-
-
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelOffer = Agape.Auctions.Models.Offers;
-using Model = Agape.Auctions.UI.Cars.Models;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
+//using AgapeModelUser = DataAccessLayer.Models;
+using AgapeModelCar = DataAccessLayer.Models;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgapeModelOffer = DataAccessLayer.Models;
+using ModelAuctions = DataAccessLayer.Models;
+using AgapeModelBid = DataAccessLayer.Models;
 
 
 
@@ -51,7 +41,7 @@ namespace Agape.Auctions.UI.Cars.ViewComponents
         private readonly string apiBaseUrlBidding;
         private readonly string apiBaseUrlPurchase;
         private readonly string apiBaseUrlVin;
-        
+
         private readonly ILogger<StatusViewComponent> _logger;
         private LogHelperComponent logHelper;
 
@@ -113,7 +103,7 @@ namespace Agape.Auctions.UI.Cars.ViewComponents
 
                     }
                     Car = carDetails;
-                   
+
                     ViewBag.status_all = "All";
                 }
                 else
@@ -345,7 +335,7 @@ namespace Agape.Auctions.UI.Cars.ViewComponents
         public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(_configure)))
@@ -360,7 +350,7 @@ namespace Agape.Auctions.UI.Cars.ViewComponents
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else

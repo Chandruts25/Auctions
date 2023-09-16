@@ -11,15 +11,14 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelOffer = Agape.Auctions.Models.Offers;
-using Model = Agape.Auctions.UI.Cars.Admin.Models;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgapeModelCar = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelPayment = DataAccessLayer.Models;
+using AgapeModelPurchase = DataAccessLayer.Models;
+using ModelAuctions = DataAccessLayer.Models;
+using AgapeModelBid = DataAccessLayer.Models;
 
 using Agape.Auctions.UI.Cars.Admin.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -664,7 +663,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         public async Task<AgapeModelUser.User> GetDealerDetails(string id)
         {
             var dealer = new AgapeModelUser.User();
-            dealer.Address = new Auctions.Models.Address();
+            dealer.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(_configure)))
@@ -677,7 +676,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                         {
                             dealer = await Response.Content.ReadAsAsync<AgapeModelUser.User>();
                             if (dealer.Address == null)
-                                dealer.Address = new Auctions.Models.Address();
+                                dealer.Address = new DALModels.Address();
                         }
                         else
                         {
@@ -696,7 +695,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(_configure)))
@@ -711,7 +710,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else
@@ -738,6 +737,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 var jsonSerializer = new JsonSerializer();
                 var reader = new StringReader(dealerDetails);
                 var user = (AgapeModelUser.User)jsonSerializer.Deserialize(reader, typeof(AgapeModelUser.User));
+                user.ConfirmPassword = user.Password;
 
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(_configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
@@ -806,6 +806,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 var jsonSerializer = new JsonSerializer();
                 var reader = new StringReader(dealerDetails);
                 var dealer = (AgapeModelUser.User)jsonSerializer.Deserialize(reader, typeof(AgapeModelUser.User));
+                dealer.ConfirmPassword = dealer.Password;
 
                 using HttpClient client = new HttpClient(new CustomHttpClientHandler(_configure));
                 StringContent content = new StringContent(JsonConvert.SerializeObject(dealer), Encoding.UTF8, "application/json");
@@ -948,6 +949,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var users = await GetUserByIdentity(userId);
+                users.ConfirmPassword = users.Password;
 
 
 

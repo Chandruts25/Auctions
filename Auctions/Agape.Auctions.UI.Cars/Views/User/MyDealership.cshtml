@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Users.User
+﻿@model DataAccessLayer.Models.User
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
     {
@@ -15,8 +15,8 @@
         requestType = "Update";
 
     var profilePhotoUrl = "";
-    if (Model != null && Model.Purchases != null && Model.Purchases.Any() && !string.IsNullOrEmpty(Model.Purchases[0]))
-        profilePhotoUrl = Model.Purchases[0];
+    if (!string.IsNullOrEmpty(Model.ProfileUrl))
+        profilePhotoUrl = Model.ProfileUrl;
 
     var paymentMethod = "";
     if (Model != null && Model.PaymentMethods != null && Model.PaymentMethods.Any() && !string.IsNullOrEmpty(Model.PaymentMethods[0]))
@@ -102,7 +102,7 @@
 
                                         <div class="row mt-20">
                                             <div class="col-md-12 mb-12">
-                                                <input type="hidden" name="hdnCountryId" id="hdnCountryId"/>
+                                                <input type="hidden" name="hdnCountryId" id="hdnCountryId" />
                                                 <input type="hidden" name="hdnCountryValue" id="hdnCountryValue" />
                                                 <input type="hidden" name="hdnStateId" id="hdnStateId" />
                                                 <label class="form-label" for="cmbCountry">Country <span class="red-req">*</span></label>
@@ -149,6 +149,8 @@
                                                     <input type="hidden" id="hdnEmailAddress" name="hdnEmailAddress" value="@Model.Email" />
                                                     <input type="hidden" id="hdnDealerId" name="hdnDealerId" value="@Model.Id" />
                                                     <input type="hidden" id="hdnIdp" name="hdnIdp" value="@Model.Idp" />
+                                                    <input type="hidden" id="hdnPassword" name="hdnPassword" value="@Model.Password" />
+                                                    <input type="hidden" id="hdnProfileUrl" name="hdnProfileUrl" value="@Model.ProfileUrl" />
                                                     <input type="hidden" id="hdnProfilePhoto" value="@profilePhotoUrl" />
                                                     <input type="hidden" id="hdnPaymentMethod" value="@paymentMethod" />
                                                     <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
@@ -190,6 +192,7 @@
             else {
 
                 var id = $("#hdnDealerId").val();
+                var password = $("#hdnPassword").val();
                 var pUrl = "/User/AddDealer";
                 var messageText = "Save";
                 var requestType = $("#hdnRequestType").val();
@@ -211,11 +214,11 @@
                 var locationLatitude = "0";
                 var locationLongitude = "0";
 
-                var purchases = [];
+                //var purchases = [];
                 var profilePhotoUrl = $("#hdnProfilePhoto").val();
-                if (profilePhotoUrl) {
-                     purchases = [profilePhotoUrl];
-                }
+                //if (profilePhotoUrl) {
+                //    purchases = [profilePhotoUrl];
+                //}
 
                 var paymentMethod = [];
                 var paymentMethodTemp = $("#hdnPaymentMethod").val();
@@ -238,7 +241,8 @@
                 var dealer = {
                     Id: id, CompanyName: companyName, Phone: companyPhone,
                     Address: dealerAddress, FirstName: firstName, LastName: lastName,
-                    Email: email, UserType: "dealer", Idp: idp, PaymentMethods: paymentMethod, Purchases: purchases
+                    Email: email, UserType: "dealer", Idp: idp, PaymentMethods: paymentMethod,
+                    /*Purchases: purchases,*/ Password: password, ProfileUrl: profilePhotoUrl
                 };
 
                 var jStr = "dealer=" + encodeURIComponent(JSON.stringify(dealer));
@@ -331,7 +335,7 @@
                                 }, '</option>'))
 
                             if (selectedState) {
-                               
+
                                 $("#cmbState").val($("#hdnTmpState").val());
                             }
                             else
@@ -359,7 +363,7 @@
     }
 
     function saveDealer() {
-        
+
         if (!validateDealerSave()) {
             showMessage("Please fill all required fields then continue", "error")
         }

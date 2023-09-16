@@ -1,60 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Agape.Azure.Cosmos;
-using AgapeModelOffer = Agape.Auctions.Models.Offers;
-using System.Linq.Expressions;
+﻿using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Agape.Auction.Offers.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class OffersController 
+    public class OffersController
     {
-        private readonly ICosmosRepository<AgapeModelOffer.Offer, AgapeModelOffer.Offer> cosmosRepository;
+        private readonly AuctionDbContext _context;
 
-        public OffersController(ICosmosRepository<AgapeModelOffer.Offer, AgapeModelOffer.Offer> cosmosRepositoryServices)
+        public OffersController(AuctionDbContext context)
         {
-            cosmosRepository = cosmosRepositoryServices;
+            _context = context;
         }
 
         // GET: api/<OffersController>
         [HttpGet]
-        public async Task<IEnumerable<AgapeModelOffer.Offer>> Get()
+        public async Task<IEnumerable<Offer>> Get()
         {
-            Expression<Func<AgapeModelOffer.Offer, bool>> funcOffer = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Offer" && c.Deleted == false);
-            var result = await cosmosRepository.GetItemsAsync(funcOffer);
-            return result.Resource;
+            Expression<Func<Offer, bool>> funcOffer = c => !(string.IsNullOrEmpty(c.Id) && c.Type == "Offer" && c.Deleted == false);
+            var result = await _context.Offers
+                .Where(funcOffer)
+                .ToListAsync();
+            return result;
         }
 
         // GET api/<OffersController>/5
         [HttpGet("{id}")]
-        public async Task<AgapeModelOffer.Offer> Get(string id)
+        public async Task<Offer> Get(string id)
         {
-            var result = await cosmosRepository.GetAsync(id);
-            return result.Resource;
+            var result = await _context.Offers.FindAsync(id);
+            return result;
         }
 
         // POST api/<OffersController>
         [HttpPost]
-        public async Task Post([FromBody] AgapeModelOffer.Offer offer)
+        public async Task Post([FromBody] Offer offer)
         {
-            await cosmosRepository.CreateAsync(offer);
+            await _context.Offers.AddAsync(offer);
+            await _context.SaveChangesAsync();
         }
 
         // PUT api/<OffersController>/5
         [HttpPut("{id}")]
-        public async Task Put(string id, [FromBody] AgapeModelOffer.Offer offer)
+        public async Task Put(string id, [FromBody] Offer offer)
         {
-            await cosmosRepository.UpdateAsync(id, offer);
+            _context.Entry(offer).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<OffersController>/5
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await cosmosRepository.DeleteAsync(id);
+            _context.Offers.RemoveRange(_context.Offers.Where(c => c.Id == id));
+            await _context.SaveChangesAsync();
         }
 
     }

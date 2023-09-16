@@ -1,7 +1,7 @@
-﻿@model List<Agape.Auctions.Models.Images.Image>
-@using AgapeModel = Agape.Auctions.Models.Cars;
-@using AgapeModelUser = Agape.Auctions.Models.Users;
-@using AgapeModelBid = Agape.Auctions.Models.Biddings;
+﻿@model List<DataAccessLayer.Models.Image>
+@using AgapeModel = DataAccessLayer.Models;
+@using AgapeModelUser = DataAccessLayer.Models;
+@using AgapeModelBid = DataAccessLayer.Models;
 @using System.Globalization;
 
 
@@ -26,7 +26,7 @@
     AgapeModelUser.User userDetail = ViewBag.UserDetails;
     //string[] invalidStatusToBuy = { "Hold", "PendingPayment" };
     AgapeModel.CarReview carReview = new AgapeModel.CarReview();
-    var vid = carDetail.Video.Url;
+    var vid = carDetail.Video?.Url ?? "";
     var sp = vid.Replace("/watch?v=", "/embed/");
     var link = sp.Replace("https:", "");
     var videoUrl = (carDetail.Video != null && !string.IsNullOrEmpty(vid)) ? link : "https://www.youtube.com/embed/vC8LbvYk6es";
@@ -438,7 +438,7 @@
         <span onclick="document.getElementById('id02').style.display='none'" class="close1" title="Close Modal">×</span>
 
         <div class="col-sm-12 text-center">
-            <img src="~/images/logo.png" style="height: 50px; padding-top: 13px;" />
+            <img src="~/images/ShopCarHereLogo.png" style="height: 50px; padding-top: 13px;" />
         </div>
 
 
@@ -531,7 +531,7 @@
         <span onclick="document.getElementById('id01').style.display='none'" class="close1" title="Close Modal">×</span>
 
         <div class="col-sm-12 text-center">
-            <img src="~/images/logo.png" style="height: 50px; padding-top: 13px;" />
+            <img src="~/images/ShopCarHereLogo.png" style="height: 50px; padding-top: 13px;" />
         </div>
 
         <div id="login_before">
@@ -1378,6 +1378,7 @@
             //$("#bidd").load("/Auctions/HighestBid?carId=" + Id);
             $("#bidCount").load("/Auctions/BidCount?carId=" + Id);
             $("#CommentCount").load("/Auctions/CommentCount?carId=" + Id);
+            $("#bid").load("/Auctions/HighestBid?carId=" + Id);
             var fff = $("#bid").text();
             //$("#hdnCarBidPrice").val(fff);
 

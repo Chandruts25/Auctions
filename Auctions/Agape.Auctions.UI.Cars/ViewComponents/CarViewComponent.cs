@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.Utilities;
 using Microsoft.Extensions.Logging;
 

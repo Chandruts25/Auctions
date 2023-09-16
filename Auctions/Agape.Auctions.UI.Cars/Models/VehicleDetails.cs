@@ -1,4 +1,4 @@
-﻿using Agape.Auctions.Models.Cars;
+﻿using DataAccessLayer.Models;
 
 namespace Agape.Auctions.UI.Cars.Models
 {

@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Users.User
+﻿@model DataAccessLayer.Models.User
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
     {
@@ -65,12 +65,12 @@
 
                                         <div class="col-md-12 mb-5">
                                             <label class="form-label" for="txtFirstName">First Name <span class="red-req">*</span></label>
-                                            <input type="text" id="txtFirstName" class="form-control" value="@Model.FirstName" onkeypress="removeInvalidClass('txtFirstName');return onlyAlphabets(event,this);"    />
+                                            <input type="text" id="txtFirstName" class="form-control" value="@Model.FirstName" onkeypress="removeInvalidClass('txtFirstName');return onlyAlphabets(event,this);" />
                                         </div>
 
                                         <div class="col-md-12 mb-5">
                                             <label class="form-label" for="txtLastName">Last Name <span class="red-req">*</span></label>
-                                            <input type="text" id="txtLastName" class="form-control" value="@Model.LastName" onkeypress="removeInvalidClass('txtLastName');return onlyAlphabets(event,this);"   />
+                                            <input type="text" id="txtLastName" class="form-control" value="@Model.LastName" onkeypress="removeInvalidClass('txtLastName');return onlyAlphabets(event,this);" />
                                         </div>
 
                                         <div class="col-md-12 mb-5">
@@ -80,7 +80,7 @@
 
                                         <div class="col-md-12 mb-5">
                                             <label class="form-label" for="txtUserCountry">Country <span class="red-req">*</span></label>
-                                            <input type="text" id="txtUserCountry" class="form-control" value="@Model.Address.Country" onkeypress="removeInvalidClass('txtUserCountry');return onlyAlphabets(event,this);"    />
+                                            <input type="text" id="txtUserCountry" class="form-control" value="@Model.Address.Country" onkeypress="removeInvalidClass('txtUserCountry');return onlyAlphabets(event,this);" />
                                         </div>
 
                                     </div>
@@ -151,7 +151,7 @@
         else {
             var id = $("#hdnUserId").val();
             var pUrl = "/User/EditUser";
-          
+
             var firstName = $("#txtFirstName").val();
             var lastName = $("#txtLastName").val();
             var userCountry = $("#txtUserCountry").val();

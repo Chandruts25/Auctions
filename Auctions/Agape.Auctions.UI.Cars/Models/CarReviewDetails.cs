@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CarReview = Agape.Auctions.Models.Cars.CarReview;
+using CarReview = DataAccessLayer.Models.CarReview;
 
 namespace Agape.Auctions.UI.Cars.Models
 {

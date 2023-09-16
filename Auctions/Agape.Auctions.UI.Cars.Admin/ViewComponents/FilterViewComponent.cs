@@ -7,19 +7,19 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
 using Agape.Auctions.UI.Cars.Admin.Utilities;
 using Microsoft.Extensions.Logging;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgapeModelCar = Agape.Auctions.Models.Cars;
+using AgapeModelUser = DataAccessLayer.Models;
+using AgapeModelCar = DataAccessLayer.Models;
 
-using AgapeModelPayment = Agape.Auctions.Models.PaymentMethods;
-using AgapeModelPurchase = Agape.Auctions.Models.Puchases;
-using AgapeModelOffer = Agape.Auctions.Models.Offers;
+using AgapeModelPayment = DataAccessLayer.Models;
+using AgapeModelPurchase = DataAccessLayer.Models;
+using AgapeModelOffer = DataAccessLayer.Models;
 using Model = Agape.Auctions.UI.Cars.Admin.Models;
-using ModelAuctions = Agape.Auctions.Models.Auctions;
-using AgapeModelBid = Agape.Auctions.Models.Biddings;
+using ModelAuctions = DataAccessLayer.Models;
+using AgapeModelBid = DataAccessLayer.Models;
 namespace Agape.Auctions.UI.Cars.Admin.ViewComponents
 {
     public class FilterViewComponent : ViewComponent

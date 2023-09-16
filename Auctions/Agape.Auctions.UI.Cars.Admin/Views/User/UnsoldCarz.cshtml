@@ -1,10 +1,9 @@
 ﻿
 
-@model List<Agape.Auctions.Models.Cars.Car>
+@model List<DataAccessLayer.Models.Car>
 @using System.Globalization;
 
-@using Agape.Auctions.Models.Images
-@using Agape.Auctions.Models.Cars
+@using DataAccessLayer.Models
 @{
     ViewData["Title"] = "Unsold Cars";
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))

@@ -1,6 +1,6 @@
-﻿@model List<Agape.Auctions.Models.Images.Image>
-@using AgapeModel = Agape.Auctions.Models.Cars;
-@using AgapeModelUser = Agape.Auctions.Models.Users;
+﻿@model List<DataAccessLayer.Models.Image>
+@using AgapeModel = DataAccessLayer.Models;
+@using AgapeModelUser = DataAccessLayer.Models;
 
 
 @using System.Globalization;
@@ -19,7 +19,7 @@
     AgapeModel.Car carDetail = ViewBag.CarDetails;
     AgapeModelUser.User userDetail = ViewBag.UserDetails;
     string[] invalidStatusToBuy = { "Hold", "PendingPayment" };
-    var vid = carDetail.Video.Url;
+    var vid = carDetail.Video?.Url ?? "";
     var sp = vid.Replace("/watch?v=", "/embed/");
     var link = sp.Replace("https:", "");
     var videoUrl = (carDetail.Video != null && !string.IsNullOrEmpty(vid)) ? link : "https://www.youtube.com/embed/vC8LbvYk6es";
@@ -574,7 +574,7 @@
                                 @if (!invalidStatusToBuy.Contains(carDetail.Status))
                                 {
                                     <div style="margin-bottom:10px;">
-                                        @*<button type="button" class="btn btn-success" onclick="redirectToPurchase()" style="width:100%;">Buy</button>*@
+                                        <button type="button" class="btn btn-success" onclick="redirectToPurchase()" style="width:100%;">Buy</button>
                                         @*<button type="button" class="btn btn-success" style="width:100%;">Buy</button>*@
                                     </div>
                                 }
@@ -683,7 +683,7 @@
                 <div class="product-minimal">
                     <div class="thumbnail clearfix">
                         <figure class="product-minimal-img">
-                                <img src="~/images/home-4-270x150.jpg" alt="" class="img-responsive">
+                            <img src="~/images/home-4-270x150.jpg" alt="" class="img-responsive">
                         </figure>
                         <div class="caption">
                             <p class="small">REGISTERED 2015</p>
@@ -707,7 +707,7 @@
                 <div class="product-minimal">
                     <div class="thumbnail clearfix">
                         <figure class="product-minimal-img">
-                                <img src="~/images/home-5-270x150.jpg" alt="" class="img-responsive">
+                            <img src="~/images/home-5-270x150.jpg" alt="" class="img-responsive">
                         </figure>
                         <div class="caption">
                             <p class="small">REGISTERED 2016</p>
@@ -731,7 +731,7 @@
                 <div class="product-minimal">
                     <div class="thumbnail clearfix">
                         <figure class="product-minimal-img">
-                                <img src="~/images/home-6-270x150.jpg" alt="" class="img-responsive">
+                            <img src="~/images/home-6-270x150.jpg" alt="" class="img-responsive">
                         </figure>
                         <div class="caption">
                             <p class="small">REGISTERED 2015</p>
@@ -755,7 +755,7 @@
                 <div class="product-minimal">
                     <div class="thumbnail clearfix">
                         <figure class="product-minimal-img">
-                                <img src="~/images/home-7-270x150.jpg" alt="" class="img-responsive">
+                            <img src="~/images/home-7-270x150.jpg" alt="" class="img-responsive">
                         </figure>
                         <div class="caption">
                             <p class="small">REGISTERED 2017</p>

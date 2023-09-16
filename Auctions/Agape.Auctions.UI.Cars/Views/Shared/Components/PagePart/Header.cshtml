@@ -84,18 +84,18 @@
                         </li>
                     }
 
-                    <li class="list-inline">
-                        <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">
-                            <button type="submit" class="btn btn-dark">Sign Out</button>
-                        </form>
-                    </li>
+                <li class="list-inline">
+                    <form method="get" asp-controller="Account" asp-action="LogOut">
+                        <button type="submit" class="btn btn-dark">Sign Out</button>
+                    </form>
+                </li>
                 </ul>
             }
             else
             {
                 <ul @*class="nav navbar-nav navbar-right"*@>
                     <li class="list-inline">
-                        <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">
+                        <form method="get" asp-controller="Account" asp-action="LogIn">
                             <button type="submit" class="list-inline">LOGIN</button>
                         </form>
                     </li>

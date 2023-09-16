@@ -8,7 +8,7 @@
     "SubscriptionKey": "4b079cac94664961af480012fd59c6df",
     "WebAPIBaseUrlCar": "https://carservicedev.azurewebsites.net/api/car/",
     "SendGridAPIKey": "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",
-    "FromEmcailId": "badasscarsus@gmail.com",
+    "FromEmcailId": "shopcarhereus@gmail.com",
     "CarBaseUrl": "https://badasscarzdev.azurewebsites.net/Auctions/Details?carId="
   },
   "ConnectionStrings": {

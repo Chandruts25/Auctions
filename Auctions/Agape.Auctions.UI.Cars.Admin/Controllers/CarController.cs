@@ -15,11 +15,14 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AgapeModel = Agape.Auctions.Models.Cars;
-using AgapeModelImage = Agape.Auctions.Models.Images;
-using AgapeModelUser = Agape.Auctions.Models.Users;
-using AgageModelCarReview = Agape.Auctions.Models.Cars.CarReview;
+using AgapeModel = DataAccessLayer.Models;
+using AgapeModelImage = DataAccessLayer.Models;
+using AgapeModelUser = DataAccessLayer.Models;
+using DALModels = DataAccessLayer.Models;
+using AgageModelCarReview = DataAccessLayer.Models.CarReview;
 using Microsoft.AspNetCore.Authorization;
+using Firebase.Auth;
+using Firebase.Storage;
 
 namespace Agape.Auctions.UI.Cars.Admin.Controllers
 {
@@ -36,14 +39,16 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         private readonly string defaultCarImageUrl;
         private readonly string apiBaseUrlUser;
         private readonly string apiBaseUrlCarReview;
+        private readonly FireBaseStorageConfig _firebaseConfig;
 
         // private readonly string apiBaseUrlCarSearch;
         private LogHelper logHelper;
 
-        public CarController(IConfiguration configuration, IOptions<AzureStorageConfig> config, ILogger<CarController> logger)
+        public CarController(IConfiguration configuration, IOptions<FireBaseStorageConfig> firebaseConfig, IOptions<AzureStorageConfig> config, ILogger<CarController> logger)
         {
             configure = configuration;
             storageConfig = config.Value;
+            _firebaseConfig = firebaseConfig.Value;
             apiBaseUrl = configure.GetValue<string>("WebAPIBaseUrlCar");
             apiBaseUrlCarImage = configure.GetValue<string>("WebAPIBaseUrlCarImage");
             apiBaseUrlVin = configure.GetValue<string>("WebAPIBaseUrlVin");
@@ -249,7 +254,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         public async Task<AgapeModelUser.User> GetUserByIdentity(string id)
         {
             var user = new AgapeModelUser.User();
-            user.Address = new Auctions.Models.Address();
+            user.Address = new DALModels.Address();
             try
             {
                 using (var client = new HttpClient(new CustomHttpClientHandler(configure)))
@@ -264,7 +269,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                                 user = lstUser.FirstOrDefault();
                             if (user.Address == null)
                             {
-                                user.Address = new Auctions.Models.Address();
+                                user.Address = new DALModels.Address();
                             }
                         }
                         else
@@ -909,7 +914,7 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 lstImages.Add(gridImage);
                 lstImages.Add(mediumImage);
 
-                var result = await StorageHelper.RemoveFileFromStorage(lstImages, carId, storageConfig);
+                var result = await DeleteCarImage(imageUrl);
                 return result;
             }
             catch (Exception ex)
@@ -918,6 +923,32 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                 return false;
             }
 
+        }
+
+        public async Task<bool> DeleteCarImage(string imagePath)
+        {
+            try
+            {
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(_firebaseConfig.apiKey));
+                var authResult = await auth.SignInWithEmailAndPasswordAsync(_firebaseConfig.authEmail, _firebaseConfig.authPassword);
+
+                var storage = new FirebaseStorage(
+                    _firebaseConfig.bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(authResult.FirebaseToken),
+                        ThrowOnCancel = true
+                    });
+
+                // Delete the image from Firebase Storage
+                await storage.Child(imagePath).DeleteAsync();
+                return true; // Deletion successful
+            }
+            catch (Exception ex)
+            {
+                logHelper.LogError($"Error deleting image: {ex}");
+                return false; // Deletion failed
+            }
         }
 
         #region UtilityMethods
@@ -936,11 +967,11 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadCarImages(IList<IFormFile> files)
         {
-            bool uploadResult = false;
+            string filePath = "";
             try
             {
                 if (files.Count == 0)
-                    return Json(new { result = false, message = "No images available to upload, Please check the input and try again" });
+                    return Json(new { result = false, message = "No images available to upload, Please check the input and try again", count = files.Count });
 
                 var carId = Request.Form["carId"];
                 var currentImageCount = int.Parse(Request.Form["currentImageCount"]);
@@ -955,52 +986,60 @@ namespace Agape.Auctions.UI.Cars.Admin.Controllers
                         {
                             if (formFile.Length > 0)
                             {
-                                using (Stream stream = formFile.OpenReadStream())
+                                var auth = new FirebaseAuthProvider(new FirebaseConfig(_firebaseConfig.apiKey));
+                                var authResult = await auth.SignInWithEmailAndPasswordAsync(_firebaseConfig.authEmail, _firebaseConfig.authPassword);
+
+                                var storage = new FirebaseStorage(
+                                _firebaseConfig.bucket,
+                                new FirebaseStorageOptions
                                 {
-                                    var imageUrl = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName;
+                                    AuthTokenAsyncFactory = () => Task.FromResult(authResult.FirebaseToken),
+                                    ThrowOnCancel = true
+                                });
 
-                                    if (lstCarImages != null && lstCarImages.Any())
-                                    {
-                                        var findImage = lstCarImages.Where(i => i.Url == imageUrl);
-                                        if (findImage != null && findImage.Any())
-                                        {
-                                            var findImageId = findImage.FirstOrDefault().Id;
-                                            var removeImageResult = await RemoveCarImageByCarImageId(carId, findImageId, imageUrl);
-                                            // var removeImageResult = await RemoveCarImageFromStorage(carId, imageUrl);
-                                        }
-                                    }
-                                    uploadResult = await StorageHelper.UploadFileToStorage(stream, formFile.FileName, carId, storageConfig);
+                                string folderName = "CarImages";
+                                string fileName = Path.GetFileName(formFile.FileName);
 
-                                    if (uploadResult)
-                                    {
-                                        //Call the api to save the data in to cosmosdb
-                                        var carImage = new AgapeModelImage.Image()
-                                        {
-                                            // Id = Guid.NewGuid().ToString(),
-                                            Url = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName,
-                                            // Type = "Image",
-                                            Owner = carId,
-                                            IsProcessed = true,
-                                            Order = currentImageCount + 1
-                                        };
-                                        currentImageCount = currentImageCount + 1;
-                                        var response = await SaveCarImages(carImage);
-                                        if (!response.Item1)
-                                            return Json(new { result = false, message = response.Item2 });
-                                    }
+                                // Upload the file to Firebase Storage
+                                using (var stream = formFile.OpenReadStream())
+                                {
+                                    filePath = await storage
+                                        .Child(folderName)
+                                        .Child(fileName)
+                                        .PutAsync(stream);
                                 }
+
+                                if (!string.IsNullOrEmpty(filePath))
+                                {
+                                    //Call the api to save the data in to cosmosdb
+                                    var carImage = new AgapeModelImage.Image()
+                                    {
+                                        // Id = Guid.NewGuid().ToString(),
+                                        //Url = "https://" + storageConfig.AccountName + ".blob.core.windows.net/" + storageConfig.ImageContainer + "/" + carId + "/" + formFile.FileName,
+                                        Url = filePath,
+                                        // Type = "Image",
+                                        Owner = carId,
+                                        IsProcessed = true,
+                                        Order = currentImageCount + 1
+                                    };
+                                    currentImageCount = currentImageCount + 1;
+                                    var response = await SaveCarImages(carImage);
+                                    if (!response.Item1)
+                                        return Json(new { result = false, message = response.Item2, count = files.Count });
+                                }
+                                //}
                             }
                         }
                         else
                         {
                             logHelper.LogError("Upload image - Trying to upload the invalid image format");
-                            return Json(new { result = false, message = "Invalid image format type, Please try again with valid image" });
+                            return Json(new { result = false, message = "Invalid image format type, Please try again with valid image", count = files.Count });
                         }
                     }
                 }
                 else
                 {
-                    return Json(new { result = true, message = "Car details is  not aavailable to save the image" });
+                    return Json(new { result = true, message = "Car details is  not aavailable to save the image", count = files.Count });
                 }
 
             }

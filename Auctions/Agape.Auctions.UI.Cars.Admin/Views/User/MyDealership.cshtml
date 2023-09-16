@@ -1,4 +1,4 @@
-﻿@model Agape.Auctions.Models.Users.User
+﻿@model DataAccessLayer.Models.User
 @{
     if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
     {
@@ -75,11 +75,11 @@
                                     </div>
 
                                     @*<div class="row mt-20">
-            <div class="col-md-12 mb-12">
-                <label class="form-label" for="txtCompanyEmail">Company Email <span class="red-req">*</span></label>
-                <input type="email" id="txtCompanyEmail" class="form-control" value="@Model.Email" onkeypress="removeInvalidClass('txtCompanyEmail')" />
-            </div>
-        </div>*@
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtCompanyEmail">Company Email <span class="red-req">*</span></label>
+                                                <input type="email" id="txtCompanyEmail" class="form-control" value="@Model.Email" onkeypress="removeInvalidClass('txtCompanyEmail')" />
+                                            </div>
+                                        </div>*@
 
                                     <div class="row mt-20">
                                         <div class="col-md-12 mb-12">
@@ -91,7 +91,7 @@
                                     <div class="row mt-20">
                                         <div class="col-md-12 mb-12">
                                             <label class="form-label" for="cmbCountry">Country <span class="red-req">*</span></label>
-                                            @Html.DropDownListFor(m => Model.Address.Country, ViewBag.Countries as SelectList, new { @id ="cmbCountry", @class = "form-control", @onChange = "filterStates('')" })
+                                            @Html.DropDownListFor(m => Model.Address.Country, ViewBag.Countries as SelectList, new { @id = "cmbCountry", @class = "form-control", @onChange = "filterStates('')" })
                                             @*<input type="text" id="txtCountry" class="form-control" value="@Model.Address.Country" onkeypress="removeInvalidClass('txtCountry');return onlyAlphabets(event,this);" />*@
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
         //filterStates();
         if ($("#cmbCountry").val()) {
             filterStates($("#hdnTmpState").val());
-                
+
         }
     });
 
@@ -197,49 +197,49 @@
         var country = $("#cmbCountry").val()
         if (country) {
             var pUrl = "/User/GetStateByCountry?countryCode=" + country;
-                $.ajax({
-                    type: "GET",
-                    url: pUrl,
-                    dataType: "json",
-                    success: function (data) {
-                        if (data != null) {
-                            console.log(data);
-                            if (data.restult == true) {
-                                console.log(data.states);
+            $.ajax({
+                type: "GET",
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        console.log(data);
+                        if (data.restult == true) {
+                            console.log(data.states);
 
-                                var drpState = $('#cmbState');
-                                drpState.empty();
-                                $.each(data.states, function (index, item) {
-                                    drpState.append(
-                                        $('<option>', {
-                                            value: item.stateName,
-                                            text: item.stateName
-                                        }, '</option>'))
-                                });
+                            var drpState = $('#cmbState');
+                            drpState.empty();
+                            $.each(data.states, function (index, item) {
+                                drpState.append(
+                                    $('<option>', {
+                                        value: item.stateName,
+                                        text: item.stateName
+                                    }, '</option>'))
+                            });
 
-                                if (selectedState)
-                                 $("#cmbState").val($("#hdnTmpState").val());
+                            if (selectedState)
+                                $("#cmbState").val($("#hdnTmpState").val());
 
-                            }
-                            else {
-                                showMessage("Error occurred while getting the state Please try again later, ErrorMessage :" + data.errorMessage, "alert alert-danger");
-                            }
                         }
                         else {
-                            showMessage("Error occurred while getting the state Please try again later", "alert alert-danger");
+                            showMessage("Error occurred while getting the state Please try again later, ErrorMessage :" + data.errorMessage, "alert alert-danger");
                         }
-                    },
-                    error: function (error) {
+                    }
+                    else {
                         showMessage("Error occurred while getting the state Please try again later", "alert alert-danger");
                     }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while getting the state Please try again later", "alert alert-danger");
+                }
 
-                });
+            });
 
-            }
-            else {
-                resetCarProperties();
-                showMessage("Please select the country to continue", "alert alert-danger");
-            }
+        }
+        else {
+            resetCarProperties();
+            showMessage("Please select the country to continue", "alert alert-danger");
+        }
     }
 
     function saveDealer() {
@@ -257,7 +257,7 @@
             }
 
             var companyName = $("#txtCompanyName").val();
-           /* var companyEmail = $("#txtCompanyEmail").val();*/
+            /* var companyEmail = $("#txtCompanyEmail").val();*/
             var companyPhone = $("#txtCompanyPhone").val();
             var country = $("#cmbCountry").val();
             var street = $("#txtStreet").val();
@@ -272,11 +272,11 @@
             var email = $("#hdnEmailAddress").val();
             var idp = $("#hdnIdp").val();
 
-           // var dAddress = [];
+            // var dAddress = [];
 
             var dealerAddress = { Country: country, Street: street, City: city, State: state, Zip: zip, Lat: locationLatitude, Lon: locationLongitude }
 
-           // dAddress.push(dealerAddress);
+            // dAddress.push(dealerAddress);
 
             var dealer = {
                 Id: id, CompanyName: companyName, Phone: companyPhone,
@@ -343,7 +343,7 @@
 
         //if (!$("#txtCountry").val())
         //    lstInvalidControls.push('txtCountry');
-         //if (!$("#txtState").val())
+        //if (!$("#txtState").val())
         //    lstInvalidControls.push('txtState');
 
         if (!$("#txtStreet").val())

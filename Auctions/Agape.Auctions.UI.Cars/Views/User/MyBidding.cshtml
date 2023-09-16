@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Agape.Auctions.Models.Biddings.Bid>
+﻿@model IEnumerable<DataAccessLayer.Models.Bid>
 
 @using System.Globalization;
 
@@ -11,7 +11,7 @@
     {
         Layout = "_Layout_Page";
     }
-    var carDetails = (Agape.Auctions.Models.Cars.Car)ViewBag.CarDetail;
+    var carDetails = (DataAccessLayer.Models.Car)ViewBag.CarDetail;
 }
 
 <div class="top3-wrapper novi-background bg-cover">

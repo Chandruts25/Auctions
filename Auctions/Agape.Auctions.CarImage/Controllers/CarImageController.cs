@@ -1,68 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Agape.Azure.Cosmos;
-using AgapeModel = Agape.Auctions.Models.Images;
-using System.Linq.Expressions;
+﻿using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Syncfusion.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Agape.Auctions.CarImage.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CarImageController
     {
-        private readonly ICosmosRepository<AgapeModel.Image, AgapeModel.Image> cosmosRepository;
+        private readonly AuctionDbContext _context;
 
-        public CarImageController(ICosmosRepository<AgapeModel.Image, AgapeModel.Image> cosmosRepositoryServices)
+        public CarImageController(AuctionDbContext context)
         {
-            cosmosRepository = cosmosRepositoryServices;
+            _context = context;
         }
+
         // GET: api/<CarImageController>
         [HttpGet]
-        public async Task<IEnumerable<AgapeModel.Image>> Get()
+        public async Task<IEnumerable<Image>> Get()
         {
-            Expression<Func<AgapeModel.Image, bool>> funcImage = c => !(string.IsNullOrEmpty(c.Id));
-            var result = await cosmosRepository.GetItemsAsync(funcImage);
-            return result.Resource;
+            Expression<Func<Image, bool>> funcImage = c => !(string.IsNullOrEmpty(c.Id));
+            var result = await _context.Images
+                .Where(funcImage)
+                .ToListAsync();
+            return result;
         }
 
         // GET api/<CarImageController>/5
         [HttpGet("{id}")]
-        public async Task<AgapeModel.Image> Get(string id)
+        public async Task<Image> Get(string id)
         {
-            var result = await cosmosRepository.GetAsync(id);
-            return result.Resource;
+            var result = await _context.Images.FindAsync(id);
+            return result;
         }
 
         // POST api/<CarImageController>
         [HttpPost]
-        public async Task Post([FromBody] AgapeModel.Image carImage)
+        public async Task Post([FromBody] Image carImage)
         {
-            await cosmosRepository.CreateAsync(carImage);
+            await _context.Images.AddAsync(carImage);
+            await _context.SaveChangesAsync();
         }
 
         // PUT api/<CarImageController>/5
         [HttpPut("{id}")]
-        public async Task Put(string id, [FromBody] AgapeModel.Image carImage)
+        public async Task Put(string id, [FromBody] Image carImage)
         {
-            await cosmosRepository.UpdateAsync(id, carImage);
+            _context.Entry(carImage).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<CarImageController>/5
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await cosmosRepository.DeleteAsync(id);
+            _context.Images.RemoveRange(_context.Images.Where(c => c.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         // GET api/<CarImageController>/GetCarImages/5
         [HttpGet("FindImagesByUser/{id}")]
-        public async Task<IEnumerable<AgapeModel.Image>> GetCarImages(string id)
+        public async Task<IEnumerable<Image>> GetCarImages(string id)
         {
-            Expression<Func<AgapeModel.Image, bool>> funcImage = c => c.Owner == id;
-            var result = await cosmosRepository.FindAsync(funcImage);
-            return result.Resource;
+            Expression<Func<Image, bool>> funcImage = c => c.Owner == id;
+            var images = await _context.Images
+                .Where(funcImage)
+                .ToListAsync();
+            return images;
         }
 
     }
