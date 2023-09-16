@@ -1,0 +1,616 @@
+﻿@model dynamic
+@using System.Globalization;
+@using Agape.Auctions.Models.Images
+@using Agape.Auctions.Models.Cars
+@{
+    ViewData["Title"] = "Profile";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+@*<link href="~/css/gflexslider.css" rel="stylesheet">
+    <link href="~/css/superslides.css" rel="stylesheet">
+    <script src="~/js/jquery.flexslider-min.js"></script>
+    <script src="~/js/jquery.superslides.js"></script>*@
+@*<link href="~/lib/bootstrap/dist/css/Admin-Module.css" rel="stylesheet" />*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="~/js/toastr.js"></script>
+<link href="~/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css">
+
+<div id="id01" class="modal"></div>
+<div id="id02" class="modal">
+    <div class="row modal-content">
+        <h5 class="stitle">Reason For Cancellation </h5>
+        <span onclick="document.getElementById('id02').style.display='none'" class="close1" title="Close Modal">×</span>
+        <div class="sectionContent">
+            <div class="subgroup">
+                <div class="col-xs-12 resurcesBlock">
+                    <div class="col-sm-12 pt-0 modal-body">
+                        <form>
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="txtReserveAmount"> </label>
+                                    <textarea class="form-control" style="resize:vertical;" id="txtReserveAmount" rows="8" onkeypress="removeInvalidClass('txtReserveAmount')"></textarea>
+                                </div>
+                            </div>
+                            <div class="mr-15 float-right">
+                                <input type="hidden" id="carid-hdn" name="carid" />
+                                <input type="button" class="btn btn-success" value="Submit" onclick="cancelAuction()">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-title"></div>
+
+<div class="col-xxs-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 mbl-res" style="margin-top: -150px;">
+    <h2 style="color: #cbb55f; font-size: 30px; padding-left: 6%;" class="change_heading">Approval Requests</h2>
+    <div class="breadcrumbs1" style="padding-left: 6%;"><a href="/User/Profile">Admin</a><span></span><span class="change_heading">Approval Requests</span></div>
+</div>
+
+<div class="header-fltr">
+    <div class="col-sm-12 col-md-12 col-lg-12 bg-toolbar" style=" width: 100%;">
+        <div style="text-align:right;">
+            <div class="txt" style="float:right; padding-top: 5px;">
+                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a> &nbsp;
+                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-full">
+    <div class="row pt-0 m-0">
+        <div class="col-xxs-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div id="divShowErrorSuccess">
+                <div id="divDetailText">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 col-xxs-12">
+            <div id="stats_filter" class="sectionBlock blk">
+                <h4 class="text-secondary" style="border-bottom: 1px solid #dddddd; padding-bottom: 10px; padding-left: 20px; ">Filters</h4>
+                <div id="stats_filter_wrapper" class="grids p-10">
+                    <div class="grid-3 select-wrapper status">
+                        <label class="status">Status</label>
+                        <select id="status" onchange="getCombo(this)">
+                            <option value="All">All</option>
+                            <option value="Submitted">Approval Requests</option>
+                            <option value="Approved">Approved</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="Sold">Sold</option>
+                            <option value="UnSold">UnSold</option>
+                        </select>
+                        <input type="hidden" id="stat" value="All" />
+                    </div>
+                    <div id="filter">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-md-9 col-sm-9 col-xs-12 col-xxs-12">
+            <div class="row column-content">
+                <div class="sectionBlock blk wrapper">
+                    <div class="col-sm-12 new-1" style="border-bottom: 1px solid #dddddd;margin-bottom: 15px;">
+                        <h4 class="text-secondary change_heading"> Approval Requests </h4>
+                    </div>
+                    <div id="Car"></div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
+            <div class="column-content">
+                <div class="sectionBlock new-last blk">
+                    <h4 class="text-secondary" style="border-bottom: 1px solid #dddddd; padding-bottom: 10px; padding-left: 20px;">My Account</h4>
+                    <div class="sectionContent">
+
+                        <ul style="padding-left: 46px;">
+
+                            <li> <a href="/User/Profile"> All Cars </a> </li>
+                            <li> <a href="/User/ApprovedCarz"> Approved Cars </a> </li>
+                            <li> <a href="/User/CanceledCarz"> Cancelled Cars </a> </li>
+                            <li> <a href="/User/SoldCarz"> Sold Cars </a> </li>
+                            <li> <a href="/User/UnsoldCarz"> Unsold Cars </a> </li>
+                            <li> <a href="#"> Auction Activity </a> </li>
+                            <li> <a href="#"> Update Password </a> </li>
+                            <li>
+                                <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">
+
+                                    <a> Logout </a>
+                                </form>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+
+
+    function popup1close() {
+        document.getElementById('id01').style.display = 'none'
+
+        document.getElementById('id01').innerHTML = "";
+    }
+
+    $(document).ready(function () {
+        var value = $("#stat").val();
+        var brand = "all";
+        var model = "all";
+        var fuel = "all";
+        var year = "all";
+        $("#Car").load("/User/StatusList?view=StatusList&status=" + value + "&brand=" + brand + "&model=" + model + "&fuel=" + fuel + "&year=" + year);
+        $("#filter").load("/User/Filters?status=All");
+        var pUrl = "/User/EditUserAdmin";
+        $('.change_heading').text("All Cars");
+
+        $.ajax({
+            type: "POST",
+            url: pUrl,
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+                        //showMessage("Profile updated successfully", "alert alert-success");
+                    }
+                    else {
+                        //showMessage("Error occured while update the profile", "alert alert-danger");
+                    }
+                }
+                else {
+                    //showMessage("Error occured while update the profile", "alert alert-danger");
+                }
+            },
+            error: function (error) {
+                //showMessage("Error occured while update the profile", "alert alert-danger");
+            }
+        });
+
+
+    });
+
+    function getCombo(selectObject) {
+        var value = selectObject.value;
+
+        switch (true) {
+            case (value == "All"):
+                $('.change_heading').text("All Cars");
+                break;
+            case (value == "Submitted"):
+                $('.change_heading').text("Approval Requests");
+                break;
+            case (value == "Approved"):
+                $('.change_heading').text("Approved Cars");
+                break;
+            case (value == "cancelled"):
+                $('.change_heading').text("Cancelled Cars");
+                break;
+            case (value == "Sold"):
+                $('.change_heading').text("Sold Cars");
+                break;
+            case (value == "UnSold"):
+                $('.change_heading').text("Unsold Cars");
+                break;
+            default:
+                $('.change_heading').text("Approval Requests");
+        }
+
+
+        $("#stat").val(value);
+        $("#Car").load("/User/StatusList?view=StatusList&status=" + value);
+        $("#filter").load("/User/Filters?status=" + value);
+    }
+    function opnpopup(carId) {
+
+
+
+
+        $('#id01').load("/User/Amount?id=" + carId);
+
+
+        document.getElementById('id01').style.display = 'block';
+
+    }
+
+    function opnpopupresubmit(carId,status) {
+        
+        $('#id01').load("/User/Resubmit?id=" + carId + "&auctionStatus=" + status);
+
+        document.getElementById('id01').style.display = 'block';
+    }
+
+
+
+    // Get the modal
+    var modal = document.getElementById('id01');
+
+
+
+    var modal1 = document.getElementById('id02');
+
+
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+
+            document.getElementById('id01').innerHTML = "";
+
+        }
+        if (event.target == modal1) {
+            modal1.style.display = "none";
+
+        }
+    }
+
+
+
+
+    function opnpopupreject(carId) {
+
+        $("#carid-hdn").val(carId);
+        document.getElementById('id02').style.display = 'block';
+
+    }
+
+
+
+
+    function viewCar(carId) {
+        window.location.href = "/Car/View?carId=" + carId + "";
+    }
+
+    function editCar(carId) {
+        window.location.href = "/Car/AddEditCar?carId=" + carId + "";
+    }
+
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function removeCar(carId) {
+        if (!confirm("Are you sure want to remove the car?")) {
+            return true;
+        }
+
+        var pUrl = "/Car/RemoveCar";
+        $.ajax({
+            type: "POST",
+            url: pUrl,
+            data: { carId: carId },
+            success: function (data) {
+                if (data.saveResult == true) {
+                    showMessage("Car removed successfully", "success");
+                }
+                else {
+                    showMessage("Error occurred while remove the car", "error");
+                }
+            }
+        });
+    }
+    $(".wrapper .item").slice(6).hide();
+    $('#pagination').pagination({
+
+        // Total number of items present
+        // in wrapper class
+        items: $("#hdn_count").val(),
+
+
+
+        // Items allowed on a single page
+        itemsOnPage: 6,
+        onPageClick: function (noofele) {
+            $(".wrapper .item").hide()
+                .slice(6 * (noofele - 1),
+                    6 + 6 * (noofele - 1)).show();
+        }
+    });
+</script>
+
+<script>
+    function saveStatus(carId, stat) {
+        var classId = carId + '~tohide';
+        var classes = document.getElementsByClassName(classId);
+        var pUrl = "/User/EditStatusCar";
+        $.ajax({
+            type: "POST",
+            data: { carId: carId, status: stat },
+            url: pUrl,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+                        showMessage("Auction car approved successfully", "success");
+
+                        document.getElementById('id01').style.display = 'none';
+
+                        $(classes).closest('.col-xxs-12.col-xs-6.col-sm-6.col-md-4.col-lg-4.stats-section').remove();
+
+                        document.getElementById('id01').innerHTML = "";
+                    }
+                    else {
+                        showMessage("Error occurred while " + messageText + " the car", "error");
+                    }
+                }
+                else {
+                    showMessage("Error occurred while " + messageText + " the car", "error");
+                }
+            },
+            error: function (error) {
+                showMessage("Error occurred while " + messageText + " the car", "error");
+            }
+
+
+
+        });
+    }
+    function validateMaxRanges() {
+        var message = "";
+        var salePrice = $("#hdnSalePrice").val();
+        var reserveAmount = parseInt($("#txtReserveAmount").val().split(',').join(''));
+        var incrementAmount = parseInt($("#txtIncrementAmount").val().split(',').join(''));
+        var startAmount = parseInt($("#txtStartAmount").val().split(',').join(''));
+
+        if (incrementAmount > reserveAmount) {
+            message = "Increment Amount should not be greater than the Reserve Amount";
+        }
+        else if (startAmount > reserveAmount) {
+            message = "Starting Amount should not be greater than the Reserve Amount";
+        }
+        return message;
+
+    }
+
+
+
+
+    function submitForAuction(carId) {
+
+        var classId = carId + '~tohide';
+        var status_a = "Approved";
+        var classes = document.getElementsByClassName(classId);
+        /*  $(classes).hide();*/
+        if (validateMaxRanges() != "") {
+            showMessage(validateMaxRanges(), "error")
+        }
+        else {
+            var pUrl = "/User/SubmitAuction";
+            var reserveAmount = parseInt($("#txtReserveAmount").val().split(',').join(''));
+            var incrementAmount = parseInt($("#txtIncrementAmount").val().split(',').join(''));
+            var startAmount = parseInt($("#txtStartAmount").val().split(',').join(''));
+            var auctionDays = parseInt($("#txtAuctionDays").val().split(',').join(''));
+
+
+            var id = $("#hdnAucId").val();
+
+
+
+            var auction = {
+                Reserve: reserveAmount, Increment: incrementAmount, Id: id,
+                StartAmount: startAmount, AuctionDays: auctionDays, Status: "Approved"
+            };
+
+            var jStr = "auction=" + JSON.stringify(auction);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+
+                            saveStatus(carId, status_a);
+
+                            //showMessage("Auction car approved successfully", "success");
+
+
+                        }
+
+                        else {
+                            showMessage("Error occurred while submit for auction", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while submit for auction", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while submit for auction", "error");
+                }
+
+            });
+
+        }
+    }
+    function ResubmitForAuction(carId) {
+
+        var classId = carId + '~tohide';
+        var classes = document.getElementsByClassName(classId);
+        /*  $(classes).hide();*/
+        if (validateMaxRanges() != "") {
+            showMessage(validateMaxRanges(), "error")
+        }
+        else {
+            var pUrl = "/User/SubmitAuction";
+            var reserveAmount = parseInt($("#txtReserveAmount").val().split(',').join(''));
+            var incrementAmount = parseInt($("#txtIncrementAmount").val().split(',').join(''));
+            var startAmount = parseInt($("#txtStartAmount").val().split(',').join(''));
+            var auctionDays = parseInt($("#txtAuctionDays").val().split(',').join(''));
+
+
+            var id = $("#hdnAucId").val();
+
+
+
+            var auction = {
+                Reserve: reserveAmount, Increment: incrementAmount, Id: id,
+                StartAmount: startAmount, AuctionDays: auctionDays, Status: "Resubmit"
+            };
+
+            var jStr = "auction=" + JSON.stringify(auction);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Auction Details Submitted successfully", "success");
+                            document.getElementById('id01').style.display = 'none';
+
+
+
+                            document.getElementById('id01').innerHTML = "";
+                        }
+
+                        else {
+                            showMessage("Error occurred while submit for auction", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while submit for auction", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while submit for auction", "error");
+                }
+
+            });
+        }
+
+    }
+    function cancelAuction() {
+
+        var pUrl = "/User/CancelAuction";
+
+        var id = $("#carid-hdn").val();
+
+        var cancelled = "cancelled";
+
+        $.ajax({
+            type: "POST",
+            data: { Id: id, stat: "Cancelled" },
+            url: pUrl,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+
+
+
+                        saveStatuscancel(cancelled);
+
+
+
+
+
+                    }
+                    else {
+                        showMessage("Error occurred while submit for auction", "error");
+                    }
+                }
+                else {
+                    showMessage("Error occurred while submit for auction", "error");
+                }
+            },
+            error: function (error) {
+                showMessage("Error occurred while submit for auction", "error");
+            }
+
+        });
+
+
+    }
+
+
+    function saveStatuscancel(stat) {
+
+
+        var carId = $("#carid-hdn").val();
+
+        var classId = carId + '~tohide';
+        var classes = document.getElementsByClassName(classId);
+
+
+        var pUrl = "/User/EditStatusCar";
+        $.ajax({
+            type: "POST",
+            data: { carId: carId, status: stat },
+            url: pUrl,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+                        showMessage("Cancelled successfully", "success");
+
+                        document.getElementById('id02').style.display = 'none';
+
+                        $(classes).closest('.col-xxs-12.col-xs-6.col-sm-6.col-md-4.col-lg-4.stats-section').remove();
+
+
+
+                    }
+                    else {
+                        showMessage("Error occurred while " + messageText + " the car", "error");
+                        document.getElementById('id02').style.display = 'none';
+
+
+                    }
+                }
+                else {
+                    showMessage("Error occurred while " + messageText + " the car", "error");
+                    document.getElementById('id02').style.display = 'none';
+                }
+            },
+            error: function (error) {
+                showMessage("Error occurred while " + messageText + " the car", "error");
+                document.getElementById('id02').style.display = 'none';
+            }
+
+
+
+        });
+    }
+
+</script>
+
+

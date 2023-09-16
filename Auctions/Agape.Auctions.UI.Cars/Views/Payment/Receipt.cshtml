@@ -1,0 +1,331 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    double advancePrice = 0;
+    double tax = 0;
+    double gst = 0;
+    double totalPrice = 0;
+    int advanceCalculatedPercentage = (int)ViewBag.CarAdvanceAmountPercentage;
+    int taxCalculatedPercentage = (int)ViewBag.CarTaxPercentage;
+    int gstCalculationPercentage = (int)ViewBag.GstPercentage;
+
+
+    if (Model.SalePrice != null)
+    {
+        advancePrice = (Model.SalePrice * advanceCalculatedPercentage) / 100;
+        tax = (Model.SalePrice * taxCalculatedPercentage) / 100;
+        gst = (advancePrice * gstCalculationPercentage) / 100;
+        totalPrice = advancePrice + tax + gst;
+    }
+}
+
+<style>
+
+    .class_Receipt h4 {
+        background: #181c2a;
+        padding: 10px;
+        color: white;
+    }
+    .table-bordered {
+        border: 1px solid #dddddd;
+        background: whitesmoke;
+    }
+</style>
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Payment Summary </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Purchase</div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+        <div class="container class_Receipt">
+
+            <div class="row row-fix">
+                <div class="col-sm-12 col-md-12 column-content">
+
+                    <div class="col-sm-3">
+
+                        <img src="~/images/sidebar-1-270x174.jpg" style="width: 100%;" />
+
+                    </div>
+
+                    <div class="col-sm-9 sidebar-form">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <p>This is Your payment deteils,dowload your payment Receipt Below !!!!</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 p-0">
+                                <center><h4 class="mt-5">Car Detail</h4></center>
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Car Name : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> ACURA </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> Car Type : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> XXXXXXXXX </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Model : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> REGISTERED 1989 </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> Price : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> ₹ 10,00,000.00 </label>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+
+
+
+
+                            <div class="col-sm-12 p-0">
+                                <center><h4 class="mt-5">Bank Detail</h4></center>
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Price : </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> ₹ 10,00,000.00 </label>
+
+                                    </td>
+
+
+                                    <td class="col-sm-3">
+
+                                        <label> Card Holder Name : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> Test Name </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Card Number : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> XXXX XXXX XXXX X312 </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> Card Type : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> American Express </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Payment Status : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> Complete </label>
+
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <div class="col-sm-12 p-0">
+                                <h4 class="mt-5">Billing Address</h4>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> City : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> Andorra </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> Street : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> Andorra </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> Zip : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> 629602 </label>
+
+                                    </td>
+
+
+                                    <td class="col-sm-3">
+
+                                        <label> Country : </label>
+
+                                    </td>
+                                    <td class="col-sm-3">
+
+                                        <label> Andorra </label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">
+
+                                        <label> State : </label>
+
+                                    </td>
+
+                                    <td class="col-sm-3">
+
+                                        <label> Andorra </label>
+
+                                    </td>
+                                    <td>
+
+
+                                        <a href="~/images/ca-3-150x80.jpg" download="Receipt">
+                                            Doeload Receipt
+                                        </a>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+               
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+            
+       
+    <div class="snackbars" id="form-output-global"></div>
+
+}
+
+<script src="~/js/bootstrap.min.js"></script>
+

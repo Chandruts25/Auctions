@@ -1,0 +1,267 @@
+﻿@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+
+}
+<link href="~/css/additional_css.css" rel="stylesheet" />
+<style>
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+    .col-sm-12.text-accent.p-0 {
+        background: #181c2a;
+        color: white;
+        padding-top: 7px !important;
+    }
+    body.front {
+        background: white;
+    }
+    .modal-body .tabs2-wrapper {
+        padding: 15px;
+    }
+
+    .modal-body ul.tabs.clearfix li {
+        margin: 0px;
+        border: 1px solid;
+    }
+
+    span.fuel::before {
+        content: '⛽ ';
+        color: black !important;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    span.Type::before {
+        content: '🚗 ';
+        font-weight: bold;
+        color: black;
+        font-size: 17px;
+    }
+
+    .product-minimal-title.new-title a {
+        font-size: 32px !important;
+    }
+
+    .p-bg {
+        background: black;
+        color: white;
+    }
+
+    .clsExpiry {
+        background-color: coral;
+    }
+</style>
+
+<div class="bg-banner"></div>
+<div class="row">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <bold> My Offers </bold> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="/Dealers">Home</a><span></span>My Offers</div>
+        </div>
+    </div>
+</div>
+<div class="container mt-50">
+  
+    <div class="section section-md-bottom content novi-background bg-cover">
+
+        <div class="container">
+            <form id="paymentForm" action="/CreatePurchaseOrderPayments" method="POST">
+
+                <div class="row row-fix">
+                    <div class="col-sm-12 col-md-12 column-content">
+
+
+
+                        <div class="col-sm-7 product-minimal">
+
+                            <img src="https://badasscarzdev.blob.core.windows.net/car/007f9f57-32e7-4e45-b646-21ddbd263e1d/02-DSCN5241.JPG" style="width: 100%;">
+
+                            <div class="caption">
+                                <div class="product-minimal-title new-title"><a href="details">Chevrolet Camaro IROC-Z</a></div>
+                                <p class="small">REGISTERED 2022</p>
+
+
+                                <div class="info">
+                                    <span class="price">Current Amount : $ 50,000.00</span>
+                                    <div class="trip_2022-03-12"></div>
+
+                                </div>
+
+
+                                <div class="info new-span">
+                                    <span class="fuel">Diesel</span>
+                                    <span class="Type">Automatic</span>
+                                    <span class="speed">3456 KM</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+
+                            <div class="col-sm-12 pt-0 modal-body">
+
+
+
+                                <div class="col-sm-12 sidebar-form ">
+                                    <div class="col-sm-12 p-0">
+                                        <h4 class="mt-5"> Description </h4>
+                                    </div>
+
+                                    <p>
+                                        Here we have a 1986 Chevrolet Camaro Iroc Z for sale. Quickly becoming one of the most sought after of the third gen Camaros, the Iroc Z sports a ton of iconic styling and the one we have for you is no exception. It has a beautiful color combo along with having the matching numbers V8 and T Tops.
+
+                                        It’s also a 38K original mile vehicle that has been a 1 owner vehicle the majority of its life and still has the original title.
+                                    </p>
+                                    <p>
+                                        Here we have a 1986 Chevrolet Camaro Iroc Z for sale. Quickly becoming one of the most sought after of the third gen Camaros, the Iroc Z sports a ton of iconic styling and the one we have for you is no exception. It has a beautiful color combo along with having the matching numbers V8 and T Tops.
+
+                                        It’s also a 38K original mile vehicle that has been a 1 owner vehicle the majority of its life and still has the original title.
+                                    </p>
+
+                                    <div class="col-sm-12 text-accent p-0 mb-30">
+                                        <h4 class="mt-5"> Current Bidding : $ 40,000.00 </h4>
+                                    </div>
+
+                                    <div class="col-sm-12 p-0 mb-50" id="txt_bid_amount" style="display:none;">
+                                        <div class="form-group form-wrap">
+                                            <label for="txtInitialPayment"> My Bidding Amount</label>
+                                            <input type="text" class="form-control">
+
+                                        </div>
+                                        <div class="col-sm-12 mr-15 float-right">
+                                            <button type="button" id="close_txt_bid_amount" class="btn btn-info">Cancel</button>
+                                            <button type="button" class="btn btn-success">Request</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mr-15 float-right">
+
+                                        <button type="button" id="btnPayment" class="btn btn-success">Make Offer</button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+
+        $("#btnPayment").click(function () {
+            $(this).hide();
+            $("#txt_bid_amount").show();
+
+        });
+        $("#close_txt_bid_amount").click(function () {
+            $("#txt_bid_amount").hide();
+            $("#btnPayment").show();
+
+        });
+
+
+    });
+</script>
+
+<script>
+    function TimeRemaining() {
+        var els = [...document.querySelectorAll('[class^="trip_"]')];
+        els.forEach(el => {
+            var end_time = el.className.split("_")[1]
+            var deadline = new Date(end_time);
+            var now = new Date();
+            var t = Math.floor(deadline.getTime() - now.getTime());
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((t % (1000 * 60)) / 1000);
+            if (t < 0) {
+
+                var classname = document.getElementsByClassName("trip_" + end_time);
+
+
+                for (var i = 0; i < classname.length; i++) {
+                    document.getElementsByClassName("trip_" + end_time)[i].innerText = 'EXPIRED';
+                }
+
+
+            } else {
+                var classname = document.getElementsByClassName("trip_" + end_time);
+                for (var i = 0; i < classname.length; i++) {
+                    document.getElementsByClassName("trip_" + end_time)[i].innerText = "TIME LEFT : " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                }
+
+
+            }
+        })
+        window.requestAnimationFrame(TimeRemaining);
+    }
+
+    function StartTimeRemaining() {
+        TimeRemaining();
+        window.requestAnimationFrame(TimeRemaining);
+    }
+
+    StartTimeRemaining()
+</script>

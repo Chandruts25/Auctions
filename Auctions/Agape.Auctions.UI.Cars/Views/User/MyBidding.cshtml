@@ -1,0 +1,182 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Biddings.Bid>
+
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var carDetails = (Agape.Auctions.Models.Cars.Car)ViewBag.CarDetail;
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> @carDetails.Model @carDetails.Make Bidding </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1">
+            <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">Profile</a><span></span>Bidding</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col" id="divShowErrorSuccess">
+            <div class="col-md-6" id="divDetailText">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content section-md-bottom novi-background bg-cover">
+
+        <div class="container">
+            <div class="row row-fix">
+
+                <div class="col-sm-4 col-md-4 column-content">
+                    <div class="sectionBlock">
+                        <div class="col-sm-12">
+                            <div class="product-minimal mb-20">
+                                <div class="thumbnail clearfix">
+                                    <figure class="product-minimal-img mb-0">
+                                        <img src="@carDetails.Thumbnail" class="img-responsive" style="margin-top:30px;height:170px;">
+                                    </figure>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 p-0">
+                            <div class="col-sm-12 col-sm-12 product-minimal p-0  mb-10">
+                                <div class="thumbnail clearfix">
+                                    <div class="caption p-10">
+                                        <div class="vdoicon">
+                                            <p class="small">Registered @carDetails.Year</p>
+
+                                        </div>
+                                        <div class="product-minimal-title"><a style="cursor:pointer;"> @carDetails.Model @carDetails.Make</a></div>
+                                        <div class="info">
+                                            <span class="price">@carDetails.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                            <span class="speed">@carDetails.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                                        </div>
+                                        <ul class="tag-list">
+                                            <li>@(carDetails.IsNew ? "New" : "Used")</li>
+                                            <li>@carDetails.Year</a></li>
+                                            <li>@(carDetails.IsAutomatic ? "Automatic" : "Gear")</li>
+                                            <li>@carDetails.Color</a></li>
+                                            <li>@(carDetails.IsPetrol ? "Petrol" : "Diesel")</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-8 col-md-8 column-content">
+
+                    <div class="sectionBlock">
+                        <h5 class="stitle">@carDetails.Model @carDetails.Make Bidding </h5>
+                        <div class="sectionContent">
+                            <div class="subgroup">
+                                <div class="col-xs-12 resurcesBlock">
+
+                                    @if (Model != null && Model.Count() > 0)
+                                    {
+                                        <table id="tblBidCars" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Bidding By
+                                                    </th>
+                                                    <th>
+                                                        Bidding Amount
+                                                    </th>
+                                                    <th>
+                                                        Created Date
+                                                    </th>
+                                                    <th>
+                                                       Details
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.Where(i => i.Type =="Bid"))
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @item.UpdatedBy
+                                                    </td>
+                                                    <td>
+                                                        @item.BiddingAmount.ToString("C", CultureInfo.CurrentCulture)
+                                                    </td>
+                                                    <td>
+                                                        @item.CreatedDate
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="ViewDetails('@item.Id')"> More</button>
+                                                    </td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div>No Records Found</div>
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        buildGrid();
+    });
+
+    function buildGrid() {
+        $('#tblBidCars')
+            .on('init.dt', function () {
+                $('#tblBidCars').removeClass('dataTable');
+            }).dataTable({
+                "order": [[1, "desc"]]
+            } );
+    }
+    function ViewDetails(Id) {
+
+
+
+        window.location.href = "/User/BidDetails?BidId=" + Id + "";
+    }
+</script>

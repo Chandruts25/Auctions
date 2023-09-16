@@ -1,0 +1,211 @@
+﻿@model IEnumerable<Agape.Auctions.UI.Cars.Models.Dealer>
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> List Dealers </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="Admin" asp-action="Dashboard">Dashboard</a><span></span>Dealer Details <div style="float:right"><a onclick="addDealer()">Add New Dealer</a></div></div>
+    </div>
+</div>
+
+
+<div class="content section-md-bottom novi-background bg-cover">
+    <div class="container">
+        <div class="row row-fix">
+
+            <div class="col-sm-12 col-md-12 column-content">
+
+                <div class="sectionBlock">
+                    <h5 class="stitle">List Dealers </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <div class="col-xs-12 resurcesBlock">
+
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    <table id="tblDealer" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Owner
+                                                </th>
+                                                <th>
+                                                    Company Name
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Phone
+                                                </th>
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" value="@item.Id" name="hdnDealerId" />
+                                                        @item.Owner
+                                                    </td>
+                                                    <td>
+                                                        @item.CompanyName
+                                                    </td>
+                                                    <td>
+                                                        @item.Email
+                                                    </td>
+                                                    <td>
+                                                        @item.Phone
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit" onclick="openDealerEditDialog('@item.Id')"><i class="fa fa-edit"></i></button>
+                                                        <button class="btn btn-danger btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="removeDealer('@item.Id')">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div>No Records Found</div>
+                                }
+                                <input type="hidden" id="hdnSelectedDealerId" />
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divEditDealerDialog" style=" overflow-x: hidden; overflow-y: auto; ">
+    <div id="divEditCustomer">
+        @await Component.InvokeAsync("Dealers", new { view = DealersViewEnum.AddEditDealer })
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        buildGrid();
+        initializeDealerDialog();
+    });
+
+    function buildGrid() {
+        $('#tblDealer')
+            .on('init.dt', function () {
+                $('#tblDealer').removeClass('dataTable');
+            }).dataTable();
+
+    }
+
+    function removeDealer(dealerId) {
+        if (!confirm("Are you sure want to delete?")) {
+            return false;
+        }
+        if (!dealerId) {
+            Lobibox.alert('error', {
+                msg: "Please select the dealer to Remove",
+                delayToRemove: 200
+            });
+            return false;
+        }
+        else {
+            var pUrl = "/Dealers/RemoveDealer";
+            $.ajax({
+                type: "POST",
+                url: pUrl,
+                data: { dealerId: dealerId },
+                success: function (data) {
+                    if (data.saveResult == true) {
+                        Lobibox.alert('success', {
+                            msg: "Dealer removed successfully",
+                            delayToRemove: 200
+                        });
+                        window.location.href = "/Dealers/Summary"
+                    }
+                    else {
+                        Lobibox.alert('error', {
+                            msg: "Error occured while remove the Dealer",
+                            delayToRemove: 200
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+
+    function openDealerEditDialog(dealerId) {
+        $("#hdnSelectedDealerId").val(dealerId);
+        if (!dealerId) {
+            Lobibox.alert('error', {
+                msg: "Please select the dealer to edit",
+                delayToRemove: 200
+            });
+            return false;
+        }
+        $("#divEditDealerDialog").dialog('open');
+    }
+
+    function addDealer() {
+        $("#hdnSelectedDealerId").val("");
+        $("#divEditDealerDialog").dialog('open');
+    }
+    function initializeDealerDialog() {
+        $('#divEditDealerDialog').dialog({
+            autoOpen: false,
+            modal: true,
+            width: 800,
+            height: 650,
+            resizable: false,
+            draggable: false,
+            title: "::Add/Edit Dealer Details::",
+            open: function (event, ui) {
+                var dealerId = $("#hdnSelectedDealerId").val();
+                $('#divEditDealerDialog').load("/Dealers/AddEditDealer?id=" + dealerId + "");
+            },
+            position: ['center', 70]
+        });
+    }
+
+</script>

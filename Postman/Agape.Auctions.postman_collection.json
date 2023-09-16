@@ -1,0 +1,690 @@
+{
+	"info": {
+		"_postman_id": "6d09881d-e6fe-40aa-9b9f-d0fd9e1f73c9",
+		"name": "Agape.Auctions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Addresses",
+			"item": [
+				{
+					"name": "Get Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses/7447b1af-9d81-44f4-a830-fb7d6593af50",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses",
+								"7447b1af-9d81-44f4-a830-fb7d6593af50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dealer Addresses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses/Dealer/b81ad0a9-2d37-4e85-ab95-65645e7c54a5",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses",
+								"Dealer",
+								"b81ad0a9-2d37-4e85-ab95-65645e7c54a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dealerId\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n    \"companyName\": \"Wesport Auto\",\r\n    \"country\": \"US\",\r\n    \"street\": \"2207 Alta Vista Dr\",\r\n    \"city\": \"Vista\",\r\n    \"state\": \"CA\",\r\n    \"zip\": \"92084\",\r\n    \"lat\": \"3\",\r\n    \"lon\": \"2\",\r\n    \"deleted\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Addresses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses/7447b1af-9d81-44f4-a830-fb7d6593af50",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses",
+								"7447b1af-9d81-44f4-a830-fb7d6593af50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"address\",\r\n    \"id\": \"557fe866-0168-4620-9f8e-7a16fcb6ef84\",\r\n    \"version\": \"1\",\r\n    \"dealerId\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n    \"companyName\": \"Wesport Auto\",\r\n    \"country\": \"US\",\r\n    \"street\": \"2205 Alta Vista Dr\",\r\n    \"city\": \"Vista\",\r\n    \"state\": \"CA\",\r\n    \"zip\": \"92084\",\r\n    \"lat\": \"2\",\r\n    \"lon\": \"2\",\r\n    \"deleted\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Addresses/api/v1/Addresses/557fe866-0168-4620-9f8e-7a16fcb6ef84",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Addresses",
+								"api",
+								"v1",
+								"Addresses",
+								"557fe866-0168-4620-9f8e-7a16fcb6ef84"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCountries",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"getCountries\":{\"apiKey\":\"cd02b426-1471-4d7f-b484-177f58552288\",\"organizationID\":4764}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/agape/api/v1/GetCountries",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"agape",
+								"api",
+								"v1",
+								"GetCountries"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cars",
+			"item": [
+				{
+					"name": "Get Car",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Cars/api/v1/Cars/443bf26f-6cdb-43ef-a1a6-9efa04048b6f",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Cars",
+								"api",
+								"v1",
+								"Cars",
+								"443bf26f-6cdb-43ef-a1a6-9efa04048b6f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Car",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"owner\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n    \"mileage\": 36900,\r\n    \"salePrice\": 46879.95,\r\n    \"description\": \"another Awsome car\",\r\n    \"VIN\": \"3FA6P0PU8DR247941\",\r\n    \"hasImages\": true,\r\n    \"vinDecoded\": false,\r\n    \"make\": \"HONDA\",\r\n    \"model\": \"Civic\",\r\n    \"year\": 2011,\r\n    \"status\": \"open\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/AgapeAuctionsApi/api/v1/Cars",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"AgapeAuctionsApi",
+								"api",
+								"v1",
+								"Cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cars",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Cars/api/v1/Cars",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Cars",
+								"api",
+								"v1",
+								"Cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Car",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/AgapeAuctionsApi/api/v1/Cars/dce7eb62-ecda-4fc9-9c7a-50be9b2d35fa",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"AgapeAuctionsApi",
+								"api",
+								"v1",
+								"Cars",
+								"dce7eb62-ecda-4fc9-9c7a-50be9b2d35fa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Car",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"another Awsome car\",\r\n    \"properties\": null,\r\n    \"vin\": \"JF1GPAL65D2890589\",\r\n    \"vinDecoded\": false,\r\n    \"type\": \"car\",\r\n    \"id\": \"443bf26f-6cdb-43ef-a1a6-9efa04048b6f\",\r\n    \"version\": \"1\",\r\n    \"owner\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n    \"mileage\": 131900,\r\n    \"salePrice\": 18079.95,\r\n    \"hasImages\": false,\r\n    \"status\": \"open\",\r\n    \"make\": \"SUBARU\",\r\n    \"model\": \"Ifsdjfhksjdhfksjdhza\",\r\n    \"year\": 2011\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Cars/api/v1/Cars/443bf26f-6cdb-43ef-a1a6-9efa04048b6f",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Cars",
+								"api",
+								"v1",
+								"Cars",
+								"443bf26f-6cdb-43ef-a1a6-9efa04048b6f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dealers",
+			"item": [
+				{
+					"name": "Put Dealer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idp\": \"4a20c9fd-dbc1-4e0e-84b3-ba31bca80d7d\",\r\n    \"companyName\": \"\",\r\n    \"paymentMethods\": null,\r\n    \"phone\": \"760-542-8223\",\r\n    \"address\": {\r\n        \"country\": \"US\",\r\n        \"street\": \"642 Steffy Lane\",\r\n        \"city\": \"Ramona\",\r\n        \"state\": \"CA\",\r\n        \"zip\": \"92052\"\r\n    },\r\n    \"cars\": [],\r\n    \"hasMoreCars\": false,\r\n    \"purchases\": null,\r\n    \"hasMorePurchases\": false,\r\n    \"type\": \"user\",\r\n    \"id\": \"674e46cf-c795-4087-9134-67d0fd344697\",\r\n    \"version\": \"1\",\r\n    \"userType\": \"dealer\",\r\n    \"email\": \"james+2@agapeworks.org\",\r\n    \"firstName\": \"James +2\",\r\n    \"lastName\": \"Smith\",\r\n    \"deleted\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Dealers/api/v1/Dealers/674e46cf-c795-4087-9134-67d0fd344697",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Dealers",
+								"api",
+								"v1",
+								"Dealers",
+								"674e46cf-c795-4087-9134-67d0fd344697"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Dealer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Dealers/api/v1/Dealers/b81ad0a9-2d37-4e85-ab95-65645e7c54a5",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Dealers",
+								"api",
+								"v1",
+								"Dealers",
+								"b81ad0a9-2d37-4e85-ab95-65645e7c54a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dealers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Dealers/api/v1/Dealers",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Dealers",
+								"api",
+								"v1",
+								"Dealers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Dealer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userType\": \"user\",\r\n  \"email\": \"james+2@agapeworks.org\",\r\n  \"firstName\": \"James +2\",\r\n  \"lastName\": \"Smith\",\r\n  \"idp\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n  \"companyName\": \"\",\r\n  \"phone\": \"760-542-8223\",\r\n  \"address\": {\r\n    \"country\": \"US\",\r\n    \"street\": \"642 Steffy Lane\",\r\n    \"city\": \"Ramona\",\r\n    \"state\": \"CA\",\r\n    \"zip\": \"92052\"\r\n  },\r\n  \"cars\": [],\r\n  \"hasMoreCars\": false,\r\n  \"hasMorePurchases\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Dealer/api/v1/Dealer",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Dealer",
+								"api",
+								"v1",
+								"Dealer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dealer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Dealers/api/v1/Dealers/b81ad0a9-2d37-4e85-ab95-65645e7c54a5",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Dealers",
+								"api",
+								"v1",
+								"Dealers",
+								"b81ad0a9-2d37-4e85-ab95-65645e7c54a5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users/674e46cf-c795-4087-9134-67d0fd344697",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users",
+								"674e46cf-c795-4087-9134-67d0fd344697"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By IDP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users/idp/cb14321a-7302-43b1-8ed5-09b1c0c80c98",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users",
+								"idp",
+								"cb14321a-7302-43b1-8ed5-09b1c0c80c98"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userType\": \"user\",\r\n  \"email\": \"james+2@agapeworks.org\",\r\n  \"firstName\": \"James +2\",\r\n  \"lastName\": \"Smith\",\r\n  \"idp\": \"b81ad0a9-2d37-4e85-ab95-65645e7c54a5\",\r\n  \"companyName\": \"\",\r\n  \"phone\": \"760-542-8223\",\r\n  \"address\": {\r\n    \"country\": \"US\",\r\n    \"street\": \"642 Steffy Lane\",\r\n    \"city\": \"Ramona\",\r\n    \"state\": \"CA\",\r\n    \"zip\": \"92052\"\r\n  },\r\n  \"cars\": [],\r\n  \"hasMoreCars\": false,\r\n  \"hasMorePurchases\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users/b81ad0a9-2d37-4e85-ab95-65645e7c54a5",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users",
+								"b81ad0a9-2d37-4e85-ab95-65645e7c54a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idp\": \"4a20c9fd-dbc1-4e0e-84b3-ba31bca80d7d\",\r\n    \"companyName\": \"\",\r\n    \"paymentMethods\": null,\r\n    \"phone\": \"760-542-8223\",\r\n    \"address\": {\r\n        \"country\": \"US\",\r\n        \"street\": \"642 Steffy Lane\",\r\n        \"city\": \"Ramona\",\r\n        \"state\": \"CA\",\r\n        \"zip\": \"92052\"\r\n    },\r\n    \"cars\": [],\r\n    \"hasMoreCars\": false,\r\n    \"purchases\": null,\r\n    \"hasMorePurchases\": false,\r\n    \"type\": \"user\",\r\n    \"id\": \"674e46cf-c795-4087-9134-67d0fd344697\",\r\n    \"version\": \"1\",\r\n    \"userType\": \"user\",\r\n    \"email\": \"james+2@agapeworks.org\",\r\n    \"firstName\": \"James +2\",\r\n    \"lastName\": \"Smith\",\r\n    \"deleted\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://agapeauctionsapi.azure-api.net/Users/api/v1/Users/674e46cf-c795-4087-9134-67d0fd344697",
+							"protocol": "https",
+							"host": [
+								"agapeauctionsapi",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Users",
+								"api",
+								"v1",
+								"Users",
+								"674e46cf-c795-4087-9134-67d0fd344697"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{AgapeAuctionsApi}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Ocp-Apim-Subscription-Key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

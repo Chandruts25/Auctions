@@ -1,0 +1,270 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Views\Car\AddEditCar.cshtml" />
+    <None Include="Views\Car\Controls\_AddEditCar.cshtml" />
+    <None Include="Views\Car\details.cshtml" />
+    <None Include="Views\Car\Index.cshtml" />
+    <None Include="Views\Car\Purchase.cshtml" />
+    <None Include="Views\Car\Search.cshtml" />
+    <None Include="Views\Car\View.cshtml" />
+    <None Include="Views\Dealers\Dealer.cshtml" />
+    <None Include="Views\Dealers\Index.cshtml" />
+    <None Include="Views\Home\Contact.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Home\Resources-old.cshtml" />
+    <None Include="Views\Home\Resources.cshtml" />
+    <None Include="Views\Home\SignedOut.cshtml" />
+    <None Include="Views\News\Details.cshtml" />
+    <None Include="Views\Payment\OrderConfirmation.cshtml" />
+    <None Include="Views\Payment\Receipt.cshtml" />
+    <None Include="Views\Payment\Summary.cshtml" />
+    <None Include="Views\Purchase\Summary.cshtml" />
+    <None Include="Views\Shared\Components\BasicStats\Default.cshtml" />
+    <None Include="Views\Shared\Components\Car\CarImages.cshtml" />
+    <None Include="Views\Shared\Components\Car\SearchResults.cshtml" />
+    <None Include="Views\Shared\Components\Favorites\Default.cshtml" />
+    <None Include="Views\Shared\Components\Filter\FilterList.cshtml" />
+    <None Include="Views\Shared\Components\FormPart\Contact.cshtml" />
+    <None Include="Views\Shared\Components\Highlights\Default.cshtml" />
+    <None Include="Views\Shared\Components\PagePartSnippet\Footer.cshtml" />
+    <None Include="Views\Shared\Components\PagePartSnippet\Map.cshtml" />
+    <None Include="Views\Shared\Components\PagePartSnippet\Navigation.cshtml" />
+    <None Include="Views\Shared\Components\PagePart\Header.cshtml" />
+    <None Include="Views\Shared\Components\PagePart\WhyChooseUs.cshtml" />
+    <None Include="Views\Shared\Components\Showroom\Default.cshtml" />
+    <None Include="Views\Shared\Components\Status\StatusList.cshtml" />
+    <None Include="Views\Shared\Components\_Rejected.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\Page.cshtml" />
+    <None Include="Views\Shared\_Amount.cshtml" />
+    <None Include="Views\Shared\_Filter.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_Layout_Page.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\User\ApprovedCarz.cshtml" />
+    <None Include="Views\User\CanceledCarz.cshtml" />
+    <None Include="Views\User\MyDealership.cshtml" />
+    <None Include="Views\User\MyProfile.cshtml" />
+    <None Include="Views\User\Profile.cshtml" />
+    <None Include="Views\User\SoldCarz.cshtml" />
+    <None Include="Views\User\UnsoldCarz.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\images\updated images.zip" />
+    <None Include="wwwroot\js\bootstrap.min.js" />
+    <None Include="wwwroot\js\cform.js" />
+    <None Include="wwwroot\js\emailvalidation.js" />
+    <None Include="wwwroot\js\jquery-migrate-1.2.1.min.js" />
+    <None Include="wwwroot\js\jquery-ui.js" />
+    <None Include="wwwroot\js\jquery-ui.min.js" />
+    <None Include="wwwroot\js\jquery.appear.js" />
+    <None Include="wwwroot\js\jquery.blockUI.js" />
+    <None Include="wwwroot\js\jquery.caroufredsel.js" />
+    <None Include="wwwroot\js\jquery.dataTables.js" />
+    <None Include="wwwroot\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\js\jquery.easing.1.3.js" />
+    <None Include="wwwroot\js\jquery.equalheights.js" />
+    <None Include="wwwroot\js\jquery.flexslider-min.js" />
+    <None Include="wwwroot\js\jquery.js" />
+    <None Include="wwwroot\js\jquery.mobile.customized.min.js" />
+    <None Include="wwwroot\js\jquery.parallax-1.1.3.resize.js" />
+    <None Include="wwwroot\js\jquery.sticky.js" />
+    <None Include="wwwroot\js\jquery.superslides.js" />
+    <None Include="wwwroot\js\jquery.touchSwipe.min.js" />
+    <None Include="wwwroot\js\jquery.ui.totop.js" />
+    <None Include="wwwroot\js\light-gallery.js" />
+    <None Include="wwwroot\js\lobibox.js" />
+    <None Include="wwwroot\js\material-parallax.js" />
+    <None Include="wwwroot\js\owl-carousel.js" />
+    <None Include="wwwroot\js\pointer-events.js" />
+    <None Include="wwwroot\js\rd-instafeed.js" />
+    <None Include="wwwroot\js\rd-mailform.js" />
+    <None Include="wwwroot\js\rd-navbar.js" />
+    <None Include="wwwroot\js\scripts-new.js" />
+    <None Include="wwwroot\js\scripts.js" />
+    <None Include="wwwroot\js\select2.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\SmoothScroll.js" />
+    <None Include="wwwroot\js\superfish.js" />
+    <None Include="wwwroot\js\swiper.js" />
+    <None Include="wwwroot\js\waypoint.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Agape.Auctions.Models" Version="0.0.11" />
+    <PackageReference Include="Agape.Azure.Cosmos" Version="0.0.4" />
+    <PackageReference Include="AgapeAPI.Core" Version="0.0.6" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0-beta.3" />
+    <PackageReference Include="Azure.Storage.Common" Version="12.10.0-beta.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.17" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.23.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.23.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="5.0.0-rc2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0-rc2" />
+    <PackageReference Include="Stripe.net" Version="39.92.0" />
+    <PackageReference Include="Syncfusion.EJ" Version="19.4.0.53" />
+    <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\site.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\LICENSE">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery-validation\LICENSE.md">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\dist\jquery.min.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\jquery\LICENSE.txt">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Offers\" />
+    <Folder Include="Views\Shared\Components\Dealers\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,65 @@
+﻿
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    string amt = ViewBag.Amount;
+}
+
+<style>
+
+
+    .sidebar-form.col-sm-12.success_new {
+        box-shadow: inset 0px 0px 18px #a7b7a5;
+    }
+
+    .sidebar-form.col-sm-12.success_new {
+        border: 3px solid #118d08;
+        border-radius: 5px;
+    }
+
+    .success_new label {
+        color: #858984;
+    }
+
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+    .border-2 {
+        border: 3px solid #cbb55f;
+    }
+
+    .black {
+        color: black;
+    }
+</style>
+
+
+<div class="bg-banner">
+
+
+</div>
+
+<div class="section section-md-bottom content novi-background bg-cover">
+    <div class="container class_Receipt">
+
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12 column-content">
+                <div class="col-sm-12  text-center border-2 mt-25">
+                    <h1 class="black"><b><span id="msg1">Payment Successful</span><br /><span id="msg2">Your Dealership has been Created.<a asp-controller="User" asp-action="Profile">Click here to goto MyAccount</a></span></b></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

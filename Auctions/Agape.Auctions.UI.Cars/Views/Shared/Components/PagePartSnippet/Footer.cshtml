@@ -1,0 +1,182 @@
+﻿@model IEnumerable<ServiceReference.FolderContent>
+
+<div class="section pre-footer novi-background bg-cover">
+    <div class="container">
+
+        <div class="row">
+
+                <!--@foreach (var item in ViewBag.NewsList as List<ServiceReference.NewsListItem>)
+                {
+                    <div class="news-minimal">
+                        <a asp-controller="News" asp-action="Details" asp-route-id="@item.NewsID">
+                            <p class="news-minimal-text">@item.Headline</p>
+                        </a>
+                    </div>
+                }
+
+            </div>-->
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="footer-title">
+                    <span>LATEST Cars</span>
+                </div>
+                <div class="footer-product">
+                    <figure class="footer-product-img">
+                        <a>
+                            <img src="/images/footer-1-80x65.jpg" alt="" class="img-responsive">
+                        </a>
+
+                    </figure>
+                    <div class="caption">
+                        <p class="title" style="color: #fff;"> LAMBORGHINI Aventador</p>
+                        <div class="product-info">35,000 KM</div>
+                        <div class="product-link" style="color: #fff;">
+                            Read More
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-product">
+                    <figure class="footer-product-img">
+                        <a>
+                            <img src="/images/footer-2-80x65.jpg" alt="" class="img-responsive">
+                        </a>
+
+                    </figure>
+                    <div class="caption">
+                        <p class="title" style="color: #fff;"> BUGATTI CHIRON</p>
+                        <div class="product-info">45,000 KM</div>
+                        <div class="product-link" style="color: #fff;">
+                            Read More
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-product">
+                    <figure class="footer-product-img">
+                        <a>
+                            <img src="/images/footer-3-80x65.jpg" alt="" class="img-responsive">
+                        </a>
+
+                    </figure>
+                    <div class="caption">
+                        <p class="title" style="color: #fff;"> FERRARI TESTAROSA</p>
+                        <div class="product-info">55,000 KM</div>
+                        <div class="product-link" style="color: #fff;">
+                            Read More
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-4">
+
+                <center> <img src="images/footer-bg.png" alt="" class="img-responsive">  </center>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="footer-title">
+                    <span>CONTACT US</span>
+                </div>
+
+                @*<address>
+           
+                
+                <span aria-hidden="true" class="fa fa-map-marker novi-icon"></span>
+            <a href="#">202 W 7th St, Suite 233 Los Angeles, California 90014 USA </a>
+        </address>
+        <div class="footer-info">
+            <div class="info-phone">
+                <span aria-hidden="true" class="fa fa-phone novi-icon"></span>
+                Phone: <a href="tel:#"> 1-800- 624-5462</a>
+            </div>
+            <div class="info-fax">
+                <span aria-hidden="true" class="fa fa-fax novi-icon"></span>FAX:
+                <a href="tel:#">1-800- 624-5462</a>
+            </div>
+            <div class="info-email">
+                <span aria-hidden="true" class="fa fa-envelope novi-icon"></span>Email:
+                <a href="mailto:#" tabindex="-1">info@demolink.org</a>
+            </div>*@
+
+                @Html.Raw(ViewBag.FooterContact)
+
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<footer class="section novi-background bg-cover">
+
+    <div class="container">
+
+            <div class="row-flex">
+
+                <div class="right-block">
+                    <div class="social-footer">
+                        <ul class="social-footer-list">
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_facebook_square novi-icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_twitter_square novi-icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_pinterest_square novi-icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_googleplus_square novi-icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_youtube_square novi-icon"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span aria-hidden="true" class="ei social_skype_square novi-icon"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-menu">
+                        <ul class="footer-menu-list">
+
+                            @foreach (var item in Model)
+                            {
+                                <li class="nav-item">
+                                    <a data-scroll class="nav-link" href="@item.URL">@item.Title</a>
+                                </li>
+                             
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="left-block">
+                <div class="footer-logo">
+                    <a href="/" class="logo2">
+                        <img src="/images/logo-welcome.png" alt="" class="img-responsive">
+                    </a>
+                </div>
+                <div>
+                    <span>&copy;&nbsp; </span><span class="copyright-year"></span><span>&nbsp;</span><span>BadAssCarz</span><span>.&nbsp;</span>
+                </div>
+            </div>
+
+
+            </div>
+
+        </div>
+</footer>
+
+

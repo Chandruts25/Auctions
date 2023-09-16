@@ -1,0 +1,1142 @@
+﻿@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+
+}
+<link href="~/css/additional_css.css" rel="stylesheet" />
+<style>
+
+
+    .bg-dark {
+        background: black;
+    }
+
+    .m-auto {
+        margin: 18px auto;
+    }
+
+    .ui-slider-range.ui-widget-header.ui-corner-all {
+        background: #cbb55f;
+    }
+
+    div#slider-range {
+        background: #c5c5c5;
+    }
+
+    span.ui-slider-handle.ui-state-default.ui-corner-all {
+        border-radius: 8px;
+        background: black;
+    }
+    .select2 {
+        width: 100% !important;
+    }
+    .swiper-slide.context-dark.swiper-slide-active.swiper-slide-duplicate-next.swiper-slide-duplicate-prev {
+        background-image: linear-gradient(rgb(0 0 0 / 26%), rgb(0 0 0 / 32%)), url(/images/banner-auctions.jpg) !important;
+    }
+    button.btn-default.btn-form2-submit {
+        width: 93%;
+        margin: 0 4%;
+    }
+</style>
+
+<section id="search-car" class="section swiper-container swiper-slider swiper-slider-3 swiper-container-horizontal swiper-container-fade" data-loop="true" data-autoplay="false" data-simulate-touch="false" data-slide-effect="fade">
+
+
+    <div class="swiper-wrapper text-right" style="transition-duration: 0ms;">
+        <!--<div class="swiper-slide context-dark swiper-slide-duplicate swiper-slide-active" data-slide-bg="/images/slider-3-1920x1200.jpg" style="background-position: 50% 50%; background-image: url(&quot;/images/slider-3-1920x1200.jpg&quot;); background-size: cover; width: 1903px; transform: translate3d(0px, 0px, 0px); opacity: 1; transition-duration: 0ms;" data-swiper-slide-index="1">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">-->
+                        @*<div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>BMW 330e iPERFORMANCE</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button" href="#"><span> SEE DETAILS</span></a>
+                        </div>*@
+                    <!--</div>
+                </div>
+            </div>
+        </div>-->
+
+        <div class="swiper-slide context-dark swiper-slide-next swiper-slide-duplicate-prev" data-slide-bg="/images/banner-auctions.jpg" style="background-position: 50% 50%; background-image: url(&quot;/images/slider-2-1920x300.jpg&quot;); background-size: cover; width: 1903px; transform: translate3d(-1903px, 0px, 0px); opacity: 0; transition-duration: 0ms;" data-swiper-slide-index="0">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">
+                        @*<div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>Chevrolet Camaro ZL1</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button" href="#"><span> SEE DETAILS</span></a>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="swiper-slide context-dark swiper-slide-duplicate-active" data-slide-bg="/images/slider-3-1920x1200.jpg" style="background-position: 50% 50%; background-image: url(&quot;/images/slider-3-1920x1200.jpg&quot;); background-size: cover; width: 1903px; transform: translate3d(-3806px, 0px, 0px); opacity: 0; transition-duration: 0ms;" data-swiper-slide-index="1">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">
+                        @*<div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>BMW 330e iPERFORMANCE</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button" href="#"><span> SEE DETAILS</span></a>
+                        </div>*@
+                    <!--</div>
+                </div>
+            </div>
+        </div>-->
+        <!--<div class="swiper-slide context-dark swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next" data-slide-bg="/images/slider-2-1920x300.jpg" style="background-position: 50% 50%; background-image: url(&quot;/images/slider-2-1920x300.jpg&quot;); background-size: cover; width: 1903px; transform: translate3d(-5709px, 0px, 0px); opacity: 0; transition-duration: 0ms;" data-swiper-slide-index="0">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">-->
+                        @*<div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>Chevrolet Camaro ZL1</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button" href="#"><span> SEE DETAILS</span></a>
+                        </div>*@
+                    <!--</div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+
+
+
+
+
+    <div class="slider-form width-auction">
+        <div class="sidebar-form-wrapper">
+            <div class="sidebar-form">
+                <form action="javascript:;" class="form3">
+
+                    <div class="select1_wrapper col-md-6">
+                        <label>SELECT A MANUFACTURER</label>
+                        <div class="select1_inner">
+                            <select class="select2 select select2-hidden-accessible" id="cmbMake" name="cmbMake" onchange="filterCars()" tabindex="-1" aria-hidden="true">
+                                <option value="0">Any Make</option>
+                                <option value="ACURA">ACURA</option>
+                                <option value="FORD">FORD</option>
+                                <option value="TOYOTA">TOYOTA</option>
+                                <option value="DODGE">DODGE</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 157px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-cmbMake-container"><span class="select2-selection__rendered" id="select2-cmbMake-container" title="Any Make">Any Make</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper col-md-6">
+                        <label>SELECT A MODEL</label>
+                        <div class="select1_inner">
+                            <select class="select2 select select2-hidden-accessible" id="cmbModel" name="cmbModel" onchange="filterCars()" tabindex="-1" aria-hidden="true">
+                                <option value="0">Any Model</option>
+                                <option value="MDX">MDX</option>
+                                <option value="Integra">Integra</option>
+                                <option value="F-150">F-150</option>
+                                <option value="Escape">Escape</option>
+                                <option value="Sienna">Sienna</option>
+                                <option value="SCION tC">SCION tC</option>
+                                <option value="Ram">Ram</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 157px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-cmbModel-container"><span class="select2-selection__rendered" id="select2-cmbModel-container" title="Any Model">Any Model</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper col-md-6">
+                        <label>FROM YEAR</label>
+                        <div class="select1_inner">
+                            <select class="select2 select select2-hidden-accessible" id="cmbModelYearFrom" name="cmbModelYearFrom" onchange="filterCars()" tabindex="-1" aria-hidden="true">
+                                <option value="0">Any Year</option>
+                                <option value="2002">2002</option>
+                                <option value="2008">2008</option>
+                                <option value="1996">1996</option>
+                                <option value="1999">1999</option>
+                                <option value="2010">2010</option>
+                                <option value="2013">2013</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 157px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-cmbModelYearFrom-container"><span class="select2-selection__rendered" id="select2-cmbModelYearFrom-container" title="Any Year">Any Year</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper col-md-6">
+                        <label>TO YEAR</label>
+                        <div class="select1_inner">
+                            <select class="select2 select select2-hidden-accessible" id="cmbModelYearTo" name="cmbModelYearTo" onchange="filterCars()" tabindex="-1" aria-hidden="true">
+                                <option value="0">Any Year</option>
+                                <option value="2002">2002</option>
+                                <option value="2008">2008</option>
+                                <option value="1996">1996</option>
+                                <option value="1999">1999</option>
+                                <option value="2010">2010</option>
+                                <option value="2013">2013</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 157px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-cmbModelYearTo-container"><span class="select2-selection__rendered" id="select2-cmbModelYearTo-container" title="Any Year">Any Year</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn-default btn-form2-submit" onclick="filterCars()">SEARCH</button>
+                    <div id="btnReset" class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Swiper Pagination -->
+    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
+    <!-- Swiper Navigation-->
+    @*<div class="swiper-button-prev fa-arrow-left"></div>
+    <div class="swiper-button-next fa-arrow-right"></div>*@
+
+</section>
+<section class="form-section">
+    <div class="container">
+        <div class="slider-form">
+            <div class="sidebar-form-wrapper">
+                <div class="sidebar-form">
+                    <form action="javascript:;" class="form3">
+
+                        <div class="select1_wrapper col-md-6">
+                            <label>SELECT A MANUFACTURER</label>
+                            <div class="select1_inner">
+                                <select class="select2 select select2-hidden-accessible" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="1">Any Make</option>
+                                    <option value="2">Alfa Romeo</option>
+                                    <option value="3">Aston Martin</option>
+                                    <option value="4">Audi</option>
+                                    <option value="5">Bentley</option>
+                                    <option value="6">BMW</option>
+                                    <option value="7">Bugatti</option>
+                                </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-8j6t-container"><span class="select2-selection__rendered" id="select2-8j6t-container" title="Any Make">Any Make</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="select1_wrapper col-md-6">
+                            <label>SELECT A MODEL</label>
+                            <div class="select1_inner">
+                                <select class="select2 select select2-hidden-accessible" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="1">Any Model</option>
+                                    <option value="2">Model 1</option>
+                                    <option value="3">Model 2</option>
+                                    <option value="4">Model 3</option>
+                                    <option value="5">Model 4</option>
+                                    <option value="6">Model 5</option>
+                                    <option value="7">Model 6</option>
+                                </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-yuet-container"><span class="select2-selection__rendered" id="select2-yuet-container" title="Any Model">Any Model</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="select1_wrapper col-md-6">
+                            <label>SELECT A TYPE</label>
+                            <div class="select1_inner">
+                                <select class="select2 select select2-hidden-accessible" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="1">Any Type</option>
+                                    <option value="2">Type 1</option>
+                                    <option value="3">Type 2</option>
+                                    <option value="4">Type 3</option>
+                                    <option value="5">Type 4</option>
+                                    <option value="6">Type 5</option>
+                                    <option value="7">Type 6</option>
+                                </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-94j5-container"><span class="select2-selection__rendered" id="select2-94j5-container" title="Any Type">Any Type</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+
+
+                        <div class="slider-range-wrapper col-md-6">
+                            <div class="txt">PRICE RANGE</div>
+                            <div class="slider-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 3.75%; width: 79.75%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 3.75%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 83.5%;"></span></div>
+                            <div class="clearfix">
+                                <input type="text" class="amount" readonly="">
+                                <input type="text" class="amount2" readonly="">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-default btn-form2-submit">SUBMIT FILTERS</button>
+
+                        <div class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div id="divSearchResults">
+
+    <div id="favorites" class="section section-md best novi-background bg-cover">
+        <div class="container">
+            <div class="tabs-custom tabs-horizontal tabs-corporate" id="tabs-1">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabs-1-1">
+                        <div class="row row-fix">
+                            <div class="col-sm-12 col-md-3">
+                                <ul class="product-filter">
+                                    <li>
+                                        <a href="#">All manufacturers</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">ASTON MARTIN</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">ALPHA ROMEO</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">AUDI</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">BMW</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">LAND ROVER</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Mercedes-Benz</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">PORSCHE</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">SUZUKI</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">TOYOTA</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">VOLVO</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">VOLKSWAGEN</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-md-9">
+                                <div class="row">
+
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/007f9f57-32e7-4e45-b646-21ddbd263e1d/02-DSCN5241.JPG" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 1999</p>
+                                                        <div class="trip_2022-07-05"></div>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> F-150 FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 70,000.00</span>
+                                                        <span class="speed">8000 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">1999</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">Yellow</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/5a9342e4-ccae-4420-9cbe-b4aafca9c312/02-DSCN5960.JPG" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2002</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> MDX ACURA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 60,000.00</span>
+                                                        <span class="speed">75555 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2002</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">Green</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/409b3f9f-18ab-4c84-8b47-e4322ee8ab8b/04-DSCN6430.JPG" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 1996</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Integra ACURA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">78855 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">1996</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">Orange</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="https://www.youtube.com/embed/9qjHTjUyfIU" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/9881f158-e57b-4765-a400-c1225e6c6e4d/02-DSCN5241.JPG" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 1999</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> F-150 FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 70,000.00</span>
+                                                        <span class="speed">54000 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">1999</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">Orange</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="https://www.youtube.com/embed/9qjHTjUyfIU" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 70,000.00</span>
+                                                        <span class="speed">3200 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">red</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/7dea6ed8-ec40-4908-b91b-47563db8b8f4/car-jeep.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 75,000.00</span>
+                                                        <span class="speed">4300 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">red</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/7b1c2a74-4785-4a82-9e71-97e15e94498a/car-jeep.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/6093781e-65d6-4a52-bb70-09596e39a5b2/car-jeep.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/faf03f91-8117-4922-aee3-89c7ff57807b/car-jeep.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Escape FORD</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 50,000.00</span>
+                                                        <span class="speed">3600 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2013</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Sienna TOYOTA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 60,000.00</span>
+                                                        <span class="speed">4500 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2013</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2013</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Sienna TOYOTA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 60,000.00</span>
+                                                        <span class="speed">4500 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2013</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2013</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Sienna TOYOTA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 60,000.00</span>
+                                                        <span class="speed">4500 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2013</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="/images/Default_Car.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2013</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Sienna TOYOTA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 60,000.00</span>
+                                                        <span class="speed">4500 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2013</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">black</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/838bda3e-877c-462a-a27c-0b0dd299c17e/honda-small-sports-ev-concept-electric-car-website-header.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 2010</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> SCION tC TOYOTA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 40,000.00</span>
+                                                        <span class="speed">3999 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">2010</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">red</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="https://www.youtube.com/watch?v=ClBYClk6Tvw" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/104877c0-b069-47d9-be05-7529d811ca62/02-DSCN5960 (1).JPG" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 1996</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Ram DODGE</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 80,000.00</span>
+                                                        <span class="speed">3456 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">1996</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">red</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" asp-controller="Home" asp-action="CarView">
+                                                        <img src="https://badasscarzdev.blob.core.windows.net/car/76736623-b8f3-4db6-8ef3-4cdb2a9793c1/1927-ford-model-t-bucket.jpg" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED 1996</p>
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" asp-controller="Home" asp-action="CarView"> Integra ACURA</a></div>
+                                                    <div class="info">
+                                                        <span class="price">₹ 10,000.00</span>
+                                                        <span class="speed">10000 KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li><a href="#">Used</a></li>
+                                                        <li><a href="#">1996</a></li>
+                                                        <li><a href="#">Gear</a></li>
+                                                        <li><a href="#">Red</a></li>
+                                                        <li><a href="#">Diesel</a></li>
+                                                        <li><a href="" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+  
+</div>
+
+
+
+<script>
+    function TimeRemaining() {
+        var els = [...document.querySelectorAll('[class^="trip_"]')];
+        els.forEach(el => {
+            var end_time = el.className.split("_")[1]
+            var deadline = new Date(end_time);
+            var now = new Date();
+            var t = Math.floor(deadline.getTime() - now.getTime());
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((t % (1000 * 60)) / 1000);
+            if (t < 0) {
+
+                var classname = document.getElementsByClassName("trip_" + end_time);
+
+
+                for (var i = 0; i < classname.length; i++) {
+                    document.getElementsByClassName("trip_" + end_time)[i].innerText = 'EXPIRED';
+                }
+
+
+            } else {
+                var classname = document.getElementsByClassName("trip_" + end_time);
+                for (var i = 0; i < classname.length; i++) {
+                    document.getElementsByClassName("trip_" + end_time)[i].innerText = "TIME LEFT : " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                }
+
+
+            }
+        })
+        window.requestAnimationFrame(TimeRemaining);
+    }
+
+    function StartTimeRemaining() {
+        TimeRemaining();
+        window.requestAnimationFrame(TimeRemaining);
+    }
+
+    StartTimeRemaining()
+</script>
+
+
+
+<script type="text/javascript">
+    function filterCars() {
+        var make = $("#cmbMake").val();
+        var model = $("#cmbModel").val();
+        //var startPrice = $("#startAmount").val().replace("$","");
+        //var endPrice = $("#endAmount").val().replace("$", "");
+        var modelYearFrom = $("#cmbModelYearFrom").val();
+        var modelYearTo = $("#cmbModelYearTo").val();
+
+        if (modelYearTo == "0")
+            modelYearTo = new Date().getFullYear();
+
+        //if (startPrice == endPrice) {
+        //    alert("End price should be greater than start price. Please change the Price range and retry");
+        //    return false;
+        //}
+
+        if (modelYearFrom == modelYearTo) {
+            alert("Model To Year should be greater than start year. Please change the year range and retry");
+            return false;
+        }
+
+        $('#divSearchResults').load("/Car/SearchResults?make=" + encodeURIComponent(make) + "&model=" + model + "&startPrice=" + 0 + "&endPrice=" + 100000000 + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");
+    }
+    $(document).ready(function () {
+
+        $("#btnReset").bind("click", function () {
+
+            $('select#cmbMake').val(0).select2();
+            $('select#cmbModel').val(0).select2();
+            $('select#type').val(1).select2();
+            $('select#cmbModelYearFrom').val(0).select2();
+            $('select#cmbModelYearTo').val(0).select2();
+            filterCars();
+        });
+
+    });
+
+</script>

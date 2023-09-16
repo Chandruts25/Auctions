@@ -1,0 +1,292 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Mycar";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css">
+@*ADDITIONAL CSS*@
+<style>
+    a.add-car {
+        color: #0070c9;
+        font-weight: bold;
+        font-size: 12px;
+    }
+    div#pagination li a {
+        background: #cbb55f;
+        border: 1px solid #cbb55f;
+        color: white;
+    }
+    .product-minimal .caption .tag-list li a:hover {
+        text-decoration: underline !important;
+    }
+</style>
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> List Cars </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">My Account</a><span></span>Car Details <div style="float:right"><a asp-controller="Car" asp-action="AddEditCar" class="add-car"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;New Car</a></div></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col" id="divShowErrorSuccess">
+        <div class="col-md-6" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+    <div class="container">
+        <div class="row row-fix">
+
+            <div class="col-sm-12 col-md-12 column-content">
+
+                <div class="sectionBlock">
+                    <h5 class="stitle">List Cars </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <div class="col-xs-12 resurcesBlock">
+
+
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    <input type="hidden" id="hdn_count" value="@Model.Count()" />
+
+                                <div class="col-sm-12 col-md-12 column-content">
+
+                                    <div class="row wrapper">
+
+                                        @foreach (var item in Model)
+
+                                        {
+                                            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-4 col-lg-4 item">
+                                                <div class="product-minimal">
+                                                    <div class="thumbnail clearfix">
+                                                        <figure class="product-minimal-img">
+                                                            <a  onclick="viewCar('@item.Id')">
+                                                                <img src="@item.Thumbnail" alt="" class="img" style="height:164px">
+                                                            </a>
+                                                        </figure>
+                                                        <div class="caption">
+                                                            <div class="col-xs-12 pl-0 pr-0">
+                                                                <div class="col-xs-5 pl-0 pr-0">
+                                                                    <p class="small">REGISTERED @item.Year</p>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-0 pr-0">
+
+                                                                    @if (item.Status != "open")
+                                                                    {
+                                                                        if (item.Status == "Approved"  || item.Status == "approved")
+                                                                        {
+                                                                            <span class="status"><span><i class="fa fa-check" aria-hidden="true"></i>&nbsp;@item.Status</span></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="status">@item.Status</span>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" style="width:fit-content;" title="Submit Auction" onclick="submitAuction('@item.Id')">Submit Auction</button>
+
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-minimal-title"><a style="cursor:pointer;" title=" @item.Model @item.Make"> @item.Model @item.Make</a></div>
+
+                                                            <div class="info">
+                                                                <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                                @*<span class="speed">@item.Mileage KM</span>*@
+                                                                <div>
+                                                                    <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="View" onclick="viewCar('@item.Id')"><i class="fa fa-table"></i></button>
+                                                                    <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editCar('@item.Id')"><i class="fa fa-edit"></i></button>
+                                                                    <button class="btn btn-success btn-xs rounded-0 removecar" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="removeCar('@item.Id')"><i class="fa fa-trash"></i></button>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="tag-list">
+                                                                <li>@(item.IsNew ? "New" : "Used")</li>
+                                                                <li>@item.Year</li>
+                                                                <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                                <li>@item.Color</li>
+                                                                <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    </div>
+
+                                    <div id="pagination"></div>
+
+                                </div>
+
+
+                                }
+                                else
+                                {
+                                    <div>No Records Found</div>
+                                }
+                                <input type="hidden" id="hdnSelectedCarId" />
+
+                            </div>
+
+                           
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="section">
+
+
+
+
+
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        @*<h4> <b> Dealer Details </b> </h4>*@
+                    </div>
+
+                    @*<div class="col-md-6 float-right">*@
+
+                    <div style="text-align:right;">
+
+                        <div class="txt" style="float:right; padding-top: 10px;">
+
+                            <!--  PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                             EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        // buildGrid();
+    });
+
+    function submitAuction(carId) {
+        window.location.href = "/User/Auction?carId=" + carId + "";
+    }
+
+    function viewCar(carId) {
+        window.location.href = "/Car/View?carId=" + carId + "";
+    }
+    function addCar() {
+        window.location.href = "/Car/AddEditCar";
+    }
+    function editCar(carId) {
+        window.location.href = "/Car/AddEditCar?carId=" + carId + "";
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function removeCar(carId) {
+        if (!confirm("Are you sure want to remove the car?")) {
+            return true;
+        }
+
+        var pUrl = "/Car/RemoveCar";
+        $.ajax({
+            type: "POST",
+            url: pUrl,
+            data: { carId: carId },
+            success: function (data) {
+                if (data.saveResult == true) {
+                    showMessage("Car removed successfully", "success");
+                }
+                else {
+                    showMessage("Error occurred while remove the car", "error");
+                }
+            }
+        });
+    }
+
+    function buildGrid() {
+
+        $('#tblCar')
+            .on('init.dt', function () {
+                $('#tblCar').removeClass('dataTable');
+            })
+            .dataTable();
+    }
+
+</script>
+
+<script>
+    $(".wrapper .item").slice(12).hide();
+    $('#pagination').pagination({
+
+        // Total number of items present
+        // in wrapper class
+        items: $("#hdn_count").val(),
+
+        
+
+        // Items allowed on a single page
+        itemsOnPage: 12,
+        onPageClick: function (noofele) {
+            $(".wrapper .item").hide()
+                .slice(12 * (noofele - 1),
+                    12 + 12 * (noofele - 1)).show();
+        }
+    });
+</script>

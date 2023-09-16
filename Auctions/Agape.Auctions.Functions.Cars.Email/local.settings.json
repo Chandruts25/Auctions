@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "UseDevelopmentStorage=true": null,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDbConnectionstring": "AccountEndpoint=https://agcosmosdb.documents.azure.com:443/;AccountKey=BgjavcMtwkD6LyExvTttSMZa89hmL342MiMZ7jRpOR3FIbxeH4JrINb4jM1Mm8oyMy0IKglBhGDpeMCmyRQmJg==;",
+    "CloudStorageAccount": "DefaultEndpointsProtocol=https;AccountName=agauctionemailstorage;AccountKey=ljMuqVmx+59/3dFPzKanMt9/wxFlxWB91gr9/aLUdfCleHFeEBmdIjUS4NInyHBEA8azSN1DcGElVWnkw3qRLA==;EndpointSuffix=core.windows.net",
+    "SendgridAPIKey": "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"
+  },
+  "Host": {
+    "LocalHttpPort": 7073
+  }
+}

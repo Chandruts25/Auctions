@@ -1,0 +1,307 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+
+@{
+    ViewData["Title"] = "View Car";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+<link href="~/css/additional_css.css" rel="stylesheet" />
+<div class="page-title"></div>
+
+<div class="col-xxs-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 mbl-res" style="margin-top: -150px;">
+    <h2 style="color: #cbb55f; font-size: 30px; padding-left: 6%;">View Car</h2>
+    <div class="breadcrumbs1" style="padding-left: 6%;"><a href="/User/Profile">Admin</a><span></span>View Car</div>
+</div>
+
+<div class="header-fltr">
+    <div class="col-sm-12 col-md-12 col-lg-12 bg-toolbar" style=" width: 100%;">
+        <div style="text-align:right;">
+            <div class="txt" style="float:right; padding-top: 5px;">
+                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a> &nbsp;
+                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="col-md-12">
+
+                    <div class="col-md-6">
+                        <h4> <b> View Car </b> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a asp-controller="Car" asp-action="Index">Car</a><span></span>View Car</div>
+        </div>
+    </div>*@
+
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+    <div class="container">
+        <div class="row row-fix">
+
+            <div class="col-sm-12 col-md-12 column-content">
+
+
+                <div class="sectionBlock">
+                    @* <h5 class="stitle">View Car </h5>*@
+                    <div class="sectionContent" style="padding-top:0;">
+                        <h5 class="stitle">View Car </h5>
+                        <div class="subgroup">
+
+                            <!-- ------------------- -->
+
+                            <div class="col-md-12">
+
+                                <br>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" id="menuItem1" href="#home">GENERAL SPEC </a>
+                                    </li>
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="image-tab" data-toggle="tab" href="#tabCarImage">CAR IMAGES </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="video-tab" data-toggle="tab" href="#tabCarVideo">CAR VIDEO </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+
+
+                                    <div id="home" class="tab-pane active">
+                                        <br>
+                                        <h4>GENERAL SPECIFICATIONS</h4>
+
+
+                                        <div class="col-md-12 tab-content-border">
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-6 mb-3">
+
+
+
+                                                    <div class="responsive-table">
+
+                                                        <table class="table table-striped table-bordered">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><label class="">Type   :</label></td>
+                                                                    <td class="car-spec">@Model.Type</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label class="">Owner :</label></td>
+                                                                    <td class="car-spec">@Model.Owner</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label class="">Mileage   :</label></td>
+                                                                    <td class="car-spec">@Model.Mileage</td>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Vin   :</label></td>
+                                                                    <td class="car-spec">@Model.Vin</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">SalePrice   :</label></td>
+                                                                    <td class="car-spec">@Model.SalePrice</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Status   :</label></td>
+                                                                    <td class="car-spec">@Model.Status</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Has Images   :</label></td>
+                                                                    <td class="car-spec">@(Model.HasImages ? "Yes" : "No")</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Is New   :</label></td>
+                                                                    <td class="car-spec">@(Model.IsNew ? "Yes" : "No")</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Is Automatic   :</label></td>
+                                                                    <td class="car-spec">@(Model.IsAutomatic ? "Yes" : "No")</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Is Petrol   :</label></td>
+                                                                    <td class="car-spec">@(Model.IsPetrol ? "Yes" : "No")</td>
+                                                                </tr>
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+
+
+
+                                                    <div class="responsive-table">
+
+                                                        <table class="table table-striped table-bordered">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><label class="">Make   :</label></td>
+                                                                    <td class="car-spec">@Model.Properties.Make</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label class="">Model :</label></td>
+                                                                    <td class="car-spec">@Model.Properties.Model</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label class="">Color   :</label></td>
+                                                                    <td class="car-spec">@Model.Color</td>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Year   :</label></td>
+                                                                    <td class="car-spec">@Model.Properties.ModelYear</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Trim   :</label></td>
+                                                                    <td class="car-spec">@Model.Properties.Trim</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td><label class="">Description   :</label></td>
+                                                                    <td class="car-spec">@Model.Description</td>
+                                                                </tr>
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-12 p-0 text-right">
+                                            <button type="button" class="btn btn-success btn-xs rounded-0" onclick="$('#image-tab').trigger('click');">Next&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div id="tabCarImage" class=" tab-pane fade">
+                                        <br>
+                                        <h4>CAR IMAGES</h4>
+
+                                        <div class="col-md-12 tab-content-border">
+
+                                            <div class="row">
+                                                @await Component.InvokeAsync("Car", new { view = "CarImages", id = Model.Id })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 p-0 text-right">
+                                            <button type="button" class="btn btn-success btn-xs rounded-0" onclick="$('#menuItem1').trigger('click');"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Previous</button>
+                                            <button type="button" class="btn btn-success btn-xs rounded-0" onclick="$('#video-tab').trigger('click');">Next&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="tabCarVideo" class=" tab-pane fade">
+                                        <br>
+                                        <h4>CAR VIDEO</h4>
+
+                                        <div class="col-md-12 tab-content-border">
+
+                                            <div class="row">
+
+
+                                                @{
+                                                    var link = "";
+                                                    @if (Model.Video.Url != null)
+                                                    {
+                                                        var videolink = @Model.Video.Url;
+                                                        var sp = videolink.Replace("/watch?v=", "/embed/");
+                                                        link = sp.Replace("https:", "");
+                                                    }
+                                                }
+                                                <iframe width="560" height="315" src="@link" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 p-0 text-right">
+                                            <button type="button" class="btn btn-success btn-xs rounded-0" onclick="$('#image-tab').trigger('click');"><i class="fa fa-arrow-left" aria-hidden="true">&nbsp;Previous</i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#menuItem1").click();
+
+        
+
+        $(".remove_view").remove();
+        $("#imagelist").css('pointer-events', 'none');
+    });
+</script>

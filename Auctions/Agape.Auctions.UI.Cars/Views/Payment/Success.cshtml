@@ -1,0 +1,196 @@
+﻿@using System.Globalization;
+@model Agape.Auctions.Models.Cars.Car
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    string amt = ViewBag.Amount;
+}
+
+<style>
+
+
+    .sidebar-form.col-sm-12.success_new {
+        box-shadow: inset 0px 0px 18px #a7b7a5;
+    }
+
+    .sidebar-form.col-sm-12.success_new {
+        border: 3px solid #118d08;
+        border-radius: 5px;
+    }
+
+    .success_new label {
+        color: #858984;
+    }
+
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+    .border-2 {
+        border: 3px solid #cbb55f;
+    }
+
+    .black {
+        color: black;
+    }
+</style>
+
+
+<div class="bg-banner">
+
+
+</div>
+
+
+<div class="section section-md-bottom content novi-background bg-cover">
+
+    <div class="container class_Receipt">
+
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12 column-content">
+
+                <div class="col-sm-12  text-center border-2 mt-25">
+                    <h1 class="black"><b><span id="msg1">Payment Successful</span><br /><span id="msg2">You've Completed your order</span></b></h1>
+                    <div class="col-sm-12 mt-20">
+
+                        <div class="form-group form-wrap error">
+                            @*<button onclick="returnhom()" class="btn btn-primary rounded-0">CLOSE</button>*@
+                            <button onclick="Print()" class="btn btn-primary rounded-0">PRINT</button>
+                        </div>
+
+                        <div class="form-group form-wrap" id="vsble" style="display:none;">
+                            <button onclick="history.back()" class="btn btn-primary rounded-0">Try Again</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-12 error">
+                    <div class="mt-50">
+                        <p>Thank you for purchasing the car on our website</p>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 mb-30">
+                            <h1>Your order summary</h1>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <p>I've attached what you ordered. If anything doesn't look right, please let us know</p>
+                        </div>
+                    </div>
+                    <div class="row" id="success_new">
+
+                        <div class="col-sm-4 ">
+                            <div class="col-sm-12 sidebar-form">
+                                <h3><b>Your car details :</b></h3>
+                                <h3>@Model.Model @Model.Make</h3>
+                                <p>@Model.Color</p>
+                                <p>Registration: @Model.Year</p>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-4 ">-->
+                        @*<div class="col-sm-12 sidebar-form">
+                                <h3><b>Payment Details:</b></h3>
+                                <h3>Bank: HDFC</h3>
+                                <p>Payment Status: Net Banking</p>
+                                <p>Mobile: 96786545XX</p>
+                            </div>*@
+                        <!--</div>-->
+                        <div class="col-sm-4 ">
+                            <div class="col-sm-12 sidebar-form">
+                                <h3><b>Handover date:</b></h3>
+                                <h3>Mon,20th Feb</h3>
+                                <p>09:30 PM </p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    //function getUrlVars() {
+    //    var vars = [], hash;
+    //    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    //    for (var i = 0; i < hashes.length; i++) {
+    //        hash = hashes[i].split('=');
+    //        vars.push(hash[0]);
+    //        vars[hash[0]] = hash[1];
+    //    }
+    //    return vars;
+    //}
+
+    //var msg1 = getUrlVars()["msg1"];
+    //var msg2 = getUrlVars()["msg2"];
+
+    //msg1 = msg1.replace(/%20/g, ' ');
+
+    //msg2 = msg2.replace(/%20/g, ' ');
+
+    //msg2 = msg2.replace(/%27/g, "'");
+
+    //if (msg1 == "Payment verification Failed") {
+    //    $('.error').attr("style", "display: none");
+    //    $('#vsble').attr("style", "display: block");
+
+    //}
+
+    //$('#msg1').html(msg1);
+    //$('#msg2').html(msg2);
+
+
+    //function returnhom() {
+    //    window.location = "/";
+    //}
+
+    function Print() {
+
+        //window.print();
+        //$(".success_new").print();
+        //return false;
+
+        //w = window.open();
+        //w.document.write($('.success_new').html());
+        //w.print();
+        //w.close();
+
+        Popup($('#success_new').html());
+    }
+
+
+
+    function Popup(data) {
+        var mywindow = window.open('new div', 'height=400,width=600');
+        mywindow.document.write('<html><head><title></title>');
+        mywindow.document.write('<link rel="stylesheet" href="css/midday_receipt.css" type="text/css" />');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(data);
+        mywindow.document.write('</body></html>');
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+
+</script>
+<script src="~/js/bootstrap.min.js"></script>

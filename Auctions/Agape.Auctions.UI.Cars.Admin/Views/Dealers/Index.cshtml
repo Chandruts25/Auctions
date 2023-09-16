@@ -1,0 +1,362 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Users.User>
+
+@{
+
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var distinctStates = Model.Select(i => i.Address).Select(a => a.State).Distinct();
+
+    var lstAllDealers = new List<DealerInfo>();
+    foreach (var item in distinctStates)
+    {
+        var dealers = Model.Where(i => i.Address.State == item);
+
+        var dealerInfo = new List<Dealer>();
+        foreach (var dealer in dealers)
+        {
+            dealerInfo.Add(new Dealer() { Id = dealer.Idp, DealerCompanyName = dealer.CompanyName });
+        }
+        lstAllDealers.Add(new DealerInfo() { DealerState = item, Dealers = dealerInfo });
+    }
+
+}
+
+@*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3BQ048VMSjLMLU4UZMVXwx8wl4ITTESo"></script>*@
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<div class="section">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <bold> Dealers </bold> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="/Dealers">Home</a><span></span>Dealers</div>
+        </div>
+    </div>
+    <div class="content section-md-bottom novi-background bg-cover">
+        <div class="container">
+            <div class="row row-fix">
+
+
+                <div class="col-sm-12 col-md-3 column-sidebar">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="sidebar-form-wrapper">
+                                <div class="sidebar-form side-menu-box" style="padding:8px;">
+                                    <form action="javascript:;" class="form2">
+                                        <div class="deal-select-box">
+                                            <select class="form-control" onchange="bindDealerDetails()" id="cmbStates">
+                                                <option value="0">All Dealers</option>
+                                                @{
+                                                    foreach (var item in distinctStates)
+                                                    {
+                                                        <option value="@item">@item</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <select class="form-control mt-5" size="14" id="cmbDealers" onchange="bindDealerInfo()">
+                                                @foreach (var item in Model)
+                                                {
+                                                    <option value="@item.Id">@item.CompanyName</option>
+                                                }
+                                            </select>
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 column-content">
+                    <div id="map" style="height: 350px; width: auto;">
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-3 column-content">
+                    <figure><a href="details.html"><img src="/images/banner.jpg" alt="" class="img-responsive"></a></figure>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-sm-12 col-md-9 column-content" id="divAllDealersSection">
+
+                    @foreach (var item in lstAllDealers)
+                    {
+                        <div class="sectionBlock">
+                            <h5 class="stitle">@item.DealerState</h5>
+                            <div class="sectionContent">
+
+                                <div class="col-xs-12">
+
+                                    <table class="table table-striped">
+
+                                        <tbody>
+                                            @foreach (var dealers in item.Dealers)
+                                            {
+                                                <tr>
+                                                    <td class="dealTableAreaLink"><a asp-controller="Dealers" asp-action="Dealer" asp-route-id="@dealers.Id">@dealers.DealerCompanyName</a></td>
+                                                    <td class="dealTableAreaLink" width="20%"> <a href="#"> Featured </a> </td>
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+
+                <div class="col-sm-12 col-md-3">
+
+                    <figure><a href="#"><img src="/images/listing-1-322x230.jpg" alt="" class="img-responsive"></a></figure>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var currentLocations = [];
+    var allLocations = [];
+    var allDealerInfo = [];
+    var markerDealers = [];
+    $(document).ready(function () {
+
+        if ('@Model' != null && '@Model.Any()' != "") {
+            var dealers = '@Html.Raw(Json.Serialize(Model))';
+            var dealersSer = $.parseJSON(dealers);
+            allDealerInfo = dealersSer;
+            $(dealersSer).each(function (i, v) {
+                $(this.address).each(function (j, a) {
+                    allLocations.push({ dealerName: v.companyName, locations : this });
+                });
+            });
+            currentLocations = allLocations;
+           }
+           InitMap();
+
+        });
+
+        var map;
+        var markers = [];
+
+        function InitMap() {
+             map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+               // center: new google.maps.LatLng(41.850033, -87.6500523),
+                center: new google.maps.LatLng(39.8097343, -98.5556199),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            setMarkers();
+        }
+
+        function setMarkers() {
+            //var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            var previnfowindow = false;
+            $(currentLocations).each(function (i, v) {
+
+                var location = v.locations;
+                if (location.lat != null && location.lon != null) {
+                    markerDealers.push(v.dealerName);
+                    var title = v.dealerName;
+                    var address = location.street + "," + location.city + "," + location.state + "," + location.country + "," + location.zip;
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(location.lat, location.lon),
+                        map: map
+                    });
+                    markers.push(marker);
+                   
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            if (previnfowindow) {
+                                previnfowindow.close();
+                            }
+                            var html = "<div><div><h5>" + title + "</h5></div>";
+                            html += "<div><div><img src='/images/Default_Car.jpg' alt='' class='img-responsive' style='width:100px;height:70px;' /></div>";
+                            html += "<div style='margin-top:5px;'>" + address + "</div></div></div>";
+                            iw = new google.maps.InfoWindow({
+                                content: html,
+                                maxWidth: 350
+                            });
+                            previnfowindow = iw;
+                            iw.open(map, marker);
+                        }
+                    })(marker, i));
+                }
+                console.log(markers);
+            });
+        }
+
+        function hideMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+        }
+
+    function bindDealerDetails() {
+        var newOptions = [];
+        var companyNames = [];
+        var selectedState = $("#cmbStates").val();
+        if (selectedState != null && selectedState != "") {
+            if (selectedState == "0") {
+                $(allDealerInfo).each(function (i, v) {
+                    newOptions.push({ name: v.companyName, id: v.id });
+                    companyNames.push(v.companyName);
+                });
+            }
+            else {
+                $(allDealerInfo).each(function (i, v) {
+                    $(this.address).each(function () {
+                        if (selectedState == this.state) {
+                            newOptions.push({ name: v.companyName, id: v.id });
+                            companyNames.push(v.companyName);
+                        }
+                       
+                    });
+                });
+            }
+        }
+
+        var drpDealers = $('#cmbDealers');
+        drpDealers.empty();
+        $.each(newOptions, function (index, item) {
+            drpDealers.append(
+                $('<option>', {
+                    value: item.id,
+                    text: item.name
+                }, '</option>'))
+        });
+        populateDealerInfo(selectedState);
+        reBindMapInfo(companyNames);
+    }
+
+    function reBindMapInfo(selectedDealers) {
+        currentLocations = [];
+        $.each(allLocations, function (i, v) {
+            if (checkItemExistInArray(v.dealerName, selectedDealers)) {
+                currentLocations.push(v);
+            }
+        });
+        hideMarkers();
+        //InitMap();
+        setMarkers();
+    }
+
+    function checkItemExistInArray(dealer,dealerList) {
+        if ($.inArray(dealer, dealerList) != -1) {
+            return true;
+        }
+        return false;
+    }
+
+    function getIndexOfMarkerDealer(marker, markerDealer) {
+        return ($.inArray(marker, markerDealer));
+    }
+
+    function bindDealerInfo() {
+        var selectedDealer = $("#cmbDealers option:selected").text();
+        var currentIndex = getIndexOfMarkerDealer(selectedDealer, markerDealers);
+        google.maps.event.trigger(markers[currentIndex], 'click');
+    }
+
+    function populateDealerInfo(selectedState) {
+        var lstDealers = '@Html.Raw(Json.Serialize(lstAllDealers))';
+        var dealersJson = $.parseJSON(lstDealers);
+        console.log(dealersJson);
+        var strContent = "";
+        if (selectedState == null || selectedState == "" || selectedState == undefined || selectedState =="0") {
+            $(dealersJson).each(function (i, v) {
+                strContent += "<div class='sectionBlock'><h5 class='stitle'>" + v.dealerState + "</h5><div class='sectionContent'><div class='col-xs-12'>";
+                strContent += "<table class='table table-striped'><tbody>"
+                console.log(v.dealerState);
+                $(v.dealers).each(function (j, d) {
+                    strContent += "<tr><td class='dealTableAreaLink'><a href='/Dealers/Dealer/" + d.id + "'>" + d.dealerCompanyName + "</a></td>";
+                    strContent += "<td class='dealTableAreaLink' width='20%'><a href='#'>Featured</a></td></tr>";
+                    console.log(d.id);
+                    console.log(d.dealerCompanyName);
+                });
+                strContent += "</tbody></table></div></div></div>";
+            });
+        }
+        else {
+            $(dealersJson).each(function (i, v) {
+                if (selectedState == v.dealerState) {
+                    strContent += "<div class='sectionBlock'><h5 class='stitle'>" + v.dealerState + "</h5><div class='sectionContent'><div class='col-xs-12'>";
+                    strContent += "<table class='table table-striped'><tbody>"
+                    console.log(v.dealerState);
+                    $(v.dealers).each(function (j, d) {
+                        strContent += "<tr><td class='dealTableAreaLink'><a href='/Dealers/Dealer/" + d.id + "'>" + d.dealerCompanyName + "</a></td>";
+                        strContent += "<td class='dealTableAreaLink' width='20%'><a href='#'>Featured</a></td></tr>";
+                        console.log(d.id);
+                        console.log(d.dealerCompanyName);
+                    });
+                    strContent += "</tbody></table></div></div></div>";
+                 }
+              });
+        }
+        $("#divAllDealersSection").empty();
+        console.log(strContent);
+        $("#divAllDealersSection").append(strContent);
+    }
+
+</script>

@@ -1,0 +1,175 @@
+﻿
+<div class="section">
+    <div class="novi-background bg-cover">
+        <div class="container">
+            <div class="row">
+                <h4> <bold> Car Details </bold> </h4>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtMake">Make <span class="red-req">*</span></label>
+                        <input type="text" id="txtMake" class="form-control form-control-lg" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtMake">Model <span class="red-req">*</span></label>
+                        <input type="text" id="txtModel" class="form-control form-control-lg" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtMake">Color <span class="red-req">*</span></label>
+                        <input type="text" id="txtColor" class="form-control form-control-lg" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtYear">Year <span class="red-req">*</span> </label>
+                        <input type="text" id="txtYear" class="form-control form-control-lg" maxlength="4" />
+                        <input type="hidden" id="hdnId" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtVin">Vin <span class="red-req">*</span> </label>
+                        <input type="text" id="txtVin" class="form-control form-control-lg" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="col-sm-3">
+                        <button type="button" onclick="editCar()" class="btn-default btn-form2-submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        stopCharacters();
+    });
+    function validateUpdate() {
+        var errorMessage = "";
+        var make = $("#txtMake").val();
+        var model = $("#txtModel").val();
+        var color = $("#txtColor").val();
+        var year = $("#txtYear").val();
+        var vin = $("#txtVin").val();
+        var videourl = $("#txtVideoUrl").val();
+
+        if (!make)
+            errorMessage = "Please Enter Car Make";
+        else if (!model)
+            errorMessage = "Please Enter Car Model";
+        else if (!color)
+            errorMessage = "Please Enter Car Color";
+        else if (!year)
+            errorMessage = "Please Enter Car Year";
+        else if (!vin)
+            errorMessage = "Please Enter Car Vin";
+      
+
+        return errorMessage;
+    }
+
+    function stopCharacters() {
+        stopChar('txtVin');
+        stopChar('txtYear');
+    }
+
+    function editCar() {
+        var errorMessage = validateUpdate();
+        if (errorMessage != "") {
+            Lobibox.alert('error', {
+                msg: errorMessage
+            });
+        }
+        else {
+            var id = $("#hdnId").val();
+            var carId = $("#hdnId").val();
+            var finalMessage = "Save";
+            var pUrl = "/Car/AddCar";
+            if (id != null && id != "") {
+                finalMessage = "Update";
+                pUrl = "/Car/EditCar";
+            }
+
+            var make = $("#txtMake").val();
+            var model = $("#txtModel").val();
+            var color = $("#txtColor").val();
+            var year = $("#txtYear").val();
+            var vin = $("#txtVin").val();
+          
+            var car = { CarId: carId, Id: id, Make: make, Model: model, Color: color, Year: year, Vin: vin };
+            var jStr = "car=" + JSON.stringify(car);
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.saveResult == true) {
+                            Lobibox.alert('success', {
+                                msg: "Car " + finalMessage + "successfully",
+                                delayToRemove: 500
+                            });
+                            window.location.href = "/Car/Index"
+                            $("#divEditCustomerDialog").dialog('close');
+                        }
+                        else {
+                            Lobibox.alert('error', {
+                                msg: "Error occurred while " + finalMessage + " the car",
+                                delayToRemove: 200
+                            });
+                        }
+                    }
+                    else {
+                        Lobibox.alert('error', {
+                            msg: "Error occurred while " + finalMessage + " the car",
+                            delayToRemove: 200
+                        });
+                    }
+                },
+                error: function (error) {
+                    Lobibox.alert('error', {
+                        msg: "Error occurred while " + finalMessage + " the car",
+                        delayToRemove: 200
+                    });
+                }
+
+            });
+        }
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+</script>

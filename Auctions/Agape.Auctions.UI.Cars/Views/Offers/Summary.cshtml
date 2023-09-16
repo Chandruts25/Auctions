@@ -1,0 +1,433 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Make an Offer";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+<script src="~/js/emailvalidation.js"></script>
+
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Make Offer </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Make Offer</div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="row row-fix">
+                <div class="col-sm-12 col-md-12 column-content">
+                   
+                    <input type="hidden" id="hdnCarId" value="@Model.Id" />
+                    <input type="hidden" id="hdnCarOwner" value="@Model.Owner" />
+
+                    <div class="col-sm-7 product-minimal">
+
+                     
+                            <img src="@Model.Thumbnail" style="width: 100%;" />
+
+                            <div class="caption">
+                                <div class="product-minimal-title new-title"><a onclick="viewCar('@Model.Id')" style="cursor:pointer"  title="@Model.Model @Model.Make" class="title-font">@Model.Model @Model.Make</a></div>
+                                <p class="small">REGISTERED @Model.Year</p>
+
+
+                                <div class="info">
+                                    <span class="price">@Model.SalePrice.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))</span>
+                                    <span class="speed">@Model.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                                </div>
+
+                                <p>@Model.Description</p>
+
+                                @*<div class="info new-span">
+                                    <span class="fuel">@(Model.IsPetrol ? "Petrol" : "Diesel")</span>
+                                    <span class="Type">@(Model.IsAutomatic ? "Automatic" : "Gear")</span>
+                                    <span class="speed">@Model.Mileage KM</span>
+                                </div>*@
+                              
+                            <ul class="tag-list">
+                                <li>@(Model.IsNew ? "New" : "Used")</li>
+                                <li>@Model.Year</li>
+                                <li>@(Model.IsAutomatic ? "Automatic" : "Gear")</li>
+                                <li>@Model.Color</li>
+                                <li>@(Model.IsPetrol ? "Petrol" : "Diesel")</li>
+                                <li><a href="@Model.Video.Url" target="_blank" style="cursor:pointer;"> Video </a></li>
+                            </ul>
+
+                            </div>
+                    
+                    </div>
+
+                    <div class="col-sm-5 sectionBlock pt-30">
+
+                        <div class="col-sm-12 pt-0 modal-body">
+                            <form>
+                              
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtFirstName"> First Name </label>
+                                        <input type="text" class="form-control" id="txtFirstName" maxlength="100" onkeydown="return /[a-z ]/i.test(event.key)" onkeypress="removeInvalidClass('txtFirstName')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtLastName"> Last Name </label>
+                                        <input type="text" class="form-control" id="txtLastName" maxlength="100" onkeydown="return /[a-z ]/i.test(event.key)" onkeypress="removeInvalidClass('txtLastName')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtEmail"> Email </label>
+                                        <input type="text" class="form-control" id="txtEmail" maxlength="100" onkeypress="removeInvalidClass('txtEmail')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtPhone"> Phone </label>
+                                        <input type="text" class="form-control" id="txtPhone" maxlength="15" onkeypress="removeInvalidClass('txtPhone')" />
+
+                                        
+                                        <p class="result"></p>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtOfferAmount"> Offer Amount </label>
+                                        <input type="text" class="form-control amountfmt" id="txtOfferAmount" maxlength="10" onkeypress="removeInvalidClass('txtOfferAmount')" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtOfferAmount"> Description </label>
+                                        <textarea class="clsTextArea form-control" id="txtDescription" maxlength="500" rows="4" style="resize: vertical;"></textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="mr-15 float-right mb-15">
+                                    <input type="button" class="btn btn-success" value="Submit" onclick="saveOfferDetails()" />
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+
+<script>
+
+    $(document).ready(function () {
+        stopCharacters();
+    });
+
+    function stopCharacters() {
+        stopCharForPhoneNumbers('txtPhone');
+        //stopChar('txtOfferAmount');
+    }
+    function viewCar(carId) {
+        window.location.href = "/Car/View?carId=" + carId + "";
+    }
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveOfferDetails() {
+        if (!validateSave()) {
+            showMessage("Please fill all the required fields ", "error")
+        }
+        else if (parseInt($("#txtOfferAmount").val()) < 1)
+        {
+            showMessage("Please enter the correct amount, as zero cannot be entered", "error")
+        }
+        //else if ($('#txtPhone').val().length != 12)
+        //{       
+        //    showMessage("Please enter valid Phone no", "error");
+        //}
+        else {
+
+            var pUrl = "/Offers/AddOfferDetails";
+            var messageText = "Saved";
+            var firstName = $("#txtFirstName").val();
+            var lastName = $("#txtLastName").val();
+            var email = $("#txtEmail").val();
+            var phone = $("#txtPhone").val();
+            var offerAmount = parseInt($("#txtOfferAmount").val().split(',').join(''));
+            var description = $("#txtDescription").val();
+            var carId = $("#hdnCarId").val();
+
+            var offerDetails = {
+                FirstName: firstName, LastName: lastName, Email: email,
+                Phone: phone, OfferAmount: offerAmount, Message: description,
+                 CarId: carId
+            };
+
+
+
+
+            var jStr = "offerDetails=" + JSON.stringify(offerDetails);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Offer Details submitted successfully", "success");
+                             window.onload = setTimeout(function () {
+
+            window.location = '@Url.Action("Index", "Home")';
+        }, 2000);
+                        }
+                        else {
+                            showMessage("Error occurred while save the offer", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while save the offer", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while save the offer", "error");
+                }
+
+            });
+
+        }
+    }
+
+    function validateSave() {
+        var lstInvalidControls = [];
+        
+
+        if (!$("#txtFirstName").val())
+            lstInvalidControls.push('txtFirstName');
+
+        if (!$("#txtLastName").val())
+            lstInvalidControls.push('txtLastName');
+
+        if (!$("#txtEmail").val())
+            lstInvalidControls.push('txtEmail');
+
+        if (!$("#txtPhone").val())
+            lstInvalidControls.push('txtPhone');
+
+        if (!$("#txtOfferAmount").val())
+            lstInvalidControls.push('txtOfferAmount');
+
+        
+
+
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+
+            return false;
+        }
+       
+
+        
+
+        var email = $('#txtEmail').val();
+
+
+        emailvalidation(email, callMe)
+
+
+
+        function callMe(aaaa) {
+            if (aaaa == 0) {
+                showMessage("Please enter valid email id", "error");
+
+                e.exit();
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+    function stopCharForPhoneNumbers(elem) {
+        $("#" + elem).keydown(function (event) {
+            console.log(event.keyCode);
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 189 || event.keyCode == 187
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+    
+
+    $(".amountfmt").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($(this).val(n.toLocaleString()))) {
+            $(this).val(n.toLocaleString());
+        }
+        else {
+            if ($(this).val() == "NaN") {
+                $(this).val('');
+            }
+        }
+
+    });
+
+
+
+    // Setting regex for validating phone number
+    var regex = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm;
+    // Positive:
+    // 302-555-1234
+    // (302)555-1234
+    // (302) 555-1234
+    // 302 555 1234
+    // 3025551234
+    // 1 302 555 1234
+
+    // Negative:
+    // 302 1 2
+    // 1 800 THIS-IS-IT
+
+
+    // Adding in dashes to the encourage 10-digit US mobile number formatting
+    //$('#txtPhone').keydown(function (e) {
+    //    var key = e.charCode || e.keyCode || 0;
+    //    $text = $(this);
+    //    if (key !== 8 && key !== 9) {
+    //        if ($text.val().length === 3) {
+    //            $text.val($text.val() + '-');
+    //        }
+    //        if ($text.val().length === 7) {
+    //            $text.val($text.val() + '-');
+    //        }
+    //    }
+    //    return;
+    //})
+
+
+    // Setting alerts if not a valid phone number
+    //$('#txtPhone').blur(function (e) {
+    //    var key = e.charCode || e.keyCode || 0;
+    //    $text = $(this);
+
+    //   var count = 0;
+    //    $($text.val()).each(function () {
+    //        count++;
+
+    //        alert();
+    //        if (count == 3) {
+    //            $text.val($text.val() + '-');
+    //        }
+
+    //        if (count == 7) {
+    //            $text.val($text.val() + '-');
+    //        }
+    //    });
+
+
+    //    return;
+    //})
+
+
+
+</script>

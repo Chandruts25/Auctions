@@ -1,0 +1,11 @@
+{
+    "type": "advertisement",
+    "id":"[GUID]",
+    "version": "1",
+    "owner": "[userId]",
+    "properties": {
+        "start": "[DateTime]",
+        "end": "[DateTime]",
+        "imageURL": "[image-url]"
+    }
+}

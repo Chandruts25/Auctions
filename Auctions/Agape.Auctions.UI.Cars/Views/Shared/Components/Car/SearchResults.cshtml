@@ -1,0 +1,122 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+@{
+    string[] carBrand = new string[Model.Count];
+    var i = 0;
+    foreach (var item in Model)
+    {
+        carBrand[i] = item.Make;
+        i++;
+    }
+    var Brand = carBrand.Distinct().ToList();
+}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css">
+    <style>
+        div#pagination li a {
+            background: #cbb55f;
+            border: 1px solid #cbb55f;
+            color: white;
+        }
+    </style>
+
+                                    <input type="hidden" id="hdn_count" value="@Model.Count()" />
+                                    @foreach (var item in Model)
+                                    {
+                                        <div class="col-xxs-12 col-xs-6 col-sm-4 item @item.Make">
+                                            <div class="product-minimal">
+                                                <div class="thumbnail clearfix">
+                                                    <figure class="product-minimal-img">
+                                                        <a style="cursor:pointer" onclick="viewCar('@item.Id')">
+                                                            <img src="@item.Thumbnail" alt="" class="img-responsive" style="height:150px;">
+                                                        </a>
+                                                    </figure>
+                                                    <div class="caption">
+
+                                                        @* <p class="small">REGISTERED @item.properties.ModelYear</p>*@
+
+                                                        <div class="vdoicon">
+                                                            <p class="small">REGISTERED @item.Year</p>
+                                                            @*  <span class="utv">
+                                                                    <a href="#" data-toggle="modal" data-target="#carVideo">
+                                                                        <i class="fa fa-video-camera" aria-hidden="true"></i>
+                                                                    </a>
+                                                                </span>
+                                                            *@
+                                                        </div>
+
+
+                                                        <div class="product-minimal-title"><a style="cursor:pointer" onclick="viewCar('@item.Id')" title="@item.Model @item.Make"> @item.Model @item.Make</a></div>
+                                                        <div class="info">
+                                                            <span class="price">@item.SalePrice.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))</span>
+                                                            <span class="speed">@item.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                                                        </div>
+                                                        <ul class="tag-list">
+                                                            <li>@(item.IsNew ? "New" : "Used")</li>
+                                                            <li>@item.Year</li>
+                                                            <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                            <li>@item.Color</li>
+                                                            <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                                            <li><a href="@item.Video.Url" target="_blank"> Video</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+
+
+    @*----------------Video popup #carVideo ---------------------*@
+
+    <div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function viewCar(carId) {
+            window.location.href = "/Car/details?carId=" + carId + "";
+        }
+    </script>
+
+    <script>
+      
+        $(".wrapper .item").slice(12).hide();
+        $('#pagination').pagination({
+
+            // Total number of items present
+            // in wrapper class
+            items: $("#hdn_count").val(),
+
+
+
+            // Items allowed on a single page
+            itemsOnPage: 12,
+            onPageClick: function (noofele) {
+                $(".wrapper .item").hide()
+                    .slice(12 * (noofele - 1),
+                        12 + 12 * (noofele - 1)).show();
+            }
+        });
+       
+    </script>

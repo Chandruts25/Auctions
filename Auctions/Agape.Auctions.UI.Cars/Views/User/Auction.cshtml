@@ -1,0 +1,353 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var stamt = ViewBag.start;
+    var inc = ViewBag.Inc;
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> @Model.Model @Model.Make Submit Auction </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1">
+            <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">Profile</a><span></span>Submit Auction</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col" id="divShowErrorSuccess">
+            <div class="col-md-12" id="divDetailText">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content section-md-bottom novi-background bg-cover">
+
+        <div class="container">
+            <div class="row row-fix">
+
+                <div class="col-sm-4 col-md-4 column-content">
+                    <div class="sectionBlock">
+                        <div class="col-sm-12">
+                            <div class="product-minimal mb-20">
+                                <div class="thumbnail clearfix">
+                                    <figure class="product-minimal-img mb-0">
+                                        <img src="@Model.Thumbnail" class="img-responsive" style="margin-top:30px;height:170px;">
+                                        <input type="hidden" id="hdnCarId" value="@Model.Id" />
+                                        <input type="hidden" id="hdnDealerId" value="@Model.Owner" />
+                                        <input type="hidden" id="hdnSalePrice" value="@Model.SalePrice" />
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 p-0">
+                            <div class="col-sm-12 col-sm-12 product-minimal p-0  mb-10">
+                                <div class="thumbnail clearfix">
+                                    <div class="caption p-10">
+                                        <div class="vdoicon">
+                                            <p class="small">Registered @Model.Year</p>
+
+                                        </div>
+                                        <div class="product-minimal-title"><a style="cursor:pointer;"> @Model.Model @Model.Make</a></div>
+                                        <div class="info">
+                                            <span class="price">@Model.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                            <span class="speed">@Model.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                                        </div>
+                                        <ul class="tag-list">
+                                            <li>@(Model.IsNew ? "New" : "Used")</a></li>
+                                            <li>@Model.Year</li>
+                                            <li>@(Model.IsAutomatic ? "Automatic" : "Gear")</li>
+                                            <li>@Model.Color</li>
+                                            <li>@(Model.IsPetrol ? "Petrol" : "Diesel")</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-8 col-md-8 column-content">
+
+                    <div class="sectionBlock">
+                        <h5 class="stitle">@Model.Model @Model.Make Submit for Auction </h5>
+                        <div class="sectionContent">
+                            <div class="subgroup">
+                                <div class="col-xs-12 resurcesBlock">
+
+                                    <div class="col-sm-12 pt-0 modal-body">
+                                        <form>
+                                            <div class="col-sm-12">
+                                                <div class="form-group form-wrap">
+                                                    <label for="txtReserveAmount">Reserve Amount </label>
+                                                    <input type="text" class="form-control amountfmt" maxlength="10" id="txtReserveAmount" onkeypress="removeInvalidClass('txtReserveAmount')" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group form-wrap">
+                                                    <label for="txtIncrementAmount"> Increment Amount </label>
+                                                    <input type="text" class="form-control amountfmt" maxlength="7" id="txtIncrementAmount" value="@inc" onkeypress="removeInvalidClass('txtIncrementAmount')" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group form-wrap">
+                                                    <label for="txtStartAmount"> Start Amount </label>
+                                                    <input type="text" class="form-control amountfmt" maxlength="7" id="txtStartAmount" value="@stamt" onkeypress="removeInvalidClass('txtStartAmount')" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group form-wrap">
+                                                    @*<label for="txtAuctionDays"> Auction Days </label>*@
+                                                    @*<input type="text" class="form-control" id="txtAuctionDays" onkeypress="removeInvalidClass('txtAuctionDays')" />*@
+                                                    <input type="hidden" class="form-control" id="txtAuctionDays" value="7" onkeypress="removeInvalidClass('txtAuctionDays')" />
+                                                </div>
+                                            </div>
+                                            <div class="mr-15 float-right">
+                                                <input type="button" class="btn btn-success" value="Submit" onclick="submitForAuction(); saveStatus('@Model.Id')" />
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+
+
+
+    $(document).ready(function () {
+        stopCharacters();
+    });
+
+    function stopCharacters() {
+        //stopChar('txtReserveAmount');
+        //stopChar('txtIncrementAmount');
+        //stopChar('txtStartAmount');
+        stopChar('txtAuctionDays');
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function saveStatus(carId) {
+
+
+
+        var pUrl = "/User/EditStatusCar";
+
+
+        //var jStr = "car=" + encodeURIComponent(JSON.stringify(carDetail));
+
+
+
+        $.ajax({
+            type: "POST",
+            data: { carId: carId, status: "Submitted" },
+            url: pUrl,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+                        showMessage("Car " + messageText + " successfully", "success");
+
+                    }
+                    else {
+                        showMessage("Error occurred while " + messageText + " the car", "error");
+                    }
+                }
+                else {
+                    showMessage("Error occurred while " + messageText + " the car", "error");
+                }
+            },
+            error: function (error) {
+                showMessage("Error occurred while " + messageText + " the car", "error");
+            }
+
+
+
+        });
+
+
+
+
+    }
+    function submitForAuction() {
+        if (!validateSave()) {
+            showMessage("Please fill all the required fields ", "error")
+        }
+        else if (validateMaxRanges() != "")
+        {
+            showMessage(validateMaxRanges(), "error")
+        }
+        else {
+
+            var pUrl = "/User/SubmitAuction";
+            var reserveAmount = parseInt($("#txtReserveAmount").val().split(',').join(''));
+            var incrementAmount = parseInt($("#txtIncrementAmount").val().split(',').join(''));
+            var startAmount = parseInt($("#txtStartAmount").val().split(',').join(''));
+            var auctionDays = parseInt($("#txtAuctionDays").val().split(',').join(''));
+            var carId = $("#hdnCarId").val();
+            var dealerId = $("#hdnDealerId").val();
+
+            var auction = {
+                CarId: carId, Reserve: reserveAmount, Increment: incrementAmount,
+                StartAmount: startAmount, AuctionDays: auctionDays, DealerId: dealerId, Status : "Submitted"
+            };
+
+            var jStr = "auction=" + JSON.stringify(auction);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Auction Details Submitted successfully", "success");
+
+                          
+            window.location = '@Url.Action("Profile", "User")';
+     
+
+                        }
+                        else {
+                            showMessage("Error occurred while submit for auction", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while submit for auction", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while submit for auction", "error");
+                }
+
+            });
+
+        }
+    }
+    function validateMaxRanges() {
+        var message = "";
+        var salePrice = $("#hdnSalePrice").val();
+        var reserveAmount = parseInt($("#txtReserveAmount").val().split(',').join(''));
+        var incrementAmount = parseInt($("#txtIncrementAmount").val().split(',').join(''));
+        var startAmount = parseInt($("#txtStartAmount").val().split(',').join(''));
+
+        if (incrementAmount > reserveAmount) {
+            message = "Increment Amount should not be greater than the Reserve Amount";
+        }
+        else if (startAmount > reserveAmount) {
+            message = "Starting Amount should not be greater than the Reserve Amount";
+        }
+        return message;
+
+    }
+
+    function validateSave() {
+        var lstInvalidControls = [];
+
+        if (!$("#txtReserveAmount").val())
+            lstInvalidControls.push('txtReserveAmount');
+
+        if (!$("#txtIncrementAmount").val())
+            lstInvalidControls.push('txtIncrementAmount');
+
+        if (!$("#txtStartAmount").val())
+            lstInvalidControls.push('txtStartAmount');
+
+        if (!$("#txtAuctionDays").val())
+            lstInvalidControls.push('txtAuctionDays');
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+        return true;
+    }
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+    $(".amountfmt").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($(this).val(n.toLocaleString()))) {
+            $(this).val(n.toLocaleString());
+        }
+        else {
+            if ($(this).val() == "NaN") {
+                $(this).val('');
+            }
+        }
+
+    });
+</script>

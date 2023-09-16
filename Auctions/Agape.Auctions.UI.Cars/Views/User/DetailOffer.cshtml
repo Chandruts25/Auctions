@@ -1,0 +1,318 @@
+﻿@model Agape.Auctions.Models.Offers.Offer
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "Offer Details";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var carDetails = (Agape.Auctions.Models.Cars.Car)ViewBag.CarDetail;
+}
+<script src="~/js/emailvalidation.js"></script>
+
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b>Offer Details</b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Offer Details</div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="row row-fix">
+                <div class="col-sm-12 col-md-12 column-content">
+
+                    <input type="hidden" id="hdnCarId" value="@carDetails.Id" />
+                    <input type="hidden" id="hdnCarOwner" value="@carDetails.Owner" />
+
+                    <div class="col-sm-7 product-minimal">
+
+
+                        <img src="@carDetails.Thumbnail" style="width: 100%;" />
+
+                        <div class="caption">
+                            <div class="product-minimal-title new-title"><a href="details" title="@carDetails.Model @carDetails.Make" class="title-font">@carDetails.Model @carDetails.Make</a></div>
+                            <p class="small">REGISTERED @carDetails.Year</p>
+
+
+                            <div class="info">
+                                <span class="price">@carDetails.SalePrice.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))</span>
+                                <span class="speed">@carDetails.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                            </div>
+
+                            <p>@carDetails.Description</p>
+
+                            @*<div class="info new-span">
+                                    <span class="fuel">@(Model.IsPetrol ? "Petrol" : "Diesel")</span>
+                                    <span class="Type">@(Model.IsAutomatic ? "Automatic" : "Gear")</span>
+                                    <span class="speed">@Model.Mileage KM</span>
+                                </div>*@
+
+                            <ul class="tag-list">
+                                <li>@(carDetails.IsNew ? "New" : "Used")</li>
+                                <li>@carDetails.Year</li>
+                                <li>@(carDetails.IsAutomatic ? "Automatic" : "Gear")</li>
+                                <li>@carDetails.Color</li>
+                                <li>@(carDetails.IsPetrol ? "Petrol" : "Diesel")</li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-5 sectionBlock pt-30">
+
+                        <div class="col-sm-12 pt-0 modal-body">
+                            <form>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtFirstName"> First Name </label>
+                                        <input type="text" disabled class="form-control" id="txtFirstName" value="@Model.FirstName" onkeypress="removeInvalidClass('txtFirstName')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtLastName"> Last Name </label>
+                                        <input type="text" disabled class="form-control" id="txtLastName" value="@Model.LastName" onkeypress="removeInvalidClass('txtLastName')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtEmail"> Email </label>
+                                        <input type="text" disabled class="form-control" id="txtEmail" value="@Model.Email" onkeypress="removeInvalidClass('txtEmail')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtPhone"> Phone </label>
+                                        <input type="text" disabled class="form-control" id="txtPhone" value="@Model.Phone" onkeypress="removeInvalidClass('txtPhone')" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtOfferAmount"> Offer Amount </label>
+                                        <input type="text" disabled class="form-control" id="txtOfferAmount" value="@Model.OfferAmount.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))" onkeypress="removeInvalidClass('txtOfferAmount')" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtDescription"> Description </label>
+                                        <textarea class="clsTextArea form-control" style="resize:none" disabled id="txtDescription" rows="4">@Model.Message</textarea>
+                                    </div>
+                                </div>
+
+
+                               
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+
+<script>
+
+    $(document).ready(function () {
+        stopCharacters();
+    });
+
+    function stopCharacters() {
+        stopChar('txtPhone');
+        stopChar('txtOfferAmount');
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveOfferDetails() {
+        if (!validateSave()) {
+            showMessage("Please fill all the required fields ", "error")
+        }
+        else if (parseInt($("#txtOfferAmount").val()) < 1)
+        {
+            showMessage("Please enter the correct amount, as zero cannot be entered", "error")
+        }
+        else {
+
+            var pUrl = "/Offers/AddOfferDetails";
+            var messageText = "Saved";
+            var firstName = $("#txtFirstName").val();
+            var lastName = $("#txtLastName").val();
+            var email = $("#txtEmail").val();
+            var phone = $("#txtPhone").val();
+            var offerAmount = parseInt($("#txtOfferAmount").val());
+            var description = $("#txtDescription").val();
+            var carId = $("#hdnCarId").val();
+
+            var offerDetails = {
+                FirstName: firstName, LastName: lastName, Email: email,
+                Phone: phone, OfferAmount: offerAmount, Message: description,
+                 CarId: carId
+            };
+
+
+
+
+            var jStr = "offerDetails=" + JSON.stringify(offerDetails);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Offer Details submitted successfully", "success");
+                             window.onload = setTimeout(function () {
+
+            window.location = '@Url.Action("Index", "Home")';
+        }, 2000);
+                        }
+                        else {
+                            showMessage("Error occurred while save the offer", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while save the offer", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while save the offer", "error");
+                }
+
+            });
+
+        }
+    }
+
+    function validateSave() {
+        var lstInvalidControls = [];
+
+        if (!$("#txtFirstName").val())
+            lstInvalidControls.push('txtFirstName');
+
+        if (!$("#txtLastName").val())
+            lstInvalidControls.push('txtLastName');
+
+        if (!$("#txtEmail").val())
+            lstInvalidControls.push('txtEmail');
+
+        if (!$("#txtPhone").val())
+            lstInvalidControls.push('txtPhone');
+
+        if (!$("#txtOfferAmount").val())
+            lstInvalidControls.push('txtOfferAmount');
+
+
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+
+
+        var email = $('#txtEmail').val();
+
+
+        emailvalidation(email, callMe)
+
+
+
+        function callMe(aaaa) {
+            if (aaaa == 0) {
+                showMessage("Please enter valid email id", "error");
+
+                e.exit();
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+</script>

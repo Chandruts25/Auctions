@@ -1,0 +1,193 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+
+<div class="section">
+
+
+    <section id="home" class="section swiper-container swiper-slider swiper-slider-2" data-loop="true"
+             data-autoplay="false" data-simulate-touch="false" data-slide-effect="fade">
+
+
+        <div class="swiper-wrapper text-right">
+
+            <div class="swiper-slide context-dark" data-slide-bg="/images/slider-2-1920x1200.jpg"
+                 style="background-position: 50% 50%;">
+
+
+                @*<div class="swiper-slide-caption">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4> FIND YOUR DREAM CAR </h4>
+                                    <h1>Chevrolet Camaro ZL1</h1>
+                                    <h3>MODEL 2017 <span>$99,000</span></h3>
+                                    <a class="button" href="#"><span> SEE DETAILS</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <b> Dealer Details </b> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                <!--  PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                 EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a> -->
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="/">Home</a><span></span>Dealer Details</div>
+        </div>
+    </div>
+
+
+    <div class="content section-md-bottom novi-background bg-cover">
+
+        <div class="container">
+            <div class="row row-fix">
+
+
+
+                <div class="col-sm-12 col-md-9 column-content">
+
+                    <div class="row">
+
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                <div class="product-minimal">
+                                    <div class="thumbnail clearfix">
+                                        <figure class="product-minimal-img">
+                                            <a style="cursor:pointer" onclick="viewCar('@item.Id')">
+                                                <img src="@item.Thumbnail" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                            </a>
+                                        </figure>
+                                        <div class="caption">
+                                            <p class="small">REGISTERED @item.Year</p>
+                                            <div class="product-minimal-title"><a onclick="viewCar('@item.Id')" style="cursor:pointer;"> @item.Model @item.Make</a></div>
+                                            <div class="info">
+                                                <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                <span class="speed">@item.Mileage.ToString("N", CultureInfo.CurrentCulture) Miles</span>
+                                            </div>
+                                            <ul class="tag-list">
+                                                <li>@(item.IsNew ? "New" : "Used")</li>
+                                                <li>@item.Year</li>
+                                                <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                <li>@item.Color</li>
+                                                <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ----------------------end left div ------------------------- -->
+
+                <div class="col-sm-12 col-md-3 column-content">
+
+                    <div class="sectionBlock">
+                        <h5 class="stitle">Dealers</h5>
+                        <div class="sectionContent">
+
+                            <div class="col-xs-12">
+
+
+
+
+                                <p>
+
+
+                                    <strong>Important Note: </strong>
+
+                                    It's best to <a href="#">find the vehicles</a> you wish to purchase prior to contacting a Broker. Not all Brokers are eligible to buy vehicles in every state – or every type of vehicle. When you attempt to bid on your selected items, the Brokers who can help facilitate your purchases will be displayed.
+                                </p>
+
+                                <h4 class="sub-title">Benefits of a Dealers</h4>
+
+                                <p>
+                                    In addition to getting access to vehicles you may not otherwise qualify for, Copart Members using Brokers can benefit in other ways too. Brokers are available to answer questions you may have about vehicles and the auction process. Many also provide financing, inspection, parts locating, repair and transportation services if needed.
+
+                                    <br>
+                                    Some Brokers have a physical location, or storefront, for you to visit. You can bid and buy via these Brokers’ computer kiosks, and experienced staff are on hand to assist you every step of the way.
+                                </p>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <figure><a href="details.html"><img src="/images/listing-1-322x230.jpg" alt="" class="img-responsive"></a></figure>
+
+                </div>
+
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function viewCar(carId) {
+        window.location.href = "/Car/details?carId=" + carId + "";
+    }
+</script>
+

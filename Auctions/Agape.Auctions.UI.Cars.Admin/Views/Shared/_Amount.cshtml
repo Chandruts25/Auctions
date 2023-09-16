@@ -1,0 +1,145 @@
+﻿@model Agape.Auctions.Models.Auctions.Auction
+
+
+<div class="row modal-content">
+
+    <h5 class="stitle">Submit for Auction </h5>
+    <span onclick="popup1close()" class="close1" title="Close Modal">×</span>
+    <div class="sectionContent">
+        <div class="subgroup">
+            <div class="col-xs-12 resurcesBlock">
+
+
+                <input type="hidden" id="hdnAucId" value="@Model.Id" />
+
+                <div class="col-sm-12 pt-0 modal-body">
+                    <form>
+                        <div class="col-sm-12">
+                            <div class="form-group form-wrap">
+                                <label for="txtReserveAmount">Reserve Amount </label>
+                                <input type="text" class="form-control amountfmt" id="txtReserveAmount" maxlength="10" value="@Model.Reserve" onkeypress="removeInvalidClass('txtReserveAmount')">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group form-wrap">
+                                <label for="txtIncrementAmount"> Increment Amount </label>
+                                <input type="text" class="form-control amountfmt" id="txtIncrementAmount" maxlength="7" value="@Model.Increment" onkeypress="removeInvalidClass('txtIncrementAmount')">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group form-wrap">
+                                <label for="txtStartAmount"> Start Amount </label>
+                                <input type="text" class="form-control amountfmt" id="txtStartAmount" maxlength="7" value="@Model.StartAmount" onkeypress="removeInvalidClass('txtStartAmount')">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-wrap">
+                                @*<label for="txtAuctionDays"> Auction Days </label>
+                                <input type="number" class="form-control" id="txtAuctionDays" value="@Model.AuctionDays" onkeypress="removeInvalidClass('txtAuctionDays')">*@
+                                <input type="hidden" class="form-control" id="txtAuctionDays" value="@Model.AuctionDays" onkeypress="removeInvalidClass('txtAuctionDays')">
+                            </div>
+                        </div>
+                        @*<div class="col-sm-6">
+                            <div class="form-group form-wrap">
+                                <label for=""> Auction Date </label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>*@
+
+                        <div class="mr-15 float-right">
+                            <input type="button" class="btn btn-success" value="Submit" onclick="submitForAuction('@Model.CarId')">
+                        </div>
+
+
+
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+<script>
+
+    $(document).ready(function () {
+
+
+        var n = parseInt($("#txtReserveAmount").val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($("#txtReserveAmount").val(n.toLocaleString()))) {
+            $("#txtReserveAmount").val(n.toLocaleString());
+        }
+        else {
+            if ($("#txtReserveAmount").val() == "NaN") {
+                $("#txtReserveAmount").val('');
+            }
+        }
+
+        var o = parseInt($("#txtIncrementAmount").val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($("#txtIncrementAmount").val(o.toLocaleString()))) {
+            $("#txtIncrementAmount").val(o.toLocaleString());
+        }
+        else {
+            if ($("#txtIncrementAmount").val() == "NaN") {
+                $("#txtIncrementAmount").val('');
+            }
+        }
+        var p = parseInt($("#txtStartAmount").val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($("#txtStartAmount").val(p.toLocaleString()))) {
+            $("#txtStartAmount").val(p.toLocaleString());
+        }
+        else {
+            if ($("#txtStartAmount").val() == "NaN") {
+                $("#txtStartAmount").val('');
+            }
+        }
+    });
+
+
+
+    $(".amountfmt").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($(this).val(n.toLocaleString()))) {
+            $(this).val(n.toLocaleString());
+        }
+        else {
+            if ($(this).val() == "NaN") {
+                $(this).val('');
+            }
+        }
+
+    });
+
+
+    //Number.prototype.formatMoney = function (c, d, t) {
+    //    var n = this,
+    //        c = isNaN(c = Math.abs(c)) ? 2 : c,
+    //        d = d == undefined ? "." : d,
+    //        t = t == undefined ? "," : t,
+    //        s = n < 0 ? "-" : "",
+    //        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    //        j = (j = i.length) > 3 ? j % 3 : 0;
+    //    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+    //};
+
+
+
+    ////This is jQuery part
+    //$(document).on('blur', ".amountfmt", function () {
+
+    //    var Money = $(this).val();
+    //    Money = parseInt(Money, 10).formatMoney(2);
+    //    $(this).val(Money);
+    //});
+
+</script>

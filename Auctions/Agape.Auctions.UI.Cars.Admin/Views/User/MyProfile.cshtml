@@ -1,0 +1,253 @@
+﻿@model Agape.Auctions.Models.Users.User
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var ownerName = string.Empty;
+    ownerName = @User.Identity.Name;
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> My Profile </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">Profile</a><span></span>My Profile</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" id="divShowErrorSuccess">
+        <div class="col-md-12" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+    <div class="container">
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12 column-content">
+                <div class="sectionBlock">
+                    <h5 class="stitle">My Profile </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <!-- ------------------- -->
+                            <div class="container">
+
+                                <div class="col-md-12 tab-content-border">
+
+                                    <div class="row">
+
+                                        <div class="col-md-12 mb-5">
+                                            <label class="form-label" for="txtFirstName">First Name <span class="red-req">*</span></label>
+                                            <input type="text" id="txtFirstName" class="form-control" value="@Model.FirstName" onkeypress="removeInvalidClass('txtFirstName');return onlyAlphabets(event,this);"    />
+                                        </div>
+
+                                        <div class="col-md-12 mb-5">
+                                            <label class="form-label" for="txtLastName">Last Name <span class="red-req">*</span></label>
+                                            <input type="text" id="txtLastName" class="form-control" value="@Model.LastName" onkeypress="removeInvalidClass('txtLastName');return onlyAlphabets(event,this);"   />
+                                        </div>
+
+                                        <div class="col-md-12 mb-5">
+                                            <label class="form-label" for="txtUserEmail">Email Address <span class="red-req">*</span></label>
+                                            <input type="text" id="txtUserEmail" class="form-control" value="@Model.Email" disabled />
+                                        </div>
+
+                                        <div class="col-md-12 mb-5">
+                                            <label class="form-label" for="txtUserCountry">Country <span class="red-req">*</span></label>
+                                            <input type="text" id="txtUserCountry" class="form-control" value="@Model.Address.Country" onkeypress="removeInvalidClass('txtUserCountry');return onlyAlphabets(event,this);"    />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12 mt-20">
+                                        <div class="row">
+                                            <div class="float-right">
+                                                <input type="hidden" id="hdnUserId" value="@Model.Id" />
+                                                <input type="hidden" id="hdnUserIdP" value="@Model.Idp" />
+                                                <input type="hidden" id="hdnCompanyName" value="@Model.CompanyName" />
+                                                <input type="hidden" id="hdnCompanyPhone" value="@Model.Phone" />
+                                                <input type="hidden" id="hdnCity" value="@Model.Address.City" />
+                                                <input type="hidden" id="hdnState" value="@Model.Address.State" />
+                                                <input type="hidden" id="hdnStreet" value="@Model.Address.Street" />
+                                                <input type="hidden" id="hdnZip" value="@Model.Address.Zip" />
+                                                <input type="hidden" id="hdnLatitude" value="@Model.Address.Lat" />
+                                                <input type="hidden" id="hdnLongitude" value="@Model.Address.Lon" />
+                                                <input type="hidden" id="hdnUserType" value="@Model.UserType" />
+                                                <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
+                                                <button type="button" id="saveUser" class="btn btn-success" onclick="saveUser()">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function redirectoIndex() {
+        window.location.href = "/User/Profile";
+    }
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123))
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+    function saveUser() {
+        if (!validateUserSave()) {
+            showMessage("Pleae fill all required fields then continue", "alert alert-danger")
+        }
+        else {
+            var id = $("#hdnUserId").val();
+            var pUrl = "/User/EditUser";
+          
+            var firstName = $("#txtFirstName").val();
+            var lastName = $("#txtLastName").val();
+            var userCountry = $("#txtUserCountry").val();
+            var userEmail = $("#txtUserEmail").val();
+
+            var companyName = $("#hdnCompanyName").val();
+            var companyPhone = $("#hdnCompanyPhone").val();
+            var street = $("#hdnStreet").val();
+            var city = $("#hdnCity").val();
+            var state = $("#hdnState").val();
+            var zip = $("#hdnZip").val();
+            var locationLatitude = $("#hdnLatitude").val();
+            var locationLongitude = $("#hdnLongitude").val();
+
+            var userType = "dealer";
+            if ($("#hdnUserType").val() != "dealer")
+                userType = "user";
+
+            var userAddress = { Country: userCountry, Street: street, City: city, State: state, Zip: zip, Lat: locationLatitude, Lon: locationLongitude }
+            var userDetail = {
+                FirstName: firstName, LastName: lastName,
+                Email: userEmail, Address: userAddress, Id: $("#hdnUserId").val(), Idp: $("#hdnUserIdP").val(), UserType: userType,
+                CompanyName: companyName, Phone: companyPhone
+            }
+
+            var jStr = "User=" + JSON.stringify(userDetail);
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Profile updated successfully", "alert alert-success");
+                            $("#hdnUserId").val(data.userId); //Set car id to hidden after save
+                        }
+                        else {
+                            showMessage("Error occurred while update the profile", "alert alert-danger");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while update the profile", "alert alert-danger");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while update the profile", "alert alert-danger");
+                }
+
+            });
+
+        }
+    }
+
+    function validateUserSave() {
+        var lstInvalidControls = [];
+        if (!$("#txtFirstName").val())
+            lstInvalidControls.push('txtFirstName');
+        if (!$("#txtLastName").val())
+            lstInvalidControls.push('txtLastName');
+        if (!$("#txtUserCountry").val())
+            lstInvalidControls.push('txtUserCountry');
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+        return true;
+    }
+
+    function showMessage(messageText, labelClass) {
+        $("#divShowErrorSuccess").show();
+        $("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        $(window).scrollTop(0);
+        $('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+
+</script>

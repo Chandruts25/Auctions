@@ -1,0 +1,551 @@
+﻿@model Agape.Auctions.Models.Users.User
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+    var requestType = "New";
+
+    if (!string.IsNullOrEmpty(Model.Id))
+        requestType = "Update";
+
+    var profilePhotoUrl = "";
+    if (Model != null && Model.Purchases != null && Model.Purchases.Any() && !string.IsNullOrEmpty(Model.Purchases[0]))
+        profilePhotoUrl = Model.Purchases[0];
+
+    var paymentMethod = "";
+    if (Model != null && Model.PaymentMethods != null && Model.PaymentMethods.Any() && !string.IsNullOrEmpty(Model.PaymentMethods[0]))
+        paymentMethod = Model.PaymentMethods[0];
+
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> My Dealership </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">Profile</a><span></span>My Dealership</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" id="divShowErrorSuccess">
+        <div class="col-md-12" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+
+
+    <div class="container">
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12 column-content">
+                <div class="sectionBlock">
+                    <h5 class="stitle">My Dealership </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <!-- ------------------- -->
+                            <div class="container">
+                                <form id="dealerShipForm" action="/MyDealerShipConfirmation" method="POST">
+                                    <div class="col-md-12 tab-content-border">
+
+                                        <div class="row">
+                                            <input type="hidden" name="hdnRequestType" id="hdnRequestType" value="@requestType" />
+                                            <input type="hidden" name="hdnUserType" id="hdnUserType" value="@Model.UserType" />
+
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtCompanyName">Company Name <span class="red-req">*</span></label>
+                                                <input type="text" id="txtCompanyName" name="txtCompanyName" maxlength="100" class="form-control" value="@Model.CompanyName" onkeypress="removeInvalidClass('txtCompanyName');" />
+                                            </div>
+                                        </div>
+
+                                        @*<div class="row mt-20">
+                                                <div class="col-md-12 mb-12">
+                                                    <label class="form-label" for="txtCompanyEmail">Company Email <span class="red-req">*</span></label>
+                                                    <input type="email" id="txtCompanyEmail" class="form-control" value="@Model.Email" onkeypress="removeInvalidClass('txtCompanyEmail')" />
+                                                </div>
+                                            </div>*@
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtCompanyPhone">Company Phone <span class="red-req">*</span></label>
+                                                <input type="text" id="txtCompanyPhone" name="txtCompanyPhone" class="form-control" maxlength="15" value="@Model.Phone" onkeypress="removeInvalidClass('txtCompanyPhone')" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <input type="hidden" name="hdnCountryId" id="hdnCountryId"/>
+                                                <input type="hidden" name="hdnCountryValue" id="hdnCountryValue" />
+                                                <input type="hidden" name="hdnStateId" id="hdnStateId" />
+                                                <label class="form-label" for="cmbCountry">Country <span class="red-req">*</span></label>
+                                                @Html.DropDownListFor(m => Model.Address.Country, ViewBag.Countries as SelectList, new { @name = "cmbCountry", @id = "cmbCountry", @class = "form-control", @onChange = "filterStates('')" })
+                                                @*<input type="text" id="txtCountry" class="form-control" value="@Model.Address.Country" onkeypress="removeInvalidClass('txtCountry');return onlyAlphabets(event,this);" />*@
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <input type="hidden" id="hdnTmpState" value="@Model.Address.State" />
+                                                <label class="form-label" for="cmbState">State <span class="red-req">*</span></label>
+                                                <select class="form-control" id="cmbState" name="cmbState" onchange="setSelectedState();"></select>
+                                                @*<input type="text" id="txtState" class="form-control" value="@Model.Address.State" onkeypress="removeInvalidClass('txtState');return onlyAlphabets(event,this);" />*@
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtCity">City <span class="red-req">*</span></label>
+                                                <input type="text" id="txtCity" name="txtCity" maxlength="100" class="form-control" value="@Model.Address.City" onkeypress="removeInvalidClass('txtCity');" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtStreet">Street <span class="red-req">*</span></label>
+                                                <input type="text" id="txtStreet" name="txtStreet" maxlength="100" class="form-control" value="@Model.Address.Street" onkeypress="removeInvalidClass('txtStreet')" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-20">
+                                            <div class="col-md-12 mb-12">
+                                                <label class="form-label" for="txtZip">Zip <span class="red-req">*</span></label>
+                                                <input type="text" id="txtZip" name="txtZip" maxlength="10" class="form-control" value="@Model.Address.Zip" onkeypress="removeInvalidClass('txtZip')" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mt-20">
+                                            <div class="row">
+                                                <div class="float-right">
+                                                    <input type="hidden" id="hdnFirstName" name="hdnFirstName" value="@Model.FirstName" />
+                                                    <input type="hidden" id="hdnLastName" name="hdnLastName" value="@Model.LastName" />
+                                                    <input type="hidden" id="hdnEmailAddress" name="hdnEmailAddress" value="@Model.Email" />
+                                                    <input type="hidden" id="hdnDealerId" name="hdnDealerId" value="@Model.Id" />
+                                                    <input type="hidden" id="hdnIdp" name="hdnIdp" value="@Model.Idp" />
+                                                    <input type="hidden" id="hdnProfilePhoto" value="@profilePhotoUrl" />
+                                                    <input type="hidden" id="hdnPaymentMethod" value="@paymentMethod" />
+                                                    <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
+                                                    @*<button type="button" id="saveDealer" class="btn btn-success" onclick="saveDealer()">Submit</button>*@
+                                                    <button type="button" id="saveDealer" class="btn btn-success" onclick="saveTest()">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    function saveTest() {
+
+        $("#hdnStateId").val($("#cmbState").val());
+        if (!validateDealerSave()) {
+            showMessage("Please fill all required fields then continue", "error")
+        }
+        else {
+
+            var dealerType = $("#hdnUserType").val();
+            if (dealerType.toUpperCase() != "DEALER") {
+
+                $("#dealerShipForm").submit();
+            }
+            else {
+
+                var id = $("#hdnDealerId").val();
+                var pUrl = "/User/AddDealer";
+                var messageText = "Save";
+                var requestType = $("#hdnRequestType").val();
+                if (requestType != null && requestType == "Update") {
+                    messageText = "Update"
+                    pUrl = "/User/EditDealer";
+                }
+
+                var companyName = $("#txtCompanyName").val();
+                /* var companyEmail = $("#txtCompanyEmail").val();*/
+                var companyPhone = $("#txtCompanyPhone").val();
+                var country = $("#cmbCountry").val();
+                var street = $("#txtStreet").val();
+                var city = $("#txtCity").val();
+                var state = $("#cmbState").val();
+                var zip = $("#txtZip").val();
+                //var locationLatitude = $("#txtLocationLatitude").val();
+                //var locationLongitude = $("#txtLocationLongitude").val();
+                var locationLatitude = "0";
+                var locationLongitude = "0";
+
+                var purchases = [];
+                var profilePhotoUrl = $("#hdnProfilePhoto").val();
+                if (profilePhotoUrl) {
+                     purchases = [profilePhotoUrl];
+                }
+
+                var paymentMethod = [];
+                var paymentMethodTemp = $("#hdnPaymentMethod").val();
+                if (paymentMethodTemp) {
+                    paymentMethod = [paymentMethod];
+                }
+
+
+                var firstName = $("#hdnFirstName").val();
+                var lastName = $("#hdnLastName").val();
+                var email = $("#hdnEmailAddress").val();
+                var idp = $("#hdnIdp").val();
+
+                // var dAddress = [];
+
+                var dealerAddress = { Country: country, Street: street, City: city, State: state, Zip: zip, Lat: locationLatitude, Lon: locationLongitude }
+
+                // dAddress.push(dealerAddress);
+
+                var dealer = {
+                    Id: id, CompanyName: companyName, Phone: companyPhone,
+                    Address: dealerAddress, FirstName: firstName, LastName: lastName,
+                    Email: email, UserType: "dealer", Idp: idp, PaymentMethods: paymentMethod, Purchases: purchases
+                };
+
+                var jStr = "dealer=" + encodeURIComponent(JSON.stringify(dealer));
+
+                $.ajax({
+                    type: "POST",
+                    data: jStr,
+                    url: pUrl,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == true) {
+                                showMessage("My Dealership " + messageText + " successfully", "success");
+                                $("#hdnDealerId").val(data.dealerId); //Set car id to hidden after save
+                            }
+                            else {
+                                showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                            }
+                        }
+                        else {
+                            showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                        }
+                    },
+                    error: function (error) {
+                        showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                    }
+
+                });
+
+            }
+        }
+    }
+
+    function setSelectedState() {
+        //$("#hdnStateId").val($("#cmbState").val());
+    }
+
+    function redirectoIndex() {
+        window.location.href = "/User/Profile";
+    }
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+    $(document).ready(function () {
+        stopCharacters();
+        //$("#cmbCountry").val("US");
+        //filterStates();
+        if (!$("#hdnTmpState").val())
+            $("#cmbCountry").val("US");
+        if ($("#cmbCountry").val()) {
+            filterStates($("#hdnTmpState").val());
+        }
+    });
+
+    function filterStates(selectedState) {
+        var country = $("#cmbCountry").val();
+        if (country) {
+            $("#hdnCountryId").val(country);
+            $("#hdnCountryValue").val($("#cmbCountry option:selected").text());
+            var pUrl = "/User/GetStateByCountry?countryCode=" + country;
+            $.ajax({
+                type: "GET",
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        console.log(data);
+                        if (data.restult == true) {
+                            console.log(data.states);
+
+                            var drpState = $('#cmbState');
+                            drpState.empty();
+                            $.each(data.states, function (index, item) {
+                                drpState.append(
+                                    $('<option>', {
+                                        value: item.stateName,
+                                        text: item.stateName
+                                    }, '</option>'))
+                            });
+
+                            drpState.append(
+                                $('<option>', {
+                                    value: '0',
+                                    text: '--Select a State--'
+                                }, '</option>'))
+
+                            if (selectedState) {
+                               
+                                $("#cmbState").val($("#hdnTmpState").val());
+                            }
+                            else
+                                $("#cmbState").val('0');
+                        }
+                        else {
+                            showMessage("Error occurred while getting the state Please try again later, ErrorMessage :" + data.errorMessage, "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while getting the state Please try again later", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while getting the state Please try again later", "error");
+                }
+
+            });
+
+        }
+        else {
+            resetCarProperties();
+            showMessage("Please select the country to continue", "error");
+        }
+    }
+
+    function saveDealer() {
+        
+        if (!validateDealerSave()) {
+            showMessage("Please fill all required fields then continue", "error")
+        }
+        else {
+
+            var dealerType = $("#hdnUserType").val();
+
+            if (dealerType.toUpperCase() == "DEALER") {
+
+                $("#dealerShipForm").submit();
+            }
+            else {
+
+                var id = $("#hdnDealerId").val();
+                var pUrl = "/User/AddDealer";
+                var messageText = "Save";
+                var requestType = $("#hdnRequestType").val();
+                if (requestType != null && requestType == "Update") {
+                    messageText = "Update"
+                    pUrl = "/User/EditDealer";
+                }
+
+                var companyName = $("#txtCompanyName").val();
+                /* var companyEmail = $("#txtCompanyEmail").val();*/
+                var companyPhone = $("#txtCompanyPhone").val();
+                var country = $("#cmbCountry").val();
+                var street = $("#txtStreet").val();
+                var city = $("#txtCity").val();
+                var state = $("#cmbState").val();
+                var zip = $("#txtZip").val();
+                //var locationLatitude = $("#txtLocationLatitude").val();
+                //var locationLongitude = $("#txtLocationLongitude").val();
+                var locationLatitude = "0";
+                var locationLongitude = "0";
+
+                var firstName = $("#hdnFirstName").val();
+                var lastName = $("#hdnLastName").val();
+                var email = $("#hdnEmailAddress").val();
+                var idp = $("#hdnIdp").val();
+
+                // var dAddress = [];
+
+                var dealerAddress = { Country: country, Street: street, City: city, State: state, Zip: zip, Lat: locationLatitude, Lon: locationLongitude }
+
+                // dAddress.push(dealerAddress);
+
+                var dealer = {
+                    Id: id, CompanyName: companyName, Phone: companyPhone,
+                    Address: dealerAddress, FirstName: firstName, LastName: lastName,
+                    Email: email, UserType: "dealer", Idp: idp
+                };
+
+                var jStr = "dealer=" + JSON.stringify(dealer);
+
+                $.ajax({
+                    type: "POST",
+                    data: jStr,
+                    url: pUrl,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == true) {
+                                showMessage("My Dealership " + messageText + " successfully", "success");
+                                $("#hdnDealerId").val(data.dealerId); //Set car id to hidden after save
+                            }
+                            else {
+                                showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                            }
+                        }
+                        else {
+                            showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                        }
+                    },
+                    error: function (error) {
+                        showMessage("Error occurred while " + messageText + " the My Dealership", "error");
+                    }
+
+                });
+
+            }
+        }
+    }
+
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123))
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+
+    function validateDealerSave() {
+        var lstInvalidControls = [];
+
+        if (!$("#txtCompanyName").val())
+            lstInvalidControls.push('txtCompanyName');
+        //if (!$("#txtCompanyEmail").val())
+        //    lstInvalidControls.push('txtCompanyEmail');
+        if (!$("#txtCompanyPhone").val())
+            lstInvalidControls.push('txtCompanyPhone');
+
+        //if (!$("#txtCountry").val())
+        //    lstInvalidControls.push('txtCountry');
+        if (!$("#txtState").val('0'))
+            lstInvalidControls.push('txtState');
+
+        if (!$("#txtStreet").val())
+            lstInvalidControls.push('txtStreet');
+        if (!$("#txtCity").val())
+            lstInvalidControls.push('txtCity');
+        if (!$("#txtZip").val())
+            lstInvalidControls.push('txtZip');
+        //if (!$("#txtLocationLatitude").val())
+        //    lstInvalidControls.push('txtLocationLatitude');
+        //if (!$("#txtLocationLongitude").val())
+        //    lstInvalidControls.push('txtLocationLongitude');
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+        return true;
+    }
+
+    function stopCharacters() {
+        stopPhoneNumbers('txtCompanyPhone');
+        stopChar('txtZip');
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            console.log(event.keyCode);
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+    function stopPhoneNumbers(elem) {
+        $("#" + elem).keydown(function (event) {
+            console.log(event.keyCode);
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 189 || event.keyCode == 187
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+
+
+</script>

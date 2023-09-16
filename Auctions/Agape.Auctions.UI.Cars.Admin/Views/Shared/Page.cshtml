@@ -1,0 +1,25 @@
+﻿@model ServiceReference.Content
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Description;
+    ViewBag.Keywords = Model.Keywords;
+}
+
+<div class="container pageLayout">
+    <h2 class="pageh2">@ViewBag.Title</h2>
+    <div class="row ">
+        <div class="col-sm-12">
+            @Html.Raw(Model.Body)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+@{
+    string[] invalidStatusToBuy = { "Hold", "PendingPayment", "PaymentPending" };
+    string[] carBrand = new string[Model.Count];
+    var i = 0;
+    foreach (var item in Model)
+    {
+        if(!invalidStatusToBuy.Contains(item.Status) && !(string.IsNullOrEmpty(item.Make)))
+        {
+            carBrand[i] = item.Make;
+            i++;
+        }
+    }
+    var Brand = carBrand.Where(i => i != null).Distinct().ToList();
+
+}
+<div id="favorites" class="section section-md best novi-background bg-cover">
+    <div class="container">
+        <div class="section-title-md">
+            Latest vehicles on sale
+        </div>
+        <div class="container">
+            <div class="row" id="divShowErrorSuccess">
+                <div class="row" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-custom tabs-horizontal tabs-corporate" id="tabs-1">
+            <ul class="nav nav-tabs">
+                @*<li class="active" role="presentation">
+                    <a href="#tabs-1-2" data-toggle="tab">Latest vehicles on sale</a>
+                </li>*@
+                @*<li role="presentation">
+                    <a href="#tabs-1-2" data-toggle="tab">Latest vehicles on sale</a>
+                </li>*@
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tabs-1-2">
+                    <div class="row row-fix">
+                        <div class="col-sm-5 col-md-4 col-lg-3">
+                            <ul class="product-filter">
+                                <li>
+                                    <a onclick="filterMake('')" style="cursor:pointer;">All manufacturers</a>
+                                </li>
+                                @foreach (var item in Brand)
+                                {
+                                    <li>
+                                        <a onclick="filterMake('@item')" style="cursor:pointer;">@item</a>
+                                    </li>
+                                }
+                               
+                            </ul>
+                        </div>
+                        <div class="col-sm-7 col-md-8 col-lg-9">
+                            @if (ViewBag.CarError != null)
+                            {
+                                @*<div class="row" style="color:red;">
+                                    @ViewBag.CarError
+                                    <br />
+                                </div>*@
+
+                            }
+                            else
+                            {
+                            <div class="row" id="divHomeResult">
+                                @await Component.InvokeAsync("Favorites", new { viewName = "DefaultResult", make = "" })
+                            </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function filterMake(make) {
+        $('#divHomeResult').load("/Home/DefaultResult?make=" + encodeURIComponent(make) +"");
+    }
+    function viewCar(carId) {
+        window.location.href = "/Car/details?carId=" + carId + "";
+    }
+    function redirectToPurchase(carId) {
+        //$.ajax(
+        //    {
+        //        url: "/Car/GetCarDetails",
+        //        data: { id: carId },
+        //        type: "Get",
+        //        success: function (data) {
+        //            if (data != null && (data.status == "Hold" || data.status == "PaymentPending")) {
+        //                showMessage("Thanks for the interest, This car is currently blocked by some other user. Please try after some times", "alert alert-danger");
+        //                $(document).scrollTop(2000)
+        //            }
+        //            else {
+        //                window.location.href = "/Purchase/Summary?carId=" + carId + "";
+        //            }
+        //        }
+        //    });
+
+        window.location.href = "/Offers/Summary?carId=" + carId + "";
+        
+    }
+
+    function showMessage(messageText, labelClass) {
+        $("#divShowErrorSuccess").show();
+        $("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        $(window).scrollTop(0);
+        $('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+    }
+</script>

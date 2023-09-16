@@ -1,0 +1,19 @@
+﻿@using System.Globalization;
+@model decimal
+@{
+    var amt = ViewBag.StartPrice;
+}
+@if (Model == 0.0M)
+{
+    @amt.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))
+    <input type="hidden" id="hdnLatestBid" value="@amt" />
+}
+else
+{
+    @Model.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))
+    <input type="hidden" id="hdnLatestBid" value="@Model" />
+}
+
+
+
+

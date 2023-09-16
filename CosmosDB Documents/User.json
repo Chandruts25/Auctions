@@ -1,0 +1,74 @@
+{
+    "type": "user",
+    "id":"[GUID]",
+    "idp": "[some ID from the provider]",
+    "version": "1",
+    "userType": "user",
+    "companyName": "Wesport Auto",
+    "paymentMethod": ["[paymentMethodId]", "[paymentMethodId]"],
+    "phone":"760-555-1212",
+    "identityId": "[GUID]",
+    "email":"mark@westportauto.com",
+    "firstName": "Mark",
+    "lastName": "Rabenort",
+    "address": {
+        "country": "US",
+        "street": "1234 Main Street",
+        "city": "Salt Lake City",
+        "state": "MO",
+        "zip": "92123"
+    },
+    "cars": [
+        {
+            "type": "car",
+            "carId":"[GUID]",
+            "version": "1",
+            "vin": "shfkasjhdfkjhjshdfaj",
+            "salePrice": 34934.95,
+            "description": "This is a cool car!!",
+            "properties":{
+                "year": 2009,
+                "make": "Ram",
+                "model": "2500",
+                "trim": "Big Horn"
+            },
+            "hasImages": true,
+            "status": "sold"
+        },
+        {
+            "type": "car",
+            "carId":"[GUID]",
+            "version": "1",
+            "vin": "shfkasjhdfkjhjshdfaj",
+            "salePrice": 34934.95,
+            "description": "This is a cool car!!",
+            "properties":{
+                "year": 2007,
+                "make": "Ram",
+                "model": "1500",
+                "trim": "Big Horn"
+            },
+            "hasImages": true,
+            "status": "open"
+        },
+        {
+            "type": "car",
+            "carId":"[GUID]",
+            "version": "1",
+            "vin": "shfkasjhdfkjhjshdfaj",
+            "salePrice": 40924.95,
+            "description": "This is a cool car!!",
+            "properties":{
+                "year": 2015,
+                "make": "Ford",
+                "model": "F250",
+                "trim": "Lightning"
+            },
+            "hasImages": true,
+            "status": "open"
+        }
+    ],
+    "hasMoreCars": true,
+    "purchases": ["[purchaseId]", "[purchaseId]"],
+    "hasMorePurchases": true
+}

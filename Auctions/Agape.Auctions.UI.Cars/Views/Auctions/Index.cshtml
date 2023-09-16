@@ -1,0 +1,291 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Users.User>
+
+@{
+    ViewData["Title"] = "Auctions";
+
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var bidRefreshFunctionUrl = ViewBag.BidRefreshFunctionUrl;
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.0.27/signalr.js"></script>
+<section id="search-car" class="section swiper-container swiper-slider swiper-slider-3" data-loop="true"
+         data-autoplay="false" data-simulate-touch="false" data-slide-effect="fade">
+
+
+    <div class="swiper-wrapper text-right">
+
+        @*<div class="swiper-slide context-dark" data-slide-bg="/images/slider-2-1920x300.jpg"
+                 style="background-position: 50% 50%;">
+                <div class="swiper-slide-caption">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4> FIND YOUR DREAM CAR </h4>
+                                <h1>Chevrolet Camaro ZL1</h1>
+                                <h3>MODEL 2017 <span>$99,000</span></h3>
+                                <a class="button" href="#"><span> SEE DETAILS</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        <div class="swiper-slide context-dark" data-slide-bg="/images/slider-3-1920x1200.jpg"
+             style="background-position: 50% 50%;">
+            @*<div class="swiper-slide-caption">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4> FIND YOUR DREAM CAR </h4>
+                                <h1>BMW 330e iPERFORMANCE</h1>
+                                <h3>MODEL 2017 <span>$99,000</span></h3>
+                                <a class="button" href="#"><span> SEE DETAILS</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+
+
+
+    <!-- Swiper Pagination -->
+    @*<div class="swiper-pagination"></div>*@
+    <!-- Swiper Navigation-->
+    @*<div class="swiper-button-prev fa-arrow-left"></div>
+        <div class="swiper-button-next fa-arrow-right"></div>*@
+
+</section>
+
+<div class="container-full">
+    <div class="slider-form">
+        <div class="sidebar-form-wrapper">
+            <div class="sidebar-form">
+                <form action="javascript:;" class="form3">
+
+                    <div class="select1_wrapper col-sm-6 col-md-6 col-lg-6">
+                        <label>SELECT A MANUFACTURER</label>
+                        <div class="select1_inner">
+                            @Html.DropDownList("cmbMake", ViewBag.Makes as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper col-sm-6 col-md-6 col-lg-6">
+                        <label>SELECT A MODEL</label>
+                        <div class="select1_inner">
+                            @Html.DropDownList("cmbModel", ViewBag.Models as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper  col-sm-6 col-md-6 col-lg-6">
+                        <label>FROM YEAR</label>
+                        <div class="select1_inner">
+                            @Html.DropDownList("cmbModelYearFrom", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                        </div>
+                    </div>
+
+                    <div class="select1_wrapper col-sm-6 col-md-6 col-lg-6">
+                        <label>TO YEAR</label>
+                        <div class="select1_inner">
+                            @Html.DropDownList("cmbModelYearTo", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-default btn-form2-submit" onclick="filterCars()">SEARCH</button>
+                    <div id="btnReset" class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<section class="form-section">
+        <div class="container">
+            <div class="slider-form  mr-30">
+                <div class="sidebar-form-wrapper">
+                    <div class="slider-form">
+                        <form action="javascript:;" class="form3">
+
+                            <div class="select1_wrapper col-md-6">
+                                <label>SELECT A MANUFACTURER</label>
+                                <div class="select1_inner">
+                                    <select class="select2 select" style="width: 100%">
+                                        <option value="1">Any Make</option>
+                                        <option value="2">Alfa Romeo</option>
+                                        <option value="3">Aston Martin</option>
+                                        <option value="4">Audi</option>
+                                        <option value="5">Bentley</option>
+                                        <option value="6">BMW</option>
+                                        <option value="7">Bugatti</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="select1_wrapper col-md-6">
+                                <label>SELECT A MODEL</label>
+                                <div class="select1_inner">
+                                    <select class="select2 select" style="width: 100%">
+                                        <option value="1">Any Model</option>
+                                        <option value="2">Model 1</option>
+                                        <option value="3">Model 2</option>
+                                        <option value="4">Model 3</option>
+                                        <option value="5">Model 4</option>
+                                        <option value="6">Model 5</option>
+                                        <option value="7">Model 6</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="select1_wrapper col-md-6">
+                                <label>SELECT A TYPE</label>
+                                <div class="select1_inner">
+                                    <select class="select2 select" style="width: 100%">
+                                        <option value="1">Any Type</option>
+                                        <option value="2">Type 1</option>
+                                        <option value="3">Type 2</option>
+                                        <option value="4">Type 3</option>
+                                        <option value="5">Type 4</option>
+                                        <option value="6">Type 5</option>
+                                        <option value="7">Type 6</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="slider-range-wrapper col-md-6">
+                                <div class="txt">PRICE RANGE</div>
+                                <div class="slider-range"></div>
+                                <div class="clearfix">
+                                    <input type="text" class="amount" readonly="">
+                                    <input type="text" class="amount2" readonly="">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-default btn-form2-submit">SUBMIT FILTERS</button>
+
+                            <div class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>*@
+
+<div id="divSearchResults">
+    @await Component.InvokeAsync("Auctions", new { viewName = "AuctionResults", make = "0", model = "0", startPrice = "4500", endPrice = "100200" })
+</div>
+
+<script type="text/javascript">
+
+    window.addEventListener("pageshow", function (event) {
+        var historyTraversal = event.persisted ||
+            (typeof window.performance != "undefined" &&
+                window.performance.navigation.type === 2);
+        if (historyTraversal) {
+            console.log('Window reloaded');
+            window.location.reload();
+        }
+    });
+
+    var bidRefreshFunctionUrl = '@bidRefreshFunctionUrl';
+    console.log(bidRefreshFunctionUrl);
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl(bidRefreshFunctionUrl +'/api')
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    connection.on('target', updateBiddingDetails);
+    connection.onclose(() => console.log('signalR Disconnected'));
+
+    console.log('connecting...');
+    connection.start({ withCredentials: false })
+        .then(() => console.log("signalR started"))
+        .catch(console.error);
+
+
+    function updateBiddingDetails(biddingDetails) {
+        console.log(biddingDetails);
+        if (biddingDetails != null && biddingDetails != undefined && biddingDetails != 'undefined') {
+            if (biddingDetails.CarId != null && biddingDetails.CarId != null != undefined && biddingDetails.CarId != null != 'undefined') {
+                if (biddingDetails.BiddingAmount != null && biddingDetails.BiddingAmount != null != undefined && biddingDetails.BiddingAmount != null != 'undefined') {
+                    var currentCar = $("#" + biddingDetails.CarId);
+                    if (currentCar.length) {
+                        $("#" + biddingDetails.CarId).html(formatToCurrency(biddingDetails.BiddingAmount));
+                        $("." + biddingDetails.CarId).html(formatToCurrency(biddingDetails.BiddingAmount));
+                    }
+                }
+            }
+        }
+    }
+
+    const formatToCurrency = amount => {
+        return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    };
+
+
+    function filterCars() {
+        var make = $("#cmbMake").val();
+        var model = $("#cmbModel").val();
+        var modelYearFrom = $("#cmbModelYearFrom").val();
+        var modelYearTo = $("#cmbModelYearTo").val();
+
+        if (modelYearTo == "0")
+            modelYearTo = new Date().getFullYear();
+
+
+
+        if (modelYearFrom == modelYearTo) {
+            alert("Model To Year should be greater than start year. Please change the year range and retry");
+            return false;
+        }
+
+        $('#divSearchResults').load("/Auctions/AuctionResults?make=" + encodeURIComponent(make) + "&model=" + model + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");
+    }
+    $(document).ready(function () {
+        $('select#cmbMake').select2();
+        $('select#cmbModel').select2();
+        $('select#cmbModelYearFrom').select2();
+        $('select#cmbModelYearTo').select2();
+
+        $("#btnReset").bind("click", function () {
+            $('select#cmbMake').val(0).select2();
+            $('select#cmbModel').val(0).select2();
+            $('select#type').val(1).select2();
+            $('select#cmbModelYearFrom').val(0).select2();
+            $('select#cmbModelYearTo').val(0).select2();
+            filterCars();
+        });
+    });
+
+    $(".wrapper .item").slice(6).hide();
+    $('#pagination').pagination({
+
+        // Total number of items present
+        // in wrapper class
+        //items: $("#hdn_count").val(),
+        items: $("#hdn_count").val(),
+
+
+
+        // Items allowed on a single page
+        itemsOnPage: 6,
+        onPageClick: function (noofele) {
+            $(".wrapper .item").hide()
+                .slice(6 * (noofele - 1),
+                    6 + 6 * (noofele - 1)).show();
+        }
+    });
+</script>

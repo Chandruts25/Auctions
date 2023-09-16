@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Agape.Auctions.Models.PaymentMethods.PaymentMethod>
+
+@{
+    ViewData["Title"] = "Payment History";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Payment History </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">Profile</a><span></span>Payment History</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" id="divShowErrorSuccess">
+        <div class="col-md-12" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="content section-md-bottom novi-background bg-cover">
+    <div class="container">
+        <div class="row row-fix">
+
+            <div class="col-sm-12 col-md-12 column-content">
+
+                <div class="sectionBlock">
+                    <h5 class="stitle">Payment History </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <div class="col-xs-12 resurcesBlock">
+
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    <table id="tblPayment" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Owner
+                                                </th>
+                                                <th>
+                                                    Created
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" value="@item.Id" name="hdnDealerId" />
+                                                        @item.Owner
+                                                    </td>
+                                                    <td>
+                                                        @item.Created
+                                                    </td>
+                                                    <td>
+                                                        @item.Status
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div>No Records Found</div>
+                                }
+                                <input type="hidden" id="hdnSelectedDealerId" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        buildGrid();
+    });
+
+    function buildGrid() {
+        $('#tblPayment')
+            .on('init.dt', function () {
+                $('#tblPayment').removeClass('dataTable');
+            }).dataTable();
+    }
+
+</script>

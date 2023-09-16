@@ -1,0 +1,104 @@
+﻿
+
+@if (ViewBag.CarReviews.Result.Count > 0)
+{
+    @foreach (var data in ViewBag.CarReviews.Result)
+    {
+        @if (data.Type == "Review")
+        {
+           <div class="comment-block clearfix">
+            <figure>
+                <img src="~/images/customer-2-104x104.jpg" alt="" class="img-responsive">
+            </figure>
+            <div class="caption clsCommentDetail">
+                <div class="top clearfix">
+                    <div class="txt1">@data.FirstName @data.LastName</div>
+                    <div class="txt2">@data.CreatedDate?.ToShortDateString()<a href="#">Posted at @data.CreatedDate?.ToShortTimeString()</a></div>
+                    <div class="ic10">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="#" onclick="addReplyBox('@data.Id')" id="a_@data.Id">
+                                <i class="fa fa-mail-reply novi-icon"></i>
+                                <span></span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="logcomment" style=" color: #4183C4;" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Login to Reply</a>
+                        }
+                    </div>
+                </div>
+                <div class="txt3">
+                    @data.Comments
+                </div>
+            </div>
+
+            @foreach (var item in data.ReplyReviewDetails)
+            {
+                <div class="caption" style="margin-left:25%;">
+                    <div class="top clearfix">
+                        <div>Replied by</div><div class="txt1">@item.FirstName @item.LastName</div>
+                        <div class="txt2">@item.CreatedDate?.ToShortDateString()<a href="#">Replied at @item.CreatedDate?.ToShortTimeString()</a></div>
+
+                    </div>
+                    <div class="txt3">
+                        @item.Comments
+                    </div>
+                </div>
+
+            }
+
+            <div id="div_@data.Id" class="clsReplyDiv" style="display:none; margin-left:25%; height:135px;">
+                <div>
+                    <textarea class="clsReplyText" style="width:100%; height:100px;"></textarea>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="saveCommentReply('@data.Id')" style="width:100%;">Save</button>
+                </div>
+            </div>
+            </div>
+        }
+
+     }
+}
+<script type="text/javascript">
+    function addReplyBox(id) {
+        $(".clsReplyDiv").hide();
+        $("#div_" + id).show();
+        $("#a_" + id).hide();
+    }
+    function saveCommentReply(id) {
+        var message = $("#div_" + id).find(".clsReplyText").val();
+        var carId = $("#hdnCarId").val();
+
+        if (message) {
+            var pUrl = "/Car/SaveCarReview";
+            $.ajax({
+                type: "POST",
+                url: pUrl,
+                data: { message: message, carId: carId, rate: "0", type: "SubReview", title: id },
+                success: function (data) {
+                    if (data.saveResult == true) {
+                        showMessage("Car Review saved successfully", "success");
+                        $("#txtYourName").val('');
+                        $("#txtEmailAddress").val('');
+                        $("#txtMessage").val('');
+                        $("#review").load("/Car/ViewReview?carId=" + carId);
+                    }
+                    else {
+                        showMessage("Error occurred while save the car review", "error");
+                        $("#rating").val('0');
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while save the car review", "error");
+                }
+            });
+        }
+        else {
+            showMessage("Error enter the message and continue", "error");
+        }
+
+    }
+
+</script>

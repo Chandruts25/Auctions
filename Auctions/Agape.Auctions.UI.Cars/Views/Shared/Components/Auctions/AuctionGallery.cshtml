@@ -1,0 +1,29 @@
+﻿@model List<Agape.Auctions.Models.Images.Image>
+
+<div id="gslider" class="flexslider">
+    <ul class="slides">
+        @foreach (var item in Model.OrderBy(i => i.Order))
+        {
+            <li>
+                <img src="@item.Url" class="img-responsive">
+            </li>
+        }
+    </ul>
+</div>
+
+<script type="text/javascript">
+        var o = $('#gslider');
+        if (o.length > 0) {
+            o.flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                sync: "#carousel",
+                directionNav: true,
+                start: function (slider) {
+                    // $('body').removeClass('loading');
+                }
+            });
+        }
+ </script>

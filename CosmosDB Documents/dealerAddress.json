@@ -1,0 +1,17 @@
+{
+    "type": "dealerAddress",
+    "id":"[GUID]",
+    "version": "1",
+    "owner": "[userId]",
+    "companyName": "Wesport Auto",
+    "phone":"760-555-1212",
+    "email":"mark@westportauto.com",
+    "address": {
+        "country": "US",
+        "street": "1234 Main Street",
+        "city": "Salt Lake City",
+        "state": "MO",
+        "zip": "92123",
+        "location": "[map coordinates]"
+    }
+}

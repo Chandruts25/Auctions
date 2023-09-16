@@ -1,0 +1,1008 @@
+﻿@model List<Agape.Auctions.Models.Images.Image>
+@using AgapeModel = Agape.Auctions.Models.Cars;
+@using AgapeModelUser = Agape.Auctions.Models.Users;
+
+
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Car/Details";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    AgapeModel.CarReview carReview = new AgapeModel.CarReview();
+    AgapeModel.Car carDetail = ViewBag.CarDetails;
+    AgapeModelUser.User userDetail = ViewBag.UserDetails;
+    string[] invalidStatusToBuy = { "Hold", "PendingPayment" };
+    var vid = carDetail.Video.Url;
+    var sp = vid.Replace("/watch?v=", "/embed/");
+    var link = sp.Replace("https:", "");
+    var videoUrl = (carDetail.Video != null && !string.IsNullOrEmpty(vid)) ? link : "https://www.youtube.com/embed/vC8LbvYk6es";
+
+
+}
+<link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700%7COpen+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet" type="text/css">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<link href="~/css/jquery-ui.css" rel="stylesheet">
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/font-awesome.css" rel="stylesheet">
+<link href="~/css/elegant-icons.css" rel="stylesheet">
+
+<link href="~/css/light-gallery.css" rel="stylesheet">
+<link href="~/css/gflexslider.css?ver=1.1" rel="stylesheet">
+<link href="~/css/superslides.css" rel="stylesheet">
+<link href="~/css/animate.css" rel="stylesheet">
+<link href="~/css/select2.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+
+<script src="~/js/jquery.js"></script>
+<script src="~/js/jquery-ui.js"></script>
+<script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="~/js/jquery.easing.1.3.js"></script>
+<script src="~/js/pointer-events.js"></script>
+<script src="~/js/superfish.js"></script>
+<script src="~/js/jquery.flexslider-min.js"></script>
+<script src="~/js/select2.js"></script>
+<script src="~/js/jquery.superslides.js"></script>
+<script src="~/js/jquery.sticky.js"></script>
+<script src="~/js/jquery.appear.js"></script>
+<script src="~/js/jquery.ui.totop.js"></script>
+<script src="~/js/jquery.caroufredsel.js"></script>
+<script src="~/js/jquery.touchSwipe.min.js"></script>
+<script src="~/js/material-parallax.js"></script>
+<script src="~/js/rd-navbar.js"></script>
+
+<script src="~/js/light-gallery.js"></script>
+
+<script src="~/js/rd-mailform.js"></script>
+<script src="~/js/scripts.js"></script>
+<script src="~/js/emailvalidation.js"></script>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<style>
+    .myinput[type="checkbox"]:checked:after {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAQAAABuW59YAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAB2SURBVHjaAGkAlv8A3QDyAP0A/QD+Dam3W+kCAAD8APYAAgTVZaZCGwwA5wr0AvcA+Dh+7UX/x24AqK3Wg/8nt6w4/5q71wAAVP9g/7rTXf9n/+9N+AAAtpJa/zf/S//DhP8H/wAA4gzWj2P4lsf0JP0A/wADAHB0Ngka6UmKAAAAAElFTkSuQmCC), linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
+    }
+
+    .myinput.large[type="checkbox"]:before {
+        height: 16px;
+        width: 16px;
+        position: relative;
+        display: block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #808080;
+        content: "";
+        background: #FFF;
+    }
+
+    .myinput[type="checkbox"]:after {
+        position: relative;
+        display: block;
+        left: 2px;
+        top: -14px;
+        width: 12px;
+        height: 12px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #B3B3B3 #dcddde #dcddde #B3B3B3;
+        content: "";
+        background-image: linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    input.myinput.large {
+        height: 16px;
+        width: 16px;
+    }
+
+    .is-invalid {
+        border: 1px solid red;
+    }
+
+    .title21 {
+        width: 50%;
+        float: left;
+        font-family: 'Open Sans';
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 700;
+        color: #202020;
+        text-align: left;
+        text-transform: uppercase;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .rating {
+        --dir: right;
+        --fill: gold;
+        --fillbg: rgba(100, 100, 100, 0.15);
+        --heart: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.328l-1.453-1.313q-2.484-2.25-3.609-3.328t-2.508-2.672-1.898-2.883-0.516-2.648q0-2.297 1.57-3.891t3.914-1.594q2.719 0 4.5 2.109 1.781-2.109 4.5-2.109 2.344 0 3.914 1.594t1.57 3.891q0 1.828-1.219 3.797t-2.648 3.422-4.664 4.359z"/></svg>');
+        --star: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.25l-6.188 3.75 1.641-7.031-5.438-4.734 7.172-0.609 2.813-6.609 2.813 6.609 7.172 0.609-5.438 4.734 1.641 7.031z"/></svg>');
+        --stars: 5;
+        --starsize: 20px;
+        --symbol: var(--star);
+        --value: 1;
+        --w: calc(var(--stars) * var(--starsize));
+        --x: calc(100% * (var(--value) / var(--stars)));
+        block-size: var(--starsize);
+        inline-size: var(--w);
+        position: relative;
+        touch-action: manipulation;
+        -webkit-appearance: none;
+    }
+
+    [dir="rtl"] .rating {
+        --dir: left;
+    }
+
+    .rating::-moz-range-track {
+        background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+        block-size: 100%;
+        mask: repeat left center/var(--starsize) var(--symbol);
+    }
+
+    .rating::-webkit-slider-runnable-track {
+        background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+        block-size: 100%;
+        mask: repeat left center/var(--starsize) var(--symbol);
+        -webkit-mask: repeat left center/var(--starsize) var(--symbol);
+    }
+
+    .rating::-moz-range-thumb {
+        height: var(--starsize);
+        opacity: 0;
+        width: var(--starsize);
+    }
+
+    .rating::-webkit-slider-thumb {
+        height: var(--starsize);
+        opacity: 0;
+        width: var(--starsize);
+        -webkit-appearance: none;
+    }
+
+    .rating, .rating-label {
+        display: block;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .rating-label {
+        margin-block-end: 0rem;
+    }
+
+    /* NO JS */
+    .rating--nojs::-moz-range-track {
+        background: var(--fillbg);
+    }
+
+    .rating--nojs::-moz-range-progress {
+        background: var(--fill);
+        block-size: 100%;
+        mask: repeat left center/var(--starsize) var(--star);
+    }
+
+    .rating--nojs::-webkit-slider-runnable-track {
+        background: var(--fillbg);
+    }
+
+    .rating--nojs::-webkit-slider-thumb {
+        background-color: var(--fill);
+        box-shadow: calc(0rem - var(--w)) 0 0 var(--w) var(--fill);
+        opacity: 1;
+        width: 1px;
+    }
+
+    [dir="rtl"] .rating--nojs::-webkit-slider-thumb {
+        box-shadow: var(--w) 0 0 var(--w) var(--fill);
+    }
+
+    input.rating {
+        width: 100px !important;
+    }
+
+
+        input.rating.rating--nojs {
+            width: 180px !important;
+            display: block;
+            --starsize: 36px;
+        }
+    /* The Modal (background) */
+    .modal {
+        display: none; /*
+    en by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: #00000066;
+        padding-top: 50px;
+    }
+
+
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 1px solid #888;
+        width: 385px;
+        padding: 20px;
+        padding-bottom: 30px;
+    }
+
+    h5.stitle {
+        padding: 10px 15px;
+        margin-top: 0;
+        margin-bottom: 0;
+        text-shadow: 0 1px 2px #151317;
+        color: #fff;
+        background-color: #181c2a;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 4px 4px 0 0;
+        text-align: left;
+    }
+
+    .close1 {
+        position: absolute;
+        right: 12px;
+        top: 2px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #898989;
+    }
+
+
+
+        .close1:hover,
+        .close1:focus {
+            color: #f44336;
+            cursor: pointer;
+        }
+
+    a.pop-a {
+        width: 100%;
+        height: 35px;
+        background: #ffffff;
+        border: 1px solid;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-top: 10px;
+        line-height: 33px;
+        text-decoration: none;
+    }
+
+        a.pop-a.fb {
+            background: #1877f2;
+            color: white;
+            border: 1px solid #c5c5c5;
+        }
+
+        a.pop-a.apple {
+            background: black;
+            color: white;
+        }
+
+        a.pop-a i {
+            padding-right: 8px;
+        }
+</style>
+
+<div class="section top4-wrapper novi-background">
+    <div class="container">
+        <div class="top4"></div>
+    </div>
+</div>
+
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Details</div>
+    </div>
+</div>
+<div id="ratingpopup" class="modal">
+    <div class="row modal-content">
+        <span onclick="saveCarReview('No')" class="close1" title="Close Modal">×</span>
+
+        <div class="col-md-12 text-center">
+
+            <span>Do you want to rate our car?</span>
+
+        </div>
+        <div class="col-md-12 text-center p-10">
+            <label class="">
+
+                <input id="rating" class="rating rating--nojs" max="5" step="1" type="range" value="0" style="cursor: pointer;">
+            </label>
+        </div>
+        <div class="col-sm-12 text-center">
+            <button type="button" class="btn btn-success" onclick="saveCarReview('Yes')">Yes</button>
+            <button type="button" class="btn btn-success" onclick="saveCarReview('No')">No</button>
+        </div>
+
+
+    </div>
+</div>
+<div class="section section-md-bottom content novi-background bg-cover">
+    <div class="container">
+
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-9 column-content">
+
+                <div class="gslider-wrapper">
+                    <div id="gslider" class="flexslider">
+                        <ul class="slides">
+                            @foreach (var item in Model.OrderBy(i => i.Order))
+                            {
+                                <li style="width: 842px; height: 600px;">
+                                    <img src="@item.Url" class="img-responsive" style="width: 870px; height: 600px;">
+
+                                </li>
+
+                            }
+                            <li style="width: 842px; height: 600px;">
+                                <iframe width="870" height="600" src="@videoUrl"
+                                        title="YouTube video player" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div id="carousel" class="flexslider">
+                        <ul class="slides">
+                            @foreach (var item in Model.OrderBy(i => i.Order))
+                            {
+                                <li style="width: 121px; height: 90px;">
+                                    <img src="@item.Url" style="height: 100%; object-fit: cover;" class="img-responsive">
+                                </li>
+                            }
+                            <li style="width: 121px; height: 90px;">
+                                <img src="~/images/VideoThumpnail.jpg" style="height: 100%; object-fit: cover;" class="img-responsive">
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tabs2-wrapper">
+                    <ul class="tabs clearfix" data-tabgroup="second-tab-group">
+                        <li class="active"><a href="#tabs3-1">VEHICLE OVERVIEW</a></li>
+                        <li><a href="#tabs3-2">FEATURES & OPTIONS</a></li>
+                        <li><a href="#tabs3-3">VEHICLE LOCATION</a></li>
+                        <li><a href="#tabs3-4">Comments & Questions</a></li>
+                    </ul>
+                </div>
+
+                <div id="second-tab-group" class="tabgroup">
+                    <div id="tabs3-1">
+                        <div class="title2">
+                            <input type="hidden" id="hdnCarId" value="@carDetail.Id" />DESCRIPTION
+                        </div>
+                        @carDetail.Description
+                    </div>
+                    <div id="tabs3-2">
+
+                        <div class="row row-fix">
+                            <div class="col-sm-6">
+                                <div class="title2">EXTRA FEATURES</div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="ul3">
+                                            <li><a href="#">@carDetail.Properties.VehicleType</a></li>
+                                            <li><a href="#">@carDetail.Properties.TransmissionStyle (TransmissionStyle)</a></li>
+                                            <li><a href="#">@carDetail.Properties.SeatBeltsAll</a></li>
+                                            <li><a href="#">@carDetail.Properties.PlantCountry</a></li>
+                                            <li><a href="#">@carDetail.Properties.PlantCity</a></li>
+                                            <li><a href="#">@carDetail.Properties.OtherRestraintSystemInfo</a></li>
+                                            <li><a href="#">@carDetail.Properties.ModelID (ModelID)</a></li>
+                                            <li><a href="#">@carDetail.Properties.ManufacturerId (ManufacturerId)</a></li>
+                                            <li><a href="#">@carDetail.Properties.MakeID (MakeID)</a></li>
+                                            <li><a href="#">@carDetail.Properties.Manufacturer (Manufacturer)</a></li>
+                                            <li><a href="#">@carDetail.Properties.FuelTypePrimary</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineModel</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineManufacturer (EngineManufacturer)</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineConfiguration</a></li>
+                                            <li><a href="#">@carDetail.Properties.DestinationMarket (DestinationMarket)</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="ul3">
+                                            <li><a href="#">@carDetail.Properties.Doors (Doors)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementL (DisplacementL)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementCI (DisplacementCI)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementCC (DisplacementCC)</a></li>
+                                            <li><a href="#">@carDetail.Properties.BodyClass</a></li>
+                                            <li><a href="#">@carDetail.Properties.AirBagLocFront</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="title2">Essential Options</div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="ul3">
+                                            <li><a href="#">@carDetail.Properties.VehicleType</a></li>
+                                            <li><a href="#">@carDetail.Properties.TransmissionStyle (TransmissionStyle)</a></li>
+                                            <li><a href="#">@carDetail.Properties.SeatBeltsAll</a></li>
+                                            <li><a href="#">@carDetail.Properties.PlantCountry</a></li>
+                                            <li><a href="#">@carDetail.Properties.PlantCity</a></li>
+                                            <li><a href="#">@carDetail.Properties.OtherRestraintSystemInfo</a></li>
+                                            <li><a href="#">@carDetail.Properties.ModelID (ModelID)</a></li>
+                                            <li><a href="#">@carDetail.Properties.ManufacturerId (ManufacturerId)</a></li>
+                                            <li><a href="#">@carDetail.Properties.MakeID (MakeID)</a></li>
+                                            <li><a href="#">@carDetail.Properties.Manufacturer (Manufacturer)</a></li>
+                                            <li><a href="#">@carDetail.Properties.FuelTypePrimary</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineModel</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineManufacturer (EngineManufacturer)</a></li>
+                                            <li><a href="#">@carDetail.Properties.EngineConfiguration</a></li>
+                                            <li><a href="#">@carDetail.Properties.DestinationMarket (DestinationMarket)</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="ul3">
+                                            <li><a href="#">@carDetail.Properties.Doors (Doors)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementL (DisplacementL)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementCI (DisplacementCI)</a></li>
+                                            <li><a href="#">@carDetail.Properties.DisplacementCC (DisplacementCC)</a></li>
+                                            <li><a href="#">@carDetail.Properties.BodyClass</a></li>
+                                            <li><a href="#">@carDetail.Properties.AirBagLocFront</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="tabs3-3">
+
+                        <div id="map" style="height:400px;">
+                        </div>
+
+                        @*<div class="google-map-container google-map-2" data-zoom='5' data-center="9870 St Vincent Place, Glasgow, DC 45 Fr 45." data-zoom="14" data-icon="images/gmap_marker.png" data-icon-active="images/gmap_marker_active.png" data-styles="[{&quot;featureType&quot;:&quot;water&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#e9e9e9&quot;},{&quot;lightness&quot;:17}]},{&quot;featureType&quot;:&quot;landscape&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#f5f5f5&quot;},{&quot;lightness&quot;:20}]},{&quot;featureType&quot;:&quot;road.highway&quot;,&quot;elementType&quot;:&quot;geometry.fill&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#ffffff&quot;},{&quot;lightness&quot;:17}]},{&quot;featureType&quot;:&quot;road.highway&quot;,&quot;elementType&quot;:&quot;geometry.stroke&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#ffffff&quot;},{&quot;lightness&quot;:29},{&quot;weight&quot;:0.2}]},{&quot;featureType&quot;:&quot;road.arterial&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#ffffff&quot;},{&quot;lightness&quot;:18}]},{&quot;featureType&quot;:&quot;road.local&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#ffffff&quot;},{&quot;lightness&quot;:16}]},{&quot;featureType&quot;:&quot;poi&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#f5f5f5&quot;},{&quot;lightness&quot;:21}]},{&quot;featureType&quot;:&quot;poi.park&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#dedede&quot;},{&quot;lightness&quot;:21}]},{&quot;elementType&quot;:&quot;labels.text.stroke&quot;,&quot;stylers&quot;:[{&quot;visibility&quot;:&quot;on&quot;},{&quot;color&quot;:&quot;#ffffff&quot;},{&quot;lightness&quot;:16}]},{&quot;elementType&quot;:&quot;labels.text.fill&quot;,&quot;stylers&quot;:[{&quot;saturation&quot;:36},{&quot;color&quot;:&quot;#333333&quot;},{&quot;lightness&quot;:40}]},{&quot;elementType&quot;:&quot;labels.icon&quot;,&quot;stylers&quot;:[{&quot;visibility&quot;:&quot;off&quot;}]},{&quot;featureType&quot;:&quot;transit&quot;,&quot;elementType&quot;:&quot;geometry&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#f2f2f2&quot;},{&quot;lightness&quot;:19}]},{&quot;featureType&quot;:&quot;administrative&quot;,&quot;elementType&quot;:&quot;geometry.fill&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#fefefe&quot;},{&quot;lightness&quot;:20}]},{&quot;featureType&quot;:&quot;administrative&quot;,&quot;elementType&quot;:&quot;geometry.stroke&quot;,&quot;stylers&quot;:[{&quot;color&quot;:&quot;#fefefe&quot;},{&quot;lightness&quot;:17},{&quot;weight&quot;:1.2}]}]">
+                                <div class="google-map"></div>
+                                <ul class="google-map-markers">
+                                    <li data-location="9870 St Vincent Place, Glasgow, DC 45 Fr 45." data-description="9870 St Vincent Place, Glasgow"></li>
+                                </ul>
+                            </div>*@
+
+                    </div>
+                    <div id="tabs3-4">
+
+
+
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="">
+                                <div class="title21">YOUR COMMENT / QUESTION</div>
+
+
+                            </div>
+
+                            <div id="note3"></div>
+                            <div id="fields3">
+                                <div class="row">
+                                    <input type="hidden" id="hdnCarId" value="@carDetail.Id" />
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-wrap">
+
+                                            <textarea class="form-control" rows="9" id="txtMessage" style="resize:vertical;" required placeholder="Your Message" onkeypress="removeInvalidClass('txtMessage')"></textarea>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <button type="button" style="width:100%;" class="btn-default btn-cf-submit3" onclick="openratingpopup()">SEND COMMENTS</button>
+
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="">
+                                <div class="title21">YOUR COMMENT / QUESTION</div>
+
+
+                            </div>
+
+                            <div id="note3"></div>
+                            <div id="fields3">
+                                <div class="row">
+                                    <input type="hidden" id="hdnCarId" value="@carDetail.Id" />
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-wrap">
+
+                                            <textarea class="form-control" rows="9" id="txtMessage" style="resize:vertical;" disabled required placeholder="Login to write comments/questions" onkeypress="removeInvalidClass('txtMessage')"></textarea>
+
+                                        </div>
+
+                                        <a class="logcomment" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn" style="padding-bottom: 25px; float: left; color: #337ab7; font-weight: 600;">Login to write comment/question</a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                        <div id="review" style="padding-top: 30px;">
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-12 col-md-3 column-sidebar">
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-12">
+                        <div class="banner2-wrapper">
+                            <div class="contact-banner">
+                                <div class="top-info clearfix">
+                                    <div class="info1">
+                                        <div class="banner-title">@carDetail.Model @carDetail.Make</div>
+                                        <div class="txt2">
+                                            <span class="txt">FIRST DRIVE REVIEW</span>
+                                            <span id="CarRating" class="stars"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="txt3">Price : @carDetail.SalePrice.ToString("C", CultureInfo.CreateSpecificCulture("en-us"))</div>
+                                <div class="txt4">@userDetail.CompanyName</div>
+                                <div class="txt5">
+                                    @userDetail.Address.Street, <br>
+                                    @userDetail.Address.City, @userDetail.Address.State, @userDetail.Address.Zip<br>
+                                    Phone: <a href="tel:#">@userDetail.Phone</a>
+                                </div>
+
+                                @if (!invalidStatusToBuy.Contains(carDetail.Status))
+                                {
+                                    <div style="margin-bottom:10px;">
+                                        @*<button type="button" class="btn btn-success" onclick="redirectToPurchase()" style="width:100%;">Buy</button>*@
+                                        @*<button type="button" class="btn btn-success" style="width:100%;">Buy</button>*@
+                                    </div>
+                                }
+
+                                <div class="form-wrapper">
+                                    <div id="note2"></div>
+                                    <div id="fields2">
+                                        <form id="ajax-contact-form2" class="form-horizontal rd-mailform">
+                                            <div class="form-group form-wrap">
+                                                <label for="inputEmail">Email</label><input type="text" class="form-control" id="inputEmail" name="email" placeholder="E-mail address" required>
+                                            </div>
+                                            <div class="form-group form-wrap">
+                                                <label for="inputMessage">Your Message</label>
+                                                <textarea class="form-control" rows="9" id="inputMessage" style="resize:vertical;" placeholder="Message" name="content" required></textarea>
+                                            </div>
+
+                                            <div class="">
+
+                                                <input type="checkbox" class="myinput large" checked> Send me a copy of this message
+
+                                            </div>
+
+                                            <div class="">
+
+                                                <input type="checkbox" class="myinput large" checked> Subscribe to our Newsletter
+
+                                            </div>
+
+                                            @*<button type="submit" class="btn-default btn-cf-submit2" onclick="sentmail()">SEND E-MAIL</button>*@
+
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-12">
+                        <div class="banner3-wrapper">
+                            <div class="banner3">
+                                <div class="top-info clearfix">
+                                    <div class="info1">
+                                        <div class="txt1">Financing Offer</div>
+                                    </div>
+                                </div>
+                                <div class="txt2">Vehicle</div>
+                                <div class="txt3">RANGE ROVER</div>
+                                <div class="form-wrapper">
+                                    <div id="note1"></div>
+                                    <div id="fields1">
+                                        <form id="ajax-contact-form1" class="form-horizontal" action="javascript:;">
+
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-6 col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="inputName">Credit amount ($)</label>
+                                                        <input type="text" class="form-control" id="inputName" name="name" value="34990">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="select1_wrapper">
+                                                            <label>Running time</label>
+                                                            <div class="select1_inner form-control">
+                                                                <select class="select2 select" style="width: 100%">
+                                                                    <option value="1">60 months</option>
+                                                                    <option value="2">48 months</option>
+                                                                    <option value="3">36 months</option>
+                                                                    <option value="4">24 months</option>
+                                                                    <option value="5">12 months</option>
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="txt4">In cooperation with CHECK24</div>
+
+                                            @*<button type="submit" class="btn-default btn-cf-submit1">CALCULATE NOW</button>*@
+
+
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-12">
+                        <div class="banner novi-background">
+                            <figure><a href="#"><img src="images/banner.jpg" alt="" class="img-responsive"></a></figure>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-3">
+                <div class="product-minimal">
+                    <div class="thumbnail clearfix">
+                        <figure class="product-minimal-img">
+                                <img src="~/images/home-4-270x150.jpg" alt="" class="img-responsive">
+                        </figure>
+                        <div class="caption">
+                            <p class="small">REGISTERED 2015</p>
+                            <div class="product-minimal-title"> BMW M6 Sport Hybrid</div>
+                            <div class="info">
+                                <span class="price">$24,380</span>
+                                <span class="speed">35,000 KM</span>
+                            </div>
+                            <ul class="tag-list">
+                                <li>Used</li>
+                                <li>2015</li>
+                                <li>Automatic</li>
+                                <li>White</li>
+                                <li>Petrol</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-3">
+                <div class="product-minimal">
+                    <div class="thumbnail clearfix">
+                        <figure class="product-minimal-img">
+                                <img src="~/images/home-5-270x150.jpg" alt="" class="img-responsive">
+                        </figure>
+                        <div class="caption">
+                            <p class="small">REGISTERED 2016</p>
+                            <div class="product-minimal-title"> 2016 Ferrari Testarosa</div>
+                            <div class="info">
+                                <span class="price">$95,900</span>
+                                <span class="speed">99,000 KM</span>
+                            </div>
+                            <ul class="tag-list">
+                                <li>Used</li>
+                                <li>2015</li>
+                                <li>Automatic</li>
+                                <li>Red</li>
+                                <li>Petrol</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-3">
+                <div class="product-minimal">
+                    <div class="thumbnail clearfix">
+                        <figure class="product-minimal-img">
+                                <img src="~/images/home-6-270x150.jpg" alt="" class="img-responsive">
+                        </figure>
+                        <div class="caption">
+                            <p class="small">REGISTERED 2015</p>
+                            <div class="product-minimal-title"> 2016 Bugatti Veyron</div>
+                            <div class="info">
+                                <span class="price">$98,995</span>
+                                <span class="speed">95,000 KM</span>
+                            </div>
+                            <ul class="tag-list">
+                                <li>Used</li>
+                                <li>2015</li>
+                                <li>Automatic</li>
+                                <li>Blue</li>
+                                <li>Petrol</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-3">
+                <div class="product-minimal">
+                    <div class="thumbnail clearfix">
+                        <figure class="product-minimal-img">
+                                <img src="~/images/home-7-270x150.jpg" alt="" class="img-responsive">
+                        </figure>
+                        <div class="caption">
+                            <p class="small">REGISTERED 2017</p>
+                            <div class="product-minimal-title"> 2017 Lexus-AMG C63</div>
+                            <div class="info">
+                                <span class="price">$31,900</span>
+                                <span class="speed">12,000 KM</span>
+                            </div>
+                            <ul class="tag-list">
+                                <li>Used</li>
+                                <li>2015</li>
+                                <li>Automatic</li>
+                                <li>Red</li>
+                                <li>Petrol</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="snackbars" id="form-output-global"></div>
+<script src="~/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+    $(window).load(function () {
+        var o = $('#gslider');
+        if (o.length > 0) {
+            o.flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                sync: "#carousel",
+                directionNav: true,
+                start: function (slider) {
+                }
+            });
+        }
+
+    });
+
+    function sentmail() {
+        var email = $('#inputEmail').val();
+
+
+        if (email != "") {
+            emailvalidation(email, callMe)
+        }
+        else {
+            showMessage("Please fill all the required fields", "error");
+        }
+
+
+
+
+
+
+        function callMe(aaaa) {
+            if (aaaa == 0) {
+                showMessage("Please enter valid email id", "error");
+
+                e.exit();
+            }
+        }
+    }
+
+
+
+
+    var currentLocations = [];
+    var allLocations = [];
+    var allDealerInfo = [];
+    var markerDealers = [];
+    $(document).ready(function () {
+        var carId = $("#hdnCarId").val();
+        $("#review").load("/Car/ViewReview?carId=" + carId);
+        $("#CarRating").load("/Car/Ratings?carId=" + carId);
+    });
+    function redirectToPurchase(carId) {
+        var carId = $("#hdnCarId").val();
+        window.location.href = "/Purchase/Summary?carId=" + carId + "";
+    }
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+
+    function showMessage(messageText, labelClass) {
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateCarReviewSave() {
+        var lstInvalidControls = [];
+
+        if (!$("#txtMessage").val())
+            lstInvalidControls.push('txtMessage');
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+        else {
+            if ($("#txtEmailAddress").val()) {
+                emailvalidation($("#txtEmailAddress").val(), emailFunc)
+            }
+        }
+
+        function emailFunc(email) {
+            if (email == 0) {
+                showMessage("Please enter valid email id", "error");
+                e.exit();
+            }
+        }
+
+        return true;
+    }
+    function openratingpopup() {
+        document.getElementById('ratingpopup').style.display = 'block';
+    }
+    function saveCarReview(rate) {
+
+        if (!validateCarReviewSave()) {
+            showMessage("Please fill all the required fields ", "error");
+            document.getElementById('ratingpopup').style.display = 'none';
+        }
+        else {
+
+            if (rate == "Yes") {
+                var rating = $("#rating").val();
+            }
+            else {
+                var rating = 0;
+            }
+
+
+            var message = $("#txtMessage").val();
+            var carId = $("#hdnCarId").val();
+
+
+
+            var pUrl = "/Car/SaveCarReview";
+            $.ajax({
+                type: "POST",
+                url: pUrl,
+                data: { message: message, carId: carId, rate: rating, type : "Review", title : "" },
+                success: function (data) {
+                    if (data.saveResult == true) {
+                        showMessage("Car Review saved successfully", "success");
+                        $("#txtYourName").val('');
+                        $("#txtEmailAddress").val('');
+                        $("#txtMessage").val('');
+                        $("#review").load("/Car/ViewReview?carId=" + carId);
+                        $("#rating").val('0');
+                        $("#CarRating").load("/Car/Ratings?carId=" + carId);
+                        document.getElementById('ratingpopup').style.display = 'none';
+                    }
+                    else {
+                        showMessage("Error occurred while save the car review", "error");
+                        $("#rating").val('0');
+                        document.getElementById('ratingpopup').style.display = 'none';
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while save the car review", "error");
+                    $("#rating").val('0');
+                    document.getElementById('ratingpopup').style.display = 'none';
+                }
+            });
+        }
+    }
+
+     $(document).ready(function () {
+        if ('@userDetail' != null && '@userDetail' != "") {
+            var user = '@Html.Raw(Json.Serialize(userDetail))';
+            var dealersSer = $.parseJSON(user);
+            allDealerInfo = dealersSer;
+            console.log(allDealerInfo);
+            $(dealersSer).each(function (i, v) {
+                $(this.address).each(function (j, a) {
+                    allLocations.push({ dealerName: v.companyName, locations : this });
+                });
+            });
+            currentLocations = allLocations;
+           }
+           InitMap();
+
+     });
+
+    var map;
+    var markers = [];
+
+    function InitMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: new google.maps.LatLng(39.8097343, -98.5556199),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        setMarkers();
+        google.maps.event.trigger(markers[0], 'click');
+    }
+
+    function setMarkers() {
+        var marker, i;
+        var previnfowindow = false;
+        $(currentLocations).each(function (i, v) {
+            var location = v.locations;
+            if (location.lat != null && location.lon != null) {
+                var title = v.dealerName;
+                var address = location.street + "," + location.city + "," + location.state + "," + location.country + "," + location.zip;
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(location.lat, location.lon),
+                    map: map
+                });
+                markers.push(marker);
+
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        if (previnfowindow) {
+                            previnfowindow.close();
+                        }
+                        var html = "<div><div><h5>" + title + "</h5></div>";
+                        html += "<div><div><img src='/images/Default_Car.jpg' alt='' class='img-responsive' style='width:100px;height:70px;' /></div>";
+                        html += "<div style='margin-top:5px;'>" + address + "</div></div></div>";
+                        iw = new google.maps.InfoWindow({
+                            content: html,
+                            maxWidth: 350
+                        });
+                        previnfowindow = iw;
+                        iw.open(map, marker);
+                    }
+                })(marker, i));
+            }
+            console.log(markers);
+        });
+    }
+
+
+</script>

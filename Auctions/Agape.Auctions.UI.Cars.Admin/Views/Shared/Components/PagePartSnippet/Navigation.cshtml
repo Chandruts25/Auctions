@@ -1,0 +1,38 @@
+﻿
+@model IEnumerable<ServiceReference.FolderContent>
+
+<div class="rd-navbar-main-outer">
+    <div class="rd-navbar-main">
+
+        <!-- RD Navbar Panel-->
+        <div class="rd-navbar-panel">
+            <!-- RD Navbar Toggle-->
+            <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+            <!-- RD Navbar Brand-->
+            <div class="rd-navbar-brand">
+                <a class="brand" href="/">
+                    <img class="brand-logo-dark"
+                         src="~/images/logo.png" alt="" />
+                </a>
+            </div>
+        </div>
+
+
+        <div class="rd-navbar-main-element">
+            <div class="rd-navbar-nav-wrap">
+                <!-- RD Navbar Nav-->
+                <ul class="rd-navbar-nav">
+
+                    @foreach (var item in Model)
+                    {
+                        <li class="rd-nav-item">
+                            <a class="rd-nav-link" href="@item.URL">@item.Title</a>
+                        </li>
+
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

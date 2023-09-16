@@ -1,0 +1,25 @@
+﻿@model ServiceReference.Content
+@{ 
+    ViewData["Title"] = "Home";
+}
+
+<div id="welcome" class="section text-center">
+    <section class="parallax-container parallax1" data-parallax-img="https://agape.blob.core.windows.net/orgid-12583/slider-3-1920x1200.jpg">
+        <div class="parallax-content">
+            <div class="container">
+                <div class="brand">
+                    <img src="images/logo-welcome.png" alt="" class="img-responsive">
+                </div>
+                <div class="section-title">Welcome to our website</div>
+                <div class="row ">
+                    <div class="col-sm-12">
+                        @Html.Raw(Model.Body)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+

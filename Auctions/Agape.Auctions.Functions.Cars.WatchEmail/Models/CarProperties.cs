@@ -1,0 +1,166 @@
+﻿using System.Text.Json.Serialization;
+
+namespace Agape.Auctions.Functions.Cars.WatchEmail.Models
+{
+    public partial class CarProperties
+    {
+        [JsonIgnore]
+        public int Year
+        {
+            get
+            {
+                int year = 0;
+                int.TryParse(ModelYear, out year);
+                return year;
+            }
+        }
+        public string ModelYear { get; set; }
+        public string Make { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public string Trim { get; set; } = string.Empty;
+        public string ABS { get; set; } = string.Empty;
+        public string ActiveSafetySysNote { get; set; } = string.Empty;
+        public string AdaptiveCruiseControl { get; set; } = string.Empty;
+        public string AdaptiveDrivingBeam { get; set; } = string.Empty;
+        public string AdaptiveHeadlights { get; set; } = string.Empty;
+        public string AdditionalErrorText { get; set; } = string.Empty;
+        public string AirBagLocCurtain { get; set; } = string.Empty;
+        public string AirBagLocFront { get; set; } = string.Empty;
+        public string AirBagLocKnee { get; set; } = string.Empty;
+        public string AirBagLocSeatCushion { get; set; } = string.Empty;
+        public string AirBagLocSide { get; set; } = string.Empty;
+        public string AutoReverseSystem { get; set; } = string.Empty;
+        public string AutomaticPedestrianAlertingSound { get; set; } = string.Empty;
+        public string AxleConfiguration { get; set; } = string.Empty;
+        public string Axles { get; set; } = string.Empty;
+        public string BasePrice { get; set; } = string.Empty;
+        public string BatteryA { get; set; } = string.Empty;
+        public string BatteryA_to { get; set; } = string.Empty;
+        public string BatteryCells { get; set; } = string.Empty;
+        public string BatteryInfo { get; set; } = string.Empty;
+        public string BatteryKWh { get; set; } = string.Empty;
+        public string BatteryKWh_to { get; set; } = string.Empty;
+        public string BatteryModules { get; set; } = string.Empty;
+        public string BatteryPacks { get; set; } = string.Empty;
+        public string BatteryType { get; set; } = string.Empty;
+        public string BatteryV { get; set; } = string.Empty;
+        public string BatteryV_to { get; set; } = string.Empty;
+        public string BedLengthIN { get; set; } = string.Empty;
+        public string BedType { get; set; } = string.Empty;
+        public string BlindSpotIntervention { get; set; } = string.Empty;
+        public string BlindSpotMon { get; set; } = string.Empty;
+        public string BodyCabType { get; set; } = string.Empty;
+        public string BodyClass { get; set; } = string.Empty;
+        public string BrakeSystemDesc { get; set; } = string.Empty;
+        public string BrakeSystemType { get; set; } = string.Empty;
+        public string BusFloorConfigType { get; set; } = string.Empty;
+        public string BusLength { get; set; } = string.Empty;
+        public string BusType { get; set; } = string.Empty;
+        public string CAN_AACN { get; set; } = string.Empty;
+        public string CIB { get; set; } = string.Empty;
+        public string CashForClunkers { get; set; } = string.Empty;
+        public string ChargerLevel { get; set; } = string.Empty;
+        public string ChargerPowerKW { get; set; } = string.Empty;
+        public string CoolingType { get; set; } = string.Empty;
+        public string CurbWeightLB { get; set; } = string.Empty;
+        public string CustomMotorcycleType { get; set; } = string.Empty;
+        public string DaytimeRunningLight { get; set; } = string.Empty;
+        public string DestinationMarket { get; set; } = string.Empty;
+        public string DisplacementCC { get; set; } = string.Empty;
+        public string DisplacementCI { get; set; } = string.Empty;
+        public string DisplacementL { get; set; } = string.Empty;
+        public string Doors { get; set; } = string.Empty;
+        public string DriveType { get; set; } = string.Empty;
+        public string DriverAssist { get; set; } = string.Empty;
+        public string DynamicBrakeSupport { get; set; } = string.Empty;
+        public string EDR { get; set; } = string.Empty;
+        public string ESC { get; set; } = string.Empty;
+        public string EVDriveUnit { get; set; } = string.Empty;
+        public string ElectrificationLevel { get; set; } = string.Empty;
+        public string EngineConfiguration { get; set; } = string.Empty;
+        public string EngineCycles { get; set; } = string.Empty;
+        public string EngineCylinders { get; set; } = string.Empty;
+        public string EngineHP { get; set; } = string.Empty;
+        public string EngineHP_to { get; set; } = string.Empty;
+        public string EngineKW { get; set; } = string.Empty;
+        public string EngineManufacturer { get; set; } = string.Empty;
+        public string EngineModel { get; set; } = string.Empty;
+        public string EntertainmentSystem { get; set; } = string.Empty;
+        public string ErrorCode { get; set; } = string.Empty;
+        public string ErrorText { get; set; } = string.Empty;
+        public string ForwardCollisionWarning { get; set; } = string.Empty;
+        public string FuelInjectionType { get; set; } = string.Empty;
+        public string FuelTypePrimary { get; set; } = string.Empty;
+        public string FuelTypeSecondary { get; set; } = string.Empty;
+        public string GCWR { get; set; } = string.Empty;
+        public string GCWR_to { get; set; } = string.Empty;
+        public string GVWR { get; set; } = string.Empty;
+        public string GVWR_to { get; set; } = string.Empty;
+        public string KeylessIgnition { get; set; } = string.Empty;
+        public string LaneCenteringAssistance { get; set; } = string.Empty;
+        public string LaneDepartureWarning { get; set; } = string.Empty;
+        public string LaneKeepSystem { get; set; } = string.Empty;
+        public string LowerBeamHeadlampLightSource { get; set; } = string.Empty;
+        public string MakeID { get; set; } = string.Empty;
+        public string Manufacturer { get; set; } = string.Empty;
+        public string ManufacturerId { get; set; } = string.Empty;
+        public string ModelID { get; set; } = string.Empty;
+        public string MotorcycleChassisType { get; set; } = string.Empty;
+        public string MotorcycleSuspensionType { get; set; } = string.Empty;
+        public string NCSABodyType { get; set; } = string.Empty;
+        public string NCSAMake { get; set; } = string.Empty;
+        public string NCSAMapExcApprovedBy { get; set; } = string.Empty;
+        public string NCSAMapExcApprovedOn { get; set; } = string.Empty;
+        public string NCSAMappingException { get; set; } = string.Empty;
+        public string NCSAModel { get; set; } = string.Empty;
+        public string NCSANote { get; set; } = string.Empty;
+        public string Note { get; set; } = string.Empty;
+        public string OtherBusInfo { get; set; } = string.Empty;
+        public string OtherEngineInfo { get; set; } = string.Empty;
+        public string OtherMotorcycleInfo { get; set; } = string.Empty;
+        public string OtherRestraintSystemInfo { get; set; } = string.Empty;
+        public string OtherTrailerInfo { get; set; } = string.Empty;
+        public string ParkAssist { get; set; } = string.Empty;
+        public string PedestrianAutomaticEmergencyBraking { get; set; } = string.Empty;
+        public string PlantCity { get; set; } = string.Empty;
+        public string PlantCompanyName { get; set; } = string.Empty;
+        public string PlantCountry { get; set; } = string.Empty;
+        public string PlantState { get; set; } = string.Empty;
+        public string PossibleValues { get; set; } = string.Empty;
+        public string Pretensioner { get; set; } = string.Empty;
+        public string RearAutomaticEmergencyBraking { get; set; } = string.Empty;
+        public string RearCrossTrafficAlert { get; set; } = string.Empty;
+        public string RearVisibilitySystem { get; set; } = string.Empty;
+        public string SAEAutomationLevel { get; set; } = string.Empty;
+        public string SAEAutomationLevel_to { get; set; } = string.Empty;
+        public string SeatBeltsAll { get; set; } = string.Empty;
+        public string SeatRows { get; set; } = string.Empty;
+        public string Seats { get; set; } = string.Empty;
+        public string SemiautomaticHeadlampBeamSwitching { get; set; } = string.Empty;
+        public string Series { get; set; } = string.Empty;
+        public string Series2 { get; set; } = string.Empty;
+        public string SteeringLocation { get; set; } = string.Empty;
+        public string SuggestedVIN { get; set; } = string.Empty;
+        public string TPMS { get; set; } = string.Empty;
+        public string TopSpeedMPH { get; set; } = string.Empty;
+        public string TrackWidth { get; set; } = string.Empty;
+        public string TractionControl { get; set; } = string.Empty;
+        public string TrailerBodyType { get; set; } = string.Empty;
+        public string TrailerLength { get; set; } = string.Empty;
+        public string TrailerType { get; set; } = string.Empty;
+        public string TransmissionSpeeds { get; set; } = string.Empty;
+        public string TransmissionStyle { get; set; } = string.Empty;
+        public string Trim2 { get; set; } = string.Empty;
+        public string Turbo { get; set; } = string.Empty;
+        public string VIN { get; set; } = string.Empty;
+        public string ValveTrainDesign { get; set; } = string.Empty;
+        public string VehicleType { get; set; } = string.Empty;
+        public string WheelBaseLong { get; set; } = string.Empty;
+        public string WheelBaseShort { get; set; } = string.Empty;
+        public string WheelBaseType { get; set; } = string.Empty;
+        public string WheelSizeFront { get; set; } = string.Empty;
+        public string WheelSizeRear { get; set; } = string.Empty;
+        public string Wheels { get; set; } = string.Empty;
+        public string Windows { get; set; } = string.Empty;
+    }
+}

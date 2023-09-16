@@ -1,0 +1,27 @@
+{
+    "type": "purchase",
+    "id":"[GUID]",
+    "version": "1",
+    "owner": "[userId]",
+    "date": "[DateTime]",
+    "items": ["[carId]"],
+    "price": 20345.98,
+    "processed":true,
+    "car": {
+        "type": "car",
+        "carId":"[GUID]",
+        "version": "1",
+        "vin": "shfkasjhdfkjhjshdfaj",
+        "salePrice": 34934.95,
+        "description": "This is a cool car!!",
+        "properties":{
+            "year": 2009,
+            "make": "Ram",
+            "model": "2500",
+            "trim": "Big Horn"
+            },
+        "hasImages": true,
+        "status": "sold",
+        "sellerId": "[userId]"
+        }
+}

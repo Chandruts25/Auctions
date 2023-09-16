@@ -1,0 +1,200 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+<style>
+    ul.nav.nav-tabs li a {
+        color: #8b8282;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        text-align: center;
+    }
+
+    a.nav-link.active {
+        font-weight: bold !important;
+        color: black;
+        border-bottom: 2px solid;
+    }
+
+    .col-sm-12.new-1 {
+        margin-bottom: 30px;
+    }
+
+        .col-sm-12.new-1 h2 {
+            color: #666666 !important;
+        }
+
+    .new-row li {
+        list-style: none;
+        text-decoration: none;
+    }
+
+    .section {
+        background: whitesmoke;
+    }
+
+    .sectionBlock {
+        background: white;
+        min-height: 564px;
+    }
+
+    .rd-navbar-main-outer {
+        background: white;
+    }
+
+    .sectionContent li a {
+        text-decoration: none !important;
+    }
+
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+    img.client-banner {
+        height: 150px;
+        margin-top: -207px;
+        margin-left: 40px;
+        border: 3px solid white;
+        border-radius: 10px;
+    }
+
+    li.blue {
+        color: #60b5e7;
+        font-weight: bold;
+    }
+
+    .sectionBlock li a {
+        text-decoration: none;
+        /* list-style: none; */
+    }
+
+    .sectionBlock li {
+        list-style: none;
+    }
+
+    .section.pre-footer.novi-background.bg-cover {
+        background: #333333;
+    }
+
+    ul.nav.nav-tabs {
+        margin-right: 32px;
+    }
+
+    .sectionBlock.new-last li {
+        line-height: 38px;
+        border-bottom: 1px solid #dddddd;
+        margin-right: 50px;
+        font-size: 14px;
+    }
+</style>
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Bid Car List </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1">
+            <a asp-controller="User" asp-action="Profile">My Account</a><span></span>Bid Car Details
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col" id="divShowErrorSuccess">
+            <div class="col-md-6" id="divDetailText">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content section-md-bottom novi-background bg-cover">
+
+        <div class="container">
+            <div class="row column-content">
+
+                <div class="sectionBlock">
+
+                    <div class="col-sm-11 new-1">
+
+                        <h4 class="text-secondary"> My Car </h4>
+                    </div>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-xxs-12 col-xs-6 col-sm-3">
+                            <div class="product-minimal">
+                                <div class="thumbnail clearfix">
+                                    <figure class="product-minimal-img">
+                                        <a href="#" onclick="openBidDetails('@item.Id')">
+                                            <img src="@item.Thumbnail" alt="" class="img" style="width:343px;height:164px">
+                                        </a>
+                                    </figure>
+                                    <div class="caption">
+                                        <div><p class="small">REGISTERED @item.Year</p></div>
+                                        <div class="product-minimal-title"><a style="cursor:pointer;"> @item.Model @item.Make</a></div>
+
+                                        <div class="info">
+                                            <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                            @*<span class="speed">@item.Mileage KM</span>*@
+                                            <div>
+                                                <button class="btn btn-primary btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="View" onclick="openBidDetails('@item.Id')"><i class="fa fa-table"></i></button>
+                                            </div>
+                                        </div>
+                                        <ul class="tag-list">
+                                            <li>@(item.IsNew ? "New" : "Used")</li>
+                                            <li>>@item.Year</li>
+                                            <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                            <li>@item.Color</li>
+                                            <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    function openBidDetails(carId) {
+        window.location.href = "/User/BidDetails?carId=" + carId + "";
+    }
+</script>

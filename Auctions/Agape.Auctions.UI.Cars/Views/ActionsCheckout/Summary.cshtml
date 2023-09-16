@@ -1,0 +1,346 @@
+﻿@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    string paymentMethod = ViewBag.PaymentMethod;
+    string carId = ViewBag.CarId;
+    decimal bidAmount = ViewBag.BidAmount;
+    string stripeAPIKey = ViewBag.StripeAPIKey;
+    string currentUserEmail = ViewBag.CurrentUserEmail;
+
+}
+<script src="https://js.stripe.com/v3/"></script>
+<link href="~/css/stripe_checkout.css" rel="stylesheet" />
+<link href="~/css/stripe_checkout1.css" rel="stylesheet" />
+
+<style>
+    .CardField-expiry {
+        margin-left: -200px !important;
+    }
+
+    #cardholder-name {
+        margin-bottom: 20px;
+    }
+
+    #card-button {
+        margin-top: 20px;
+    }
+
+    .divCheckout {
+        margin-left: 300px;
+        width: 500px;
+        padding-bottom: 100px;
+        padding-top: 100px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 1px solid #888;
+        width: 385px;
+        padding: 20px;
+        padding-bottom: 30px;
+    }
+
+    div#card-result:before {
+        position: absolute;
+        content: '';
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        background-image: none;
+        z-index: 2;
+        width: 0.6666em;
+        margin-top: -1px;
+        height: 0.6666em;
+        -webkit-transition: background 0.1s ease;
+        transition: background 0.1s ease;
+        border-width: 1px 0px 0px 1px;
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        top: 0%;
+        left: 50%;
+        border-top: 1px solid;
+        background: white;
+        border-left: 1px solid;
+    }
+
+    div#card-result {
+        background-color: #FFFFFF !important;
+        display: none;
+        border: 1px solid;
+        position: relative;
+        margin-top: 7px;
+        background: none #FFFFFF;
+        border: 1px solid;
+        padding: 0px 16px;
+        border-radius: 6px;
+        width: fit-content;
+    }
+
+    .error {
+        display: block !important;
+        color: red !important;
+    }
+
+    .success {
+        display: block !important;
+        color: green !important;
+    }
+</style>
+
+<div class="section">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+                    <input type="hidden" id="hdnPaymentMethod" value="@paymentMethod" />
+                    <input type="hidden" id="hdnCarId" value="@carId" />
+                    <input type="hidden" id="hdnBidAmount" value="@bidAmount" />
+                    @*<input type="text" id="txt1" value="@paymentMethod" />*@
+                    <div class="col-md-6">
+                        <h4> <bold> Bid Checkout </bold> </h4>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="content section-md-bottom novi-background bg-cover">
+        <div class="container">
+            <div class="row" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <!--<div class="row row-fix">
+
+            <div class="col-sm-12 col-md-3 column-sidebar">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 divCheckout">
+                        <input id="cardholder-name" type="text">-->
+            <!-- placeholder for Elements -->
+            <!--<div id="card-element"></div>
+                            <div id="card-result"></div>
+                            <button id="card-button">Save Card</button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+            <div class="row modal-content" id="hide" style="display:none;">
+
+
+                <div class="col-sm-12 text-center">
+                    <img src="~/images/logo.png" style="height: 50px; padding-top: 13px;" />
+                </div>
+
+
+                <div class="col-sm-12 text-center">
+                    <h3 class="color-class"> Register to bid</h3>
+                </div>
+
+                <div class="col-sm-12 text-justify">
+                    <p>We require a valid credit card on file before you can bid. Winning bidders pay a 4.5% buyer’s fee to Cars & Bids on top of the winning bid amount. The minimum buyer’s fee is $225, and the maximum is $4,500.</a></p>
+                </div>
+                <div class="col-sm-12 pt-10 pb-10">
+                    <p>Bids are binding, so please bid wisely!</p>
+
+                </div>
+                <div class="col-sm-12 ">
+                    <h4> Credit Card Information</h4>
+
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="form-group form-wrap">
+                        <label>Cardholder Name</label>
+                        <input id="cardholder-name" class="form-control" type="text">
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-12">
+                    <div class="form-group form-wrap">
+                        <label>Name on card</label>
+                        <div id="card-element" class="form-control"></div>
+                        <div id="card-result"></div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <button id="card-button" class="btn btn-success">Save Card</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    window.addEventListener("pageshow", function (event) {
+        var historyTraversal = event.persisted ||
+            (typeof window.performance != "undefined" &&
+                window.performance.navigation.type === 2);
+        if (historyTraversal) {
+            window.location.href = "/Auctions/Index";
+        }
+    });
+
+    $(document).ready(function () {
+        var paymentMethod = $("#hdnPaymentMethod").val();
+        var carId = $("#hdnCarId").val();
+        if (paymentMethod == "true") {
+
+            //conformation("");
+            biddingCar("");
+            /* $('#hide').hide();*/
+            //window.location.href = "/Auctions";
+            window.location.href = "/Auctions/Details?carId=" + carId;
+        }
+        else {
+            $('#hide').show();
+        }
+    });
+
+    var stripe = Stripe('@stripeAPIKey');
+
+    var elements = stripe.elements();
+    var cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    var cardholderName = document.getElementById('cardholder-name');
+    var cardButton = document.getElementById('card-button');
+    var resultContainer = document.getElementById('card-result');
+
+    cardButton.addEventListener('click', function (ev) {
+
+        stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement,
+            billing_details: {
+                name: cardholderName.value,
+                email: '@currentUserEmail',
+            },
+        }
+        ).then(function (result) {
+            console.log(result);
+            if (result.error) {
+                // Display error.message in your UI
+                showMessage("Error occurred while save the card details, Error Message" + result.error.message, "alert alert-danger");
+                //resultContainer.textContent = result.error.message;
+                resultContainer.textContent = result.error.message;
+
+                resultContainer.classList.add("error");
+                resultContainer.classList.remove("success");
+            } else {
+
+                //conformation(result.paymentMethod.id);
+                biddingCar(result.paymentMethod.id);
+
+                // You have successfully created a new PaymentMethod
+                //resultContainer.textContent = "Created payment method: " + result.paymentMethod.id;
+                resultContainer.textContent = "Created payment method: " + result.paymentMethod.id;
+                resultContainer.classList.add("success");
+                resultContainer.classList.remove("error");
+            }
+        });
+    });
+
+    function showMessage(messageText, labelClass) {
+    //$("#divShowErrorSuccess").show();
+    //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+    //$(window).scrollTop(0);
+    //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function biddingCar(paymentId) {
+
+        var paymentMethod = $("#hdnPaymentMethod").val();
+        var carId = $("#hdnCarId").val();
+        var bidAmount = $("#hdnBidAmount").val();
+
+        var pUrl = "/ActionsCheckout/AddBidding";
+        var biddingDetails = {
+            CarId: carId, BiddingAmount: bidAmount, Deleted: paymentMethod, Type: paymentId
+        };
+
+        var jStr = "biddingDetails=" + JSON.stringify(biddingDetails);
+
+        $.ajax({
+            type: "POST",
+            data: jStr,
+            url: pUrl,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == true) {
+                        showMessage("Successfully Bidded", "success");
+                        window.location.href = "/Auctions/Details?carId=" + carId;
+                    }
+                    else if (data.result == false && data.maxBid == false)
+                    {
+                        showMessage("A bid has already placed for the price. Please try again.", "error");
+                    }
+                    else {
+                        showMessage("Error occurred while save the bid details", "error");
+                    }
+                }
+                else {
+                    showMessage("Error occurred while save the bid details", "error");
+                }
+            },
+            error: function (error) {
+                showMessage("Error occurred while save the bid details", "error");
+            }
+
+        });
+    }
+
+
+    function conformation(id) {
+        var bidAmount = $("#hdnBidAmount").val();
+
+        bidAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(bidAmount);
+
+        let text = "Are you sure you are place a Bid for " + bidAmount + " for the car Yes /No";
+        if (confirm(text) == true) {
+
+            if (id != "") {
+                biddingCar(id)
+           }
+            else {
+                biddingCar("");
+                window.location.href = "/Auctions";
+            }
+        } else {
+            history.back();
+        }
+    }
+
+
+
+
+
+
+</script>
+
+

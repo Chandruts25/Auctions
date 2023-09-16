@@ -1,0 +1,254 @@
+﻿@model IEnumerable<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+@*ADDITIONAL CSS*@
+@*<style>
+    .btn-primary {
+        background-color: #dbdbd9 !important;
+        border-color: #dbdbd9 !important;
+    }
+    .btn-success {
+        background-color: #939393 !important;
+        border-color: #939393 !important;
+    }
+    .rounded-0 {
+        width: 25px;
+        height: 25px;
+        margin-left: 2px;
+        line-height: 1.42857143;
+    }
+</style>*@
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> List Cars </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a asp-controller="User" asp-action="Profile">My Account</a><span></span>Car Details <div style="float:right"><a asp-controller="Car" asp-action="AddEditCar">Add New Car</a></div></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col" id="divShowErrorSuccess">
+        <div class="col-md-6" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+    <div class="container">
+        <div class="row row-fix">
+
+            <div class="col-sm-12 col-md-12 column-content">
+
+                <div class="sectionBlock">
+                    <h5 class="stitle">List Cars </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <div class="col-xs-12 resurcesBlock">
+
+
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    <table id="tblCar" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="th-sm">
+                                                    Details
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>
+
+                                                    <div class="col-sm-12 col-md-12 column-content">
+
+                                                        <div class="row">
+
+                                                            @foreach (var item in Model)
+
+                                                            {
+                                                                <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                                                    <div class="product-minimal">
+                                                                        <div class="thumbnail clearfix">
+                                                                            <figure class="product-minimal-img">
+                                                                                <a href="details.html">
+                                                                                    <img src="@item.Thumbnail" alt="" class="img" style="height:164px">
+                                                                                </a>
+                                                                            </figure>
+                                                                            <div class="caption">
+                                                                                <div><p class="small">REGISTERED @item.Year</p></div>
+                                                                                <div class="product-minimal-title"><a style="cursor:pointer;"> @item.Model @item.Make</a></div>
+
+                                                                                <div class="info">
+                                                                                    <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                                                    @*<span class="speed">@item.Mileage KM</span>*@
+                                                                                    <div>
+                                                                                        <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="View" onclick="viewCar('@item.Id')"><i class="fa fa-table"></i></button>
+                                                                                        <button class="btn btn-success btn-xs rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editCar('@item.Id')"><i class="fa fa-edit"></i></button>
+                                                                                        <button class="btn btn-success btn-xs rounded-0 removecar" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="removeCar('@item.Id')"><i class="fa fa-trash"></i></button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <ul class="tag-list">
+                                                                                    <li>@(item.IsNew ? "New" : "Used")</li>
+                                                                                    <li>@item.Year</li>
+                                                                                    <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                                                    <li>@item.Color</li>
+                                                                                    <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            }
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div>No Records Found</div>
+                                }
+                                <input type="hidden" id="hdnSelectedCarId" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="section">
+
+
+
+
+
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        @*<h4> <b> Dealer Details </b> </h4>*@
+                    </div>
+
+                    @*<div class="col-md-6 float-right">*@
+
+                    <div style="text-align:right;">
+
+                        <div class="txt" style="float:right; padding-top: 10px;">
+
+                            <!--  PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                             EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        // buildGrid();
+    });
+
+
+    function viewCar(carId) {
+        window.location.href = "/Car/View?carId=" + carId + "";
+    }
+    function addCar() {
+        window.location.href = "/Car/AddEditCar";
+    }
+    function editCar(carId) {
+        window.location.href = "/Car/AddEditCar?carId=" + carId + "";
+    }
+
+    function showMessage(messageText, labelClass) {
+        $("#divShowErrorSuccess").show();
+        $("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        $(window).scrollTop(0);
+        $('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+    }
+
+    function removeCar(carId) {
+        if (!confirm("Are you sure want to remove the car?")) {
+            return true;
+        }
+
+        var pUrl = "/Car/RemoveCar";
+        $.ajax({
+            type: "POST",
+            url: pUrl,
+            data: { carId: carId },
+            success: function (data) {
+                if (data.saveResult == true) {
+                    showMessage("Car removed successfully", "alert alert-success");
+                }
+                else {
+                    showMessage("Error occurred while remove the car", "alert alert-danger");
+                }
+            }
+        });
+    }
+
+    function buildGrid() {
+
+        $('#tblCar')
+            .on('init.dt', function () {
+                $('#tblCar').removeClass('dataTable');
+            })
+            .dataTable();
+    }
+
+</script>

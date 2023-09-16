@@ -1,0 +1,209 @@
+﻿@using System.Globalization;
+@model List<Agape.Auctions.Models.Cars.Car>
+@{
+    string[] invalidStatusToShow = { "Hold", "Open", "PaymentPending" };
+    string[] carBrand = new string[Model.Count];
+    string[] carModel = new string[Model.Count];
+    string[] carFuel = new string[Model.Count];
+    int[] carYear = new int[Model.Count];
+    //string[] carStatus = new  string[Model.Count];
+    var i = 0;
+    foreach (var item in Model.Where(i => !invalidStatusToShow.Contains(i.Status)))
+    {
+        carBrand[i] = item.Make;
+        carModel[i] = item.Model;
+        carFuel[i] = item.IsPetrol ? "Petrol" : "Diesel";
+        carYear[i] = item.Year;
+        // carStatus[i] = item.Status;
+        i++;
+    }
+    var Brand = carBrand.Where(i => i != null && i != "").OrderBy(i => i).Distinct().ToList();
+    var CarModel = carModel.Where(i => i != null && i != "").OrderBy(i => i).Distinct().ToList();
+    var Fuel = carFuel.Where(i => i != null && i != "").OrderBy(i => i).Distinct().ToList();
+    var Year = carYear.Where(i => i != null && i != 0).OrderBy(i => i).Distinct().ToList();
+    //var stat = carStatus[i];
+
+    <div class="grid-3 select-wrapper brand first">
+        <label class="brand">Dealer</label>
+        <select>
+            <option value="all">All</option>
+            <option value="AGW">AGW</option>
+            <option value="AgapeWorks">AgapeWorks</option>
+            <option value="BardAssCARZ">BardAssCARZ</option>
+            <option value="AgapeWorksAgapeWorks">AgapeWorksAgapeWorks</option>
+        </select>
+    </div>
+
+    <div class="grid-3 select-wrapper brand first">
+        <label class="brand">Brand</label>
+        <select id="select-brand">
+            <option value="all">All</option>
+            @foreach (var item in Brand)
+            {
+                <option value="@item">@item</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="grid-3 select-wrapper carmodel">
+        <label class="carmodel">Model</label>
+        <select id="select-carmodel">
+            <option value="all">All</option>
+            @foreach (var item in CarModel)
+            {
+                var s = item.Replace(" ", "");
+                <option value="@s">@item</option>
+            }
+
+
+        </select>
+    </div>
+    <div class="grid-3 select-wrapper fuel">
+        <label class="fuel">Fuel</label>
+        <select id="select-fuel">
+            <option value="all">All</option>
+            @foreach (var item in Fuel)
+            {
+                <option value="@item">@item</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="grid-3 select-wrapper reg">
+        <label class="reg">Reg</label>
+        <select id="select-reg">
+            <option value="all">All</option>
+            @foreach (var item in Year)
+            {
+                <option value="reg-@item">@item</option>
+            }
+
+
+        </select>
+    </div>
+    <div class="grid-3 select-wrapper date" style="display:none;">
+        <label class="date">Date</label>
+        <select id="select-date">
+            <option value="all">All</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="182">Last 6 months</option>
+            <option value="365">Last 12 months</option>
+        </select>
+    </div>
+
+}
+<script>
+    var t0 = performance.now();
+    var initialized = false;
+    var $select = $('#stats_filter select');
+
+    function initialize() {
+        mySelectors = [];
+        $statsSection = $('.stats-section');
+        console.log("First search will be costly");
+        $($statsSection).each(function (i, e) {
+            let temp = $(e).data();
+            temp.element = $(e);
+            let myDate = temp.date.split("-");
+            temp.date = new Date(myDate[1] + "-" + myDate[0] + "-" + myDate[2]).getTime();//fix date format and convert to timestamp
+            mySelectors.push(temp);
+        });
+        initialized = true;
+    }
+
+    function Accept() {
+        var x = document.getElementById("cars1");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    $select.change(function () {
+        var value = $("#stat").val();
+        var brand = $("#select-brand").val();
+        var model = $("#select-carmodel").val();
+        var fuel = $("#select-fuel").val();
+        var years = $("#select-reg").val();
+        var year = years.replace("reg-", "");
+        $("#Car").load("/User/StatusList?view=StatusList&status=" + value + "&brand=" + brand + "&model=" + model + "&fuel=" + fuel + "&year=" + year);
+    });
+</script>
+
+@*<script>
+    $select.change(function () {
+        var t0 = performance.now();
+        if (!initialized)
+            initialize();
+
+        var result = mySelectors;
+       
+        $select.each(function () {
+            var val = $(this).val(); //you don't need to search the selected child
+            if (val !== 'all') {
+                switch ($(this).prop('id')) {
+                    case 'select-brand':
+                        result = result.filter(obj => {
+                            return obj.brand === val;
+                        });
+                        break;
+                    case 'select-fuel':
+                        result = result.filter(obj => {
+                            return obj.fuel === val;
+                        });
+                        break;
+                    case 'select-carmodel':
+                        result = result.filter(obj => {
+
+                            return obj.carmodel === val;
+                        });
+                        break;
+                    case 'select-reg':
+
+                        result = result.filter(obj => {
+
+                            return obj.reg === val;
+                        });
+                        break;
+                    case 'select-date':
+                        var selectedDate = new Date(new Date().setDate(new Date().getDate() - val)).getTime(); // timestamp
+                        result = result.filter(obj => {
+                            return obj.date > selectedDate;
+                        });
+                }
+            }
+
+        });
+        console.log(result);
+       
+        $($statsSection).hide();
+        $.each(result, function (i, e) {
+            $(e.element).show();
+        });
+
+        $("#hdn_count").val(result.length);
+       // $('#pagination').pagination('updateItems', result.length);
+        resetPaging(result.length);
+        
+        //var t1 = performance.now();
+        // console.log("Search performance " + (t1 - t0) + " milliseconds.");
+    });
+
+    function resetPaging(itemsCount) {
+        $('#pagination').pagination('destroy');
+        $(".wrapper .item").slice(6).hide();
+        $('#pagination').pagination({
+            items: itemsCount,
+            itemsOnPage: 6,
+            onPageClick: function (noofele) {
+                $(".wrapper .item").hide()
+                    .slice(6 * (noofele - 1),
+                        6 + 6 * (noofele - 1)).show();
+            }
+        });
+    }
+</script>*@

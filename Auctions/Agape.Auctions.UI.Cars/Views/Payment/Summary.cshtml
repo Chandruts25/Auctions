@@ -1,0 +1,866 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    double advancePrice = 0;
+    decimal totalPrices = 0;
+    double tax = 0;
+    double gst = 0;
+    double totalPrice = 0;
+    int advanceCalculatedPercentage = (int)ViewBag.CarAdvanceAmountPercentage;
+    int taxCalculatedPercentage = (int)ViewBag.CarTaxPercentage;
+    int gstCalculationPercentage = (int)ViewBag.GstPercentage;
+    double advanceThresholdAmount = (double)ViewBag.AdvanceThresholdAmount;
+
+
+    if (Model.SalePrice != null)
+    {
+        advancePrice = (Model.SalePrice * advanceCalculatedPercentage) / 100;
+        if (advancePrice > advanceThresholdAmount)
+        {
+            advancePrice = advanceThresholdAmount;
+        }
+        totalPrices = decimal.Parse(advancePrice.ToString());
+
+        tax = (Model.SalePrice * taxCalculatedPercentage) / 100;
+        gst = (advancePrice * gstCalculationPercentage) / 100;
+        totalPrice = advancePrice;
+    }
+}
+
+<style>
+    .modal-content {
+        width: 571px !important;
+        float: left;
+        margin: 100px 35%;
+    }
+
+    .modal {
+        background: #00000073;
+    }
+
+    .new_tab > div {
+        border: none !important;
+    }
+
+    .modal-header {
+        background: #cbb55f;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        color: #1c1c1c;
+    }
+
+        .modal-header h4 {
+            font-weight: bold;
+        }
+
+
+
+    .modal-body label {
+        background: white;
+        @*margin-bottom: -11px;*@
+        padding: 0 3px;
+        float: left;
+        @*margin-left: 17px;*@
+        color: #181c2a;
+        font-weight: bold;
+    }
+
+
+
+    .modal-body .tabs2-wrapper {
+        padding: 15px;
+    }
+
+    .modal-body ul.tabs.clearfix li {
+        margin: 0px;
+        border: 1px solid;
+    }
+
+    span.fuel::before {
+        content: '⛽ ';
+        color: black !important;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    span.Type::before {
+        content: '🚗 ';
+        font-weight: bold;
+        color: black;
+        font-size: 17px;
+    }
+
+    .product-minimal-title.new-title a {
+        font-size: 32px !important;
+    }
+
+    ul.card_logos {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+    .card_visa, .card_mastercard, .card_amex, .card_discover, .card_diners, .card_jcb {
+        display: inline-block;
+        width: 50px;
+        height: 30px;
+        overflow: hidden;
+        text-align: left;
+        text-indent: -999px;
+        background: url(/images/sprite-cards.png) 0 0 no-repeat;
+
+    }
+
+.card_mastercard {
+	background-position: -55px 0;
+}
+
+.card_amex {
+	background-position: -110px 0;
+}
+
+.card_discover {
+	background-position: -165px 0;
+}
+
+.card_diners {
+	background-position: -220px 0;
+}
+
+.card_jcb {
+	background-position: -660px 0;
+}
+
+.is_visa li, .is_mastercard li, .is_amex li, .is_discover li, .is_diners li, .is_jcb li, .is_nothing li {
+	opacity: 0;
+}
+
+    .is_visa li.card_visa, .is_mastercard li.card_mastercard, .is_amex li.card_amex, .is_discover li.card_discover, .is_diners li.card_diners, .is_jcb li.card_jcb {
+        opacity: 1;
+        float: left;
+        display: block;
+    }
+
+    .p-bg {
+        background: black;
+    }
+    .clsExpiry {
+        background-color: coral;
+    }
+</style>
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Payment Summary </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Payment</div>
+    </div>
+</div>
+
+
+@if (Model != null)
+{
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+                   
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <form id="paymentForm" action="/CreatePurchaseOrderPayments" method="POST">
+
+                <div class="row row-fix">
+                    <div class="col-sm-12 col-md-12 column-content">
+
+                        <input type="hidden" name="carId" id="hdnCarId" value="@Model.Id" />
+                        <input type="hidden" id="hdnCarOwner" name="owner" value="@Model.Owner" />
+
+                        <div class="col-sm-7 product-minimal">
+
+                            <img src="@Model.Thumbnail" style="width: 100%;" />
+
+                            <div class="caption">
+                                <div class="product-minimal-title new-title"><a href="#">@Model.Model @Model.Make</a></div>
+                                <p class="small">REGISTERED @Model.Year</p>
+
+
+                                <div class="info">
+                                    <span class="price">@Model.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                    <span class="speed">@Model.Mileage Miles</span>
+
+                                </div>
+
+                                <p>@Model.Description</p>
+
+                                <ul class="tag-list">
+                                    <li><a href="#">@(Model.IsNew ? "New" : "Used")</a></li>
+                                    <li><a href="#">@Model.Year</a></li>
+                                    <li><a href="#">@(Model.IsAutomatic ? "Automatic" : "Gear")</a></li>
+                                    <li><a href="#">@Model.Color</a></li>
+                                    <li><a href="#">@(Model.IsPetrol ? "Petrol" : "Diesel")</a></li>
+                                    <li><a href="@Model.Thumbnail" target="_blank"> Video</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+
+                            <div class="col-sm-12 pt-0 modal-body">
+                                <div class="col-sm-12 p-0">
+                                    <input type="hidden" id="hdnExpiryTime" value="12" />
+                                    <p class="text-center text-white mt-5 p-5 p-bg" id="pExpiry">Your sale will ends in, <span class="countdown"></span></p>
+
+                                </div>
+                                @*<div class="col-sm-12">
+                                        <h4 class="mt-5">Payment Details</h4>
+                                    </div>*@
+
+                                @*<div class="col-sm-12 sidebar-form ">
+                                        <div class="col-sm-12">
+                                            <div class="form-group form-wrap">
+                                                <label for="txtInitialPayment"> Payment Amount</label>
+                                                <input type="text" class="form-control" readonly id="txtInitialPayment" value="@advancePrice.ToString("C", CultureInfo.CurrentCulture)">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group form-wrap">
+                                                <label for="txtGST"> GST (10%)</label>
+                                                <input type="text" class="form-control" readonly id="txtGST" value="@gst.ToString("C", CultureInfo.CurrentCulture)">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <div class="form-group form-wrap">
+                                                <label for="txtApplyPromoCode"> Do you have any Promo </label>
+                                                <input type="text" class="form-control" id="txtApplyPromoCode" value="">
+                                                <label id="myElem" style="display: none; color: green;"> Applied Promo Code</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-3 pt-25 pl-15 " style="padding-top:27px !important">
+                                            <div class="form-group form-wrap">
+
+                                                <input type="button" id="btnApplyCoupun" value="Apply" class="btn btn-success" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group form-wrap">
+                                                <label for="txtTotl"> Total Amount (Advance + Tax + GST)</label>
+                                                <input type="text" class="form-control" readonly id="txtTotl" value="@totalPrice.ToString("C", CultureInfo.CurrentCulture)">
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                <div class="col-sm-12">
+                                    <h4 class="mt-5">Billing Details</h4>
+                                </div>
+
+
+                                <div class="col-sm-12 sidebar-form ">
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-wrap">
+                                            <label for="txtInitialPayment"> Payment Amount</label>
+                                            <input type="text" class="form-control" readonly id="txtInitialPayment" value="@advancePrice.ToString("C", CultureInfo.CurrentCulture)">
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-sm-12">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputholdername"> Card Holder Name </label>
+                                            <input type="text" class="form-control" id="inputholdername" name="holdername" onkeypress="removeInvalidClass('inputholdername')">
+                                        </div>
+                                    </div>*@
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputstreet"> Street </label>
+                                            <input type="text" class="form-control" id="inputstreet" name="street" onkeypress="removeInvalidClass('inputstreet')">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-8">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputcity"> City </label>
+                                            <input type="text" class="form-control" id="inputcity" name="city" onkeypress="removeInvalidClass('inputcity')">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputzip"> Zip </label>
+                                            <input type="text" class="form-control" id="inputzip" name="zip" onkeypress="removeInvalidClass('inputzip')">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputcountry"> Country </label>
+                                            @Html.DropDownList("country", ViewBag.Countries as SelectList, new { @id = "cmbCountry", @name = "country", @class = "form-control", @onChange = "filterStates('')" })
+                                            @*<input type="text" class="form-control" id="inputstate" name="state" onkeypress="removeInvalidClass('inputstate')">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <label for="cmbState"> State </label>
+                                            <select class="form-control" id="cmbState" name="state"></select>
+                                            @*<input type="text" class="form-control" id="inputState" name="country" onkeypress="removeInvalidClass('inputcountry')">*@
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <label for="cc"> Card No </label>
+                                            <input type="text" class="form-control" id="cc" name="cardno" placeholder="0000 0000 0000 0000" onkeypress="return checkDigit(event); removeInvalidClass('cc')">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <ul class="card_logos">
+                                                <li class="card_visa">Visa</li>
+                                                <li class="card_mastercard">Mastercard</li>
+                                                <li class="card_amex">American Express</li>
+                                                <li class="card_discover">Discover</li>
+                                                <li class="card_jcb">JCB</li>
+                                                <li class="card_diners">Diners Club</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputExpiry"> Expiry </label>
+                                            <input type="text" class="form-control" id="inputExpiry" name="expiry" placeholder="MM/YY" maxlength="5" onkeyup="formatString(event); removeInvalidClass('inputExpiry')">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-wrap">
+                                            <label for="inputcvv"> CVV </label>
+                                            <input type="password" class="form-control" id="inputcvv" name="cvv" maxlength="3" onkeypress="removeInvalidClass('inputcvv')">
+                                        </div>
+                                    </div>*@
+
+                                <div class="mr-15 float-right">
+                                    <input type="hidden" id="hdnTotalPrice" name="totalPrice" value="@totalPrices" />
+                                    <button type="button" class="btn btn-info" onclick="resetInputs()">Clear</button>
+                                    <button type="button" id="btnPayment" onclick="sendPayment()" class="btn btn-success">PAY - @advancePrice.ToString("C", CultureInfo.CurrentCulture)</button>
+                                </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="snackbars" id="form-output-global"></div>
+
+}
+
+<script src="~/js/bootstrap.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+
+        //document.getElementById('cc').oninput = function () {
+        //    this.value = cc_format(this.value)
+        //}
+
+        //$('#btnApplyCoupun').click(function () {
+        //    calculation();
+        //});
+
+        //$('#cc').creditCardTypeDetector({ 'credit_card_logos': '.card_logos' });
+
+        $("#cmbCountry").val("US");
+        filterStates();
+    });
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+
+    function filterStates(selectedState) {
+        var country = $("#cmbCountry").val()
+        if (country) {
+            var pUrl = "/User/GetStateByCountry?countryCode=" + country;
+            $.ajax({
+                type: "GET",
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        console.log(data);
+                        if (data.restult == true) {
+                            console.log(data.states);
+
+                            var drpState = $('#cmbState');
+                            drpState.empty();
+                            $.each(data.states, function (index, item) {
+                                drpState.append(
+                                    $('<option>', {
+                                        value: item.stateName,
+                                        text: item.stateName
+                                    }, '</option>'))
+                            });
+
+                            if (selectedState)
+                                $("#cmbState").val($("#hdnTmpState").val());
+
+                        }
+                        else {
+                            showMessage("Error occurred while getting the state Please try again later, ErrorMessage :" + data.errorMessage, "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while getting the state Please try again later", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while getting the state Please try again later", "error");
+                }
+
+            });
+
+        }
+        else {
+            resetCarProperties();
+            showMessage("Please select the country to continue", "error");
+        }
+    }
+
+    function showMessageWarning() {
+        $("#divShowErrorSuccess").show();
+        $("#divDetailText").html("<div class='alert alert-danger'>Your payment is under process, Please don't refresh or close the screen</div>");
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divShowErrorSuccess").delay(1000).slideDown();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //// $('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        //$("#divShowErrorSuccess").delay(2000).slideUp();
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validatePayment() {
+        var lstInvalidControls = [];
+
+        //if (!$("#inputcountry").val())
+        //    lstInvalidControls.push('inputcountry');
+        //if (!$("#inputstate").val())
+        //    lstInvalidControls.push('inputstate');
+        if (!$("#inputcity").val())
+            lstInvalidControls.push('inputcity');
+        if (!$("#inputzip").val())
+            lstInvalidControls.push('inputzip');
+        if (!$("#inputstreet").val())
+            lstInvalidControls.push('inputstreet');
+        //if (!$("#cc").val())
+        //    lstInvalidControls.push('cc');
+        //if (!$("#inputExpiry").val())
+        //    lstInvalidControls.push('inputExpiry');
+        //if (!$("#inputcvv").val())
+        //    lstInvalidControls.push('inputcvv');
+        //if (!$("#inputholdername").val())
+        //    lstInvalidControls.push('inputholdername');
+
+        if (lstInvalidControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+            return false;
+        }
+        return true;
+    }
+
+    function resetInputs() {
+        $("#cmbCountry").val("");
+        $("#cmbState").val("");
+        $("#inputcity").val("");
+        $("#inputzip").val("");
+        $("#inputstreet").val("");
+        $("#cc").val("");
+        $("#inputExpiry").val("");
+        $("#inputcvv").val("");
+        $("#inputholdername").val("");
+    }
+
+    function sendPayment() {
+        if (!validatePayment()) {
+            showMessage("Please fill all required fields then continue", "error")
+        }
+        else {
+            $.blockUI({
+               
+            });
+            //showMessageWarning();
+            var inputcountry = $("#cmbCountry").val();
+            var inputstate = $("#cmbState").val();
+            var inputcity = $("#inputcity").val();
+            var inputzip = $("#inputzip").val();
+            var inputstreet = $("#inputstreet").val();
+            var cc = $("#cc").val();
+            var inputExpiry = $("#inputExpiry").val();
+            var inputcvv = $("#inputcvv").val();
+            var inputholdername = $("#inputholdername").val();
+            var carOwner = $("#hdnCarOwner").val();
+            var carId = $("#hdnCarId").val();
+
+            var billing = { Country: inputcountry, Street: inputstreet, City: inputcity, State: inputstate, Zip: inputzip }
+            var payment = { Owner: carOwner, Status: carId, BillingDetails: billing, Version: $("#hdnTotalPrice").val() }
+
+            var jStr = "paymentDetails=" + encodeURIComponent(JSON.stringify(payment));
+
+            $("#paymentForm").submit();
+
+
+            //var pUrl = "/Payment/CreatePurchaseOrderPayment";
+
+            //$.ajax({
+            //    type: "POST",
+            //    data: jStr,
+            //    url: pUrl,
+            //    dataType: "json",
+            //    success: function (data) {
+            //        if (data != null) {
+            //            if (data.result == true) {
+            //                //showMessage("Purchase Order Created Successfully", "alert alert-success");
+            //               // var totalAmount = $("#hdnTotalPrice").val();
+            //               // window.location.href = "/Payment/OrderConfirmation?id=" + totalAmount;
+            //            }
+            //            else {
+            //                showMessage("Error occured while create the purchse order", "alert alert-danger");
+            //            }
+            //        }
+            //        else {
+            //            showMessage("Error occured while create the purchse order", "alert alert-danger");
+            //        }
+            //    },
+            //    error: function (error) {
+            //        showMessage("Error occured while create the purchse order", "alert alert-danger");
+            //    }
+
+            //});
+
+        }
+    }
+
+
+    function cc_format(value) {
+        var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+        var matches = v.match(/\d{4,16}/g);
+        var match = matches && matches[0] || ''
+        var parts = []
+        for (i = 0, len = match.length; i < len; i += 4) {
+            parts.push(match.substring(i, i + 4))
+        }
+        if (parts.length) {
+            return parts.join(' ')
+        } else {
+            return value
+        }
+    }
+
+    function checkDigit(event) {
+        var code = (event.which) ? event.which : event.keyCode;
+
+        if ((code < 48 || code > 57) && (code > 31)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function formatString(e) {
+        var inputChar = String.fromCharCode(event.keyCode);
+        var code = event.keyCode;
+        var allowedKeys = [8];
+        if (allowedKeys.indexOf(code) !== -1) {
+            return;
+        }
+
+        event.target.value = event.target.value.replace(
+            /^([1-9]\/|[2-9])$/g, '0$1/' // 3 > 03/
+        ).replace(
+            /^(0[1-9]|1[0-2])$/g, '$1/' // 11 > 11/
+        ).replace(
+            /^([0-1])([3-9])$/g, '0$1/$2' // 13 > 01/3
+        ).replace(
+            /^(0?[1-9]|1[0-2])([0-9]{2})$/g, '$1/$2' // 141 > 01/41
+        ).replace(
+            /^([0]+)\/|[0]+$/g, '0' // 0/ > 0 and 00 > 0
+        ).replace(
+            /[^\d\/]|^[\/]*$/g, '' // To allow only digits and `/`
+        ).replace(
+            /\/\//g, '/' // Prevent entering more than 1 `/`
+        );
+    }
+
+
+
+    function calculation() {
+        var total = $('#txtInitialPayment').val();
+
+
+        var arr = total.split(' ');
+        var amount = arr[1];
+
+        amount = amount.replace(",", "")
+
+        amount = parseFloat(amount);
+
+        var gst = amount / 10;
+
+        var tot_price = amount + gst;
+
+        var code = $('#txtApplyPromoCode').val();
+
+        if (code == "") {
+
+            $('#txtGST').val('₹ ' + gst);
+
+            $('#txtTotl').val('₹ ' + tot_price);
+            $("#btnPayment").html('PAY - ₹ ' + tot_price);
+        }
+        else {
+
+            var less = tot_price / 10;
+
+            $('#txtGST').val('₹ ' + gst);
+
+            var last_amount = tot_price - less;
+
+            $('#txtTotl').val('₹ ' + last_amount);
+
+            $("#btnPayment").html('PAY - ₹ ' + last_amount);
+
+            $("#myElem").show().delay(5000).fadeOut();
+
+
+
+        }
+
+    }
+
+
+    (function ($) {
+        $.fn.creditCardTypeDetector = function (options) {
+            console.log('test');
+            var settings = $.extend({
+                'credit_card_logos_id': '.card_logos'
+            }, options),
+
+                // the object that contains the logos
+                logos_obj = $(settings.credit_card_logos_id),
+
+                // the regular expressions check for possible matches as you type, hence the OR operators based on the number of chars
+                // Visa
+                visa_regex = new RegExp('^4[0-9]{0,15}$'),
+
+                // MasterCard
+                mastercard_regex = new RegExp('^5$|^5[1-5][0-9]{0,14}$'),
+
+                // American Express
+                amex_regex = new RegExp('^3$|^3[47][0-9]{0,13}$'),
+
+                // Diners Club
+                diners_regex = new RegExp('^3$|^3[068]$|^3(?:0[0-5]|[68][0-9])[0-9]{0,11}$'),
+
+                //Discover
+                discover_regex = new RegExp('^6$|^6[05]$|^601[1]?$|^65[0-9][0-9]?$|^6(?:011|5[0-9]{2})[0-9]{0,12}$'),
+
+                //JCB
+                jcb_regex = new RegExp('^2[1]?$|^21[3]?$|^1[8]?$|^18[0]?$|^(?:2131|1800)[0-9]{0,11}$|^3[5]?$|^35[0-9]{0,14}$');
+
+            return this.each(function () {
+                // as the user types
+                $(this).keyup(function () {
+                    var cur_val = $(this).val();
+
+                    // get rid of spaces and dashes before using the regular expression
+                    cur_val = cur_val.replace(/ /g, '').replace(/-/g, '');
+
+                    // checks per each, as their could be multiple hits
+                    if (cur_val.match(visa_regex)) {
+                        $(logos_obj).addClass('is_visa');
+                    } else {
+                        $(logos_obj).removeClass('is_visa');
+                    }
+
+                    if (cur_val.match(mastercard_regex)) {
+                        $(logos_obj).addClass('is_mastercard');
+                    } else {
+                        $(logos_obj).removeClass('is_mastercard');
+                    }
+
+                    if (cur_val.match(amex_regex)) {
+                        $(logos_obj).addClass('is_amex');
+                    } else {
+                        $(logos_obj).removeClass('is_amex');
+                    }
+
+                    if (cur_val.match(diners_regex)) {
+                        $(logos_obj).addClass('is_diners');
+                    } else {
+                        $(logos_obj).removeClass('is_diners');
+                    }
+
+                    if (cur_val.match(discover_regex)) {
+                        $(logos_obj).addClass('is_discover');
+                    } else {
+                        $(logos_obj).removeClass('is_discover');
+                    }
+
+                    if (cur_val.match(jcb_regex)) {
+                        $(logos_obj).addClass('is_jcb');
+                    } else {
+                        $(logos_obj).removeClass('is_jcb');
+                    }
+
+                    // if nothing is a hit we add a class to fade them all out
+                    if (cur_val != '' && !cur_val.match(visa_regex) && !cur_val.match(mastercard_regex)
+                        && !cur_val.match(amex_regex) && !cur_val.match(diners_regex)
+                        && !cur_val.match(discover_regex) && !cur_val.match(jcb_regex)) {
+                        $(logos_obj).addClass('is_nothing');
+                    } else {
+                        $(logos_obj).removeClass('is_nothing');
+                    }
+                });
+            });
+        };
+    })(jQuery);
+
+
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    var new_time = getUrlVars()["new"];
+
+
+    $('#hdnExpiryTime').val(new_time)
+
+    var timer2 = $('#hdnExpiryTime').val();
+
+    var timerNew = timer2.split(':');
+    //by parsing integer, I avoid all extra string processing
+    var minutesNew = parseInt(timerNew[0], 10);
+    var secondsNew = parseInt(timerNew[1], 10);
+
+    var delay = (60000 * minutesNew) + (1000 * secondsNew);
+    console.log(delay);
+    setTimeout(function () { window.location = "/"; },
+        delay);
+
+    //timer2 = timer2 + ':00'
+    var interval = setInterval(function () {
+
+
+        var timer = timer2.split(':');
+        //by parsing integer, I avoid all extra string processing
+        var minutes = parseInt(timer[0], 10);
+        var seconds = parseInt(timer[1], 10);
+        --seconds;
+        minutes = (seconds < 0) ? --minutes : minutes;
+        if (minutes < 0) clearInterval(interval);
+        seconds = (seconds < 0) ? 59 : seconds;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+        //minutes = (minutes < 10) ?  minutes : minutes;
+
+        var lblmin;
+
+        if (minutes < 2) {
+            lblmin = 'min'
+        }
+        else {
+            lblmin = 'mins'
+        }
+
+        if (minutes < 0) {
+            $('.countdown').html('0 ' + lblmin + ' 00 sec');
+        }
+        else {
+            if (seconds <= 10 && (minutes == 0 || minutes == "0")) {
+                $('#pExpiry').addClass("clsExpiry")
+                $("#pExpiry").html("Your page expire soon")
+            }
+            else {
+
+                $('.countdown').html(minutes + ' ' + lblmin + ' ' + seconds + ' sec');
+            }
+        }
+
+
+
+        timer2 = minutes + ':' + seconds;
+
+        Time_pass = minutes + ':' + seconds;
+
+    }, 1000);
+
+    //var expiryValue = $("#hdnExpiryTime").val();
+    //var delay = 60000 * expiryValue;
+    //setTimeout(function () { window.location = "/"; },
+    //    delay);
+
+
+</script>

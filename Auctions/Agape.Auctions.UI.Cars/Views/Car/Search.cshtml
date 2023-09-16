@@ -1,0 +1,302 @@
+﻿@{
+    ViewData["Title"] = "Search";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+<style>
+    .slider-form {
+        width: 400px;
+        /* display: none; */
+        position: absolute;
+        z-index: 2;
+        right: calc(50% - 704px);
+        transform: translateY(-50%);
+        top: 265px !important;
+    }
+        
+</style>
+
+<section id="search-car" class="section swiper-container swiper-slider swiper-slider-3" data-loop="true"
+         data-autoplay="false" data-simulate-touch="false" data-slide-effect="fade">
+
+
+    <div class="swiper-wrapper text-right">
+
+        <div class="swiper-slide context-dark" data-slide-bg="/images/slider-2-1920x300.jpg"
+             style="background-position: 50% 50%;">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>Chevrolet Camaro ZL1</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button"><span> SEE DETAILS</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide context-dark" data-slide-bg="/images/slider-3-1920x1200.jpg"
+             style="background-position: 50% 50%;">
+            <div class="swiper-slide-caption">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4> FIND YOUR DREAM CAR </h4>
+                            <h1>BMW 330e iPERFORMANCE</h1>
+                            <h3>MODEL 2017 <span>$99,000</span></h3>
+                            <a class="button"><span> SEE DETAILS</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="slider-form">
+            <div class="sidebar-form-wrapper">
+                <div class="sidebar-form">
+                    <form action="javascript:;" class="form2">
+                        <div class="select1_wrapper">
+                            <label>SELECT A MANUFACTURER</label>
+                            <div class="select1_inner">
+                                @Html.DropDownList("cmbMake", ViewBag.Makes as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                            </div>
+                        </div>
+                        <div class="select1_wrapper">
+                            <label>SELECT A MODEL</label>
+                            <div class="select1_inner">
+                                @Html.DropDownList("cmbModel", ViewBag.Models as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                            </div>
+                        </div>
+                        <div class="select1_wrapper">
+                            <label>Model Year From</label>
+                            <div class="select1_inner">
+                                @Html.DropDownList("cmbModelFrom", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                            </div>
+                        </div>
+                        <div class="select1_wrapper">
+                            <label>Model Year To</label>
+                            <div class="select1_inner">
+                                @Html.DropDownList("cmbModelTo", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                            </div>
+                        </div>
+
+                        <div class="slider-range-wrapper">
+                            <div class="txt">PRICE RANGE</div>
+                            <div class="slider-range"></div>
+                            <div class="clearfix">
+                                <input type="text" id="startAmount" class="amount" readonly="">
+                                <input type="text" id="endAmount" class="amount2" readonly="">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-default btn-form2-submit" onclick="filterCars()">SUBMIT FILTERS</button>
+                        <div id="btnReset" class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>*@
+
+
+
+
+
+
+    <!-- Swiper Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Swiper Navigation-->
+    <div class="swiper-button-prev fa-arrow-left"></div>
+    <div class="swiper-button-next fa-arrow-right"></div>
+
+</section>
+
+
+<div class="slider-form search-section">
+    <div class="sidebar-form-wrapper">
+        <div class="sidebar-form">
+            <form action="javascript:;" class="form3">
+
+                <div class="select1_wrapper col-md-6">
+                    <label>SELECT A MANUFACTURER</label>
+                    <div class="select1_inner">
+                        @Html.DropDownList("cmbMake", ViewBag.Makes as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                    </div>
+                </div>
+
+                <div class="select1_wrapper col-md-6">
+                    <label>SELECT A MODEL</label>
+                    <div class="select1_inner">
+                        @Html.DropDownList("cmbModel", ViewBag.Models as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                    </div>
+                </div>
+
+                <div class="select1_wrapper col-md-6">
+                    <label>FROM YEAR</label>
+                    <div class="select1_inner">
+                        @Html.DropDownList("cmbModelYearFrom", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                    </div>
+                </div>
+
+                <div class="select1_wrapper col-md-6">
+                    <label>TO YEAR</label>
+                    <div class="select1_inner">
+                        @Html.DropDownList("cmbModelYearTo", ViewBag.ModelYear as SelectList, new { @class = "select2 select", @onChange = "filterCars()" })
+                    </div>
+                </div>
+
+                @*<div class="slider-range-wrapper col-md-6">
+                        <div class="txt">PRICE RANGE</div>
+                        <div class="slider-range"></div>
+                        <div class="clearfix">
+                            <input type="text" id="startAmount" class="amount" readonly="">
+                            <input type="text" id="endAmount" class="amount2" readonly="">
+                        </div>
+                    </div>*@
+
+                <button type="submit" class="btn-default btn-form2-submit" onclick="filterCars()">SEARCH</button>
+                <div id="btnReset" class="reset-filters"><a href="#">RESET ALL FILTERS</a></div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+    <div id="favorites" class="section section-md best novi-background bg-cover">
+        <div class="container">
+            @*<div class="section-title-md">
+                    FAVORITES FROM AUTOCLUB
+                </div>*@
+            <div class="tabs-custom tabs-horizontal tabs-corporate" id="tabs-1">
+                @*<ul class="nav nav-tabs">
+                        <li class="active" role="presentation">
+                            <a href="#tabs-1-1" data-toggle="tab">Most researched manufacturers</a>
+                        </li>
+                    </ul>*@
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabs-1-1">
+                        <div class="row row-fix">
+                            <div class="col-sm-12 col-md-3" id="filter_Fav">
+                                @await Component.InvokeAsync("Car", new { viewName = "FilterFav", make = "0", model = "0", startPrice = "0", endPrice = "100000000000000" })
+                            </div>
+
+                            <div class="col-sm-12 col-md-9">
+                                <div class="row wrapper" id="divSearchResults">
+
+                                    @await Component.InvokeAsync("Car", new { viewName = "SearchResults", make = "0", model = "0", startPrice = "0", endPrice = "100000000000000" })
+
+                                </div>
+                                <div id="pagination" style="display: flex; justify-content: center; align-items: center;"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+<script type="text/javascript">
+    function filterCars() {
+        var make = $("#cmbMake").val();
+        var model = $("#cmbModel").val();
+        //var startPrice = $("#startAmount").val().replace("$","");
+        //var endPrice = $("#endAmount").val().replace("$", "");
+        var modelYearFrom = $("#cmbModelYearFrom").val();
+        var modelYearTo = $("#cmbModelYearTo").val();
+
+        if (modelYearTo == "0")
+            modelYearTo = new Date().getFullYear();
+
+        //if (startPrice == endPrice) {
+        //    alert("End price should be greater than start price. Please change the Price range and retry");
+        //    return false;
+        //}
+
+        if (modelYearFrom == modelYearTo) {
+            alert("Model To Year should be greater than start year. Please change the year range and retry");
+            return false;
+        }
+
+        $('#divSearchResults').load("/Car/SearchResults?make=" + encodeURIComponent(make) + "&model=" + model + "&startPrice=" + 0 + "&endPrice=" + 100000000 + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");
+        $('#filter_Fav').load("/Car/FilterFav?make=" + encodeURIComponent(make) + "&model=" + model + "&startPrice=" + 0 + "&endPrice=" + 100000000 + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");
+    }
+    function filterMake(make) {
+        $("#" + make).addClass('active');
+        if (make == "All") {
+            var make = $("#cmbMake").val();
+        }
+
+        var model = $("#cmbModel").val();
+        //var startPrice = $("#startAmount").val().replace("$","");
+        //var endPrice = $("#endAmount").val().replace("$", "");
+        var modelYearFrom = $("#cmbModelYearFrom").val();
+        var modelYearTo = $("#cmbModelYearTo").val();
+
+        if (modelYearTo == "0")
+            modelYearTo = new Date().getFullYear();
+
+        //if (startPrice == endPrice) {
+        //    alert("End price should be greater than start price. Please change the Price range and retry");
+        //    return false;
+        //}
+
+        if (modelYearFrom == modelYearTo) {
+            alert("Model To Year should be greater than start year. Please change the year range and retry");
+            return false;
+        }
+        $('#divSearchResults').load("/Car/SearchResults?make=" + encodeURIComponent(make) + "&model=" + model + "&startPrice=" + 0 + "&endPrice=" + 100000000 + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");
+       /* $('#filter_Fav').load("/Car/FilterFav?make=" + encodeURIComponent(make) + "&model=" + model + "&startPrice=" + 0 + "&endPrice=" + 100000000 + "&yearFrom=" + modelYearFrom + "&yearTo=" + modelYearTo + "");*/
+        
+       
+    }
+    $(document).ready(function () {
+
+        $("#btnReset").bind("click", function () {
+
+            $('select#cmbMake').val(0).select2();
+            $('select#cmbModel').val(0).select2();
+            $('select#type').val(1).select2();
+            $('select#cmbModelYearFrom').val(0).select2();
+            $('select#cmbModelYearTo').val(0).select2();
+            filterCars();
+        });
+
+    });
+
+</script>
+<script>
+
+    $(".wrapper .item").slice(12).hide();
+    $('#pagination').pagination({
+
+        // Total number of items present
+        // in wrapper class
+        items: $("#hdn_count").val(),
+
+
+
+        // Items allowed on a single page
+        itemsOnPage: 12,
+        onPageClick: function (noofele) {
+            $(".wrapper .item").hide()
+                .slice(12 * (noofele - 1),
+                    12 + 12 * (noofele - 1)).show();
+        }
+    });
+
+</script>

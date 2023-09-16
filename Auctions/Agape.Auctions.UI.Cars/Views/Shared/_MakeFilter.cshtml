@@ -1,0 +1,26 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+
+@{
+    string[] carBrand = new string[Model.Count];
+    var i = 0;
+    foreach (var item in Model)
+    {
+        carBrand[i] = item.Make;
+        i++;
+    }
+    var Brand = carBrand.Distinct().ToList();
+}
+<div class="col-sm-12 col-md-3">
+    <ul class="product-filter">
+        <li>
+            <a onclick="filterMake('All')">All</a>
+        </li>
+        @foreach (var item in Brand)
+        {
+            <li>
+                <a onclick="filterMake('@item')">@item</a>
+            </li>
+        }
+
+    </ul>
+</div>

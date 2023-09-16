@@ -1,0 +1,1074 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+
+@{
+    ViewData["Title"] = "Edit Car";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    var ownerName = string.Empty;
+    // if (!(string.IsNullOrEmpty(Model.Id)))
+    ownerName = @User.Identity.Name;
+
+    var requestType = "New";
+
+    if (!string.IsNullOrEmpty(Model.Vin))
+        requestType = "Update";
+
+}
+
+
+
+<div class="page-title"></div>
+
+<div class="col-xxs-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 mbl-res" style="margin-top: -150px;">
+    <h2 style="color: #cbb55f; font-size: 30px; padding-left: 6%;">Edit Car</h2>
+    <div class="breadcrumbs1" style="padding-left: 6%;"><a href="/User/Profile">Admin</a><span></span>Edit Car</div>
+</div>
+
+<div class="header-fltr">
+    <div class="col-sm-12 col-md-12 col-lg-12 bg-toolbar" style=" width: 100%;">
+        <div style="text-align:right;">
+            <div class="txt" style="float:right; padding-top: 5px;">
+                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a> &nbsp;
+                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <b> Add/Edit Car </b> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a asp-controller="Car" asp-action="Index">Car</a><span></span>Add/Edit Car</div>
+        </div>
+    </div>*@
+
+<div class="container">
+    <div class="row" id="divShowErrorSuccess">
+        <div class="col-md-12" id="divDetailText">
+
+        </div>
+    </div>
+</div>
+
+<div class="content section-md-bottom novi-background bg-cover">
+
+    <div class="container">
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12 column-content">
+                <div class="sectionBlock">
+                    <h5 class="stitle">Edit Car </h5>
+                    <div class="sectionContent">
+                        <div class="subgroup">
+                            <!-- ------------------- -->
+                            <div class="col-md-12">
+
+                                <ul class="nav nav-tabs" id="ulTabMenus" role="tablist">
+
+                                    <li class="nav-item active" id="menuItem1">
+                                        <a class="nav-link" data-toggle="tab" href="#tabGeneral">GENERAL SPEC </a>
+                                    </li>
+
+                                    <li class="nav-item" id="menuItem2">
+                                        <a class="nav-link" id="tabUpload_click" data-toggle="tab" href="#tabUpload">CAR IMAGES  </a>
+                                    </li>
+
+                                    <li class="nav-item" id="menuItem3">
+                                        <a class="nav-link" id="tabUploadVideo_click" data-toggle="tab" href="#tabUploadVideo">CAR VIDEO  </a>
+                                    </li>
+
+                                </ul>
+
+                                <div class="tab-content">
+
+                                    <div id="tabGeneral" class="tab-pane active">
+                                        <br>
+                                        <h4>GENERAL SPECIFICATIONS</h4>
+
+                                        <div class="col-md-12 tab-content-border">
+
+                                           
+
+                                            <div class="row mt-20">
+
+                                                @*<div class="col-md-3 mb-3">
+            <label class="form-label" for="txtOwner">Owner <span class="red-req">*</span></label>
+            <input type="text" id="txtOwner" class="form-control" value="@ownerName" onkeypress="removeInvalidClass('txtOwner')" />
+        </div>*@
+
+                                                <div class="col-md-12 mb-10">
+                                                    <label class="form-label" for="cmbYear">Year</label>
+                                                       <div class="select1_inner">
+                                                        @Html.DropDownListFor(m => m.Year, ViewBag.Years as SelectList, new { @id = "cmbYear", @class = "select2 select", @onChange = "removeInvalidComboClass('cmbYear')" })
+                                                        </div>
+                                                        @*<input type="text" id="txtYear"  class="form-control" value="@Model.Year" onkeypress="removeInvalidClass('txtYear')" />*@
+                                                    </div>
+
+                                                <div class="col-md-12 mb-10">
+                                                    <label class="form-label" for="cmbMake">Make</label>
+                                                    <div class="select1_inner">
+                                                        @*<input type="text" id="txtMake" class="form-control" value="@Model.Make" onkeypress="removeInvalidClass('txtMake')" />*@
+                                                        @Html.DropDownListFor(m => m.Make, ViewBag.CarMake as SelectList, new { @id = "cmbMake", @class = "select2 select", @onChange = "bindCarModel();removeInvalidComboClass('cmbMake')" })
+                                                        </div>
+                                                    </div>
+
+                                                <div class="col-md-12 mb-10">
+                                                    <label class="form-label" for="cmbModel">Model</label>
+                                                    @*<input type="text" id="txtModel" class="form-control" value="@Model.Model" onkeypress="removeInvalidClass('txtModel')" />*@
+                                                    <div class="select1_inner">
+                                                        @Html.DropDownListFor(m => m.Model, ViewBag.CarModel as SelectList, new { @id = "cmbModel", @class = "select2 select", @onChange = "removeInvalidComboClass('cmbModel')" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtStatus">Status</label>
+
+                                                        <select id="txtStatus" class="form-control" onkeypress="removeInvalidClass('txtStatus')">
+                                                            <option value="@Model.Status">@Model.Status</option>
+                                                            <option value="open">Open</option>
+                                                            <option value="Submitted">Submitted</option>
+                                                            <option value="approved">Approved</option>
+                                                            <option value="cancelled">Cancelled</option>
+                                                            <option value="Sold">Sold</option>
+                                                            <option value="Unsold">Unsold</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtTrim">Trim</label>
+                                                        <input type="text" id="txtTrim" maxlength="100" class="form-control" value="@Model.Properties.Trim" />
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtVin">VIN <span class="red-req">*</span></label>
+                                                        <input type="text" id="txtVin" maxlength="17" class="form-control" value="@Model.Vin" onkeypress="removeInvalidClass('txtVin')" />
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtVin">Color <span class="red-req">*</span></label>
+                                                        <input type="text" id="txtColor" maxlength="100" class="form-control" value="@Model.Color" onkeypress="removeInvalidClass('txtColor')" />
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtMileage">Mileage <span class="red-req">*</span></label>
+                                                        <input type="text" maxlength="8" id="txtMileage" class="form-control amountfmt1" value="@Model.Mileage" onkeypress="removeInvalidClass('txtMileage')" />
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtSalePrice">Sale Price <span class="red-req">*</span></label>
+                                                        <input type="text" id="txtSalePrice" maxlength="10" class="form-control amountfmt" value="@Model.SalePrice" onkeypress="removeInvalidClass('txtSalePrice')" />
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3" id="statusDiv">
+                                                        <label class="form-label" for="cmbStatus">Status <span class="red-req">*</span></label>
+                                                        @Html.DropDownListFor(m => m.Status, ViewBag.Status as SelectList, new { @id = "cmbStatus", @class = "form-control", @onChange = "removeInvalidClass('cmbStatus')" })
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-10">
+                                                        <label class="form-label" for="txtCarPageId">Page Part Id</label>
+                                                        <input type="text" id="txtCarPageId" maxlength="10" class="form-control" value="@Model.PagePartId" onkeypress="removeInvalidClass('txtCarPageId')" />
+                                                    </div>
+
+                                                    <input id="hdnTemp" type="hidden" />
+                                                    <input type="hidden" id="hdnrequestType" value="@requestType" />
+                                                    <input type="hidden" id="hdnId" value="@Model.Id" />
+                                                    <input type="hidden" id="hdnHasImages" value="@(Model.HasImages ? "true" : "false")" />
+                                                    <input type="hidden" id="hdnVin" value="@Model.Vin" />
+
+                                                </div>
+
+
+                                            @*<div class="row mt-20">
+
+
+                                                    <div class="col-md-3 mb-3">
+                                                            <label class="form-label" for="hdnTemp">Has Images <span class="red-req">*</span></label>
+                                                            <div>
+                                                                <input type="radio" name="rdbHasImages" value="Y" @(Model.HasImages ? "checked" : "") id="rdbHasImagesYes" /><label for='rdbHasImagesYes' class="clsRadioLabel">Yes</label>
+                                                                <input type="radio" name="rdbHasImages" value="N" @(!Model.HasImages ? "checked" : "") id="rdbHasImagesNo" class="clsRadioNoOption" /><label for='rdbHasImagesNo' class="clsRadioLabel">No</label>
+                                                            </div>
+                                                        </div>
+
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label" for="hdnTemp">Is Automatic <span class="red-req">*</span></label>
+                                                        <div>
+                                                            <input type="radio" name="rdbIsAutomatic" value="Y" @(Model.IsAutomatic ? "checked" : "") id="rdbIsAutomaticYes" /><label for='rdbIsAutomaticYes' class="clsRadioLabel">Yes</label>
+                                                            <input type="radio" name="rdbIsAutomatic" value="N" @(!Model.IsAutomatic ? "checked" : "") id="rdbIsAutomaticNo" class="clsRadioNoOption" /><label for='rdbIsAutomaticNo' class="clsRadioLabel">No</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label" for="hdnTemp">Is New <span class="red-req">*</span></label>
+                                                        <div>
+                                                            <input type="radio" name="rdbIsNew" value="Y" @(Model.IsNew ? "checked" : "") id="rdbIsNewYes" /><label for='rdbIsNewYes' class="clsRadioLabel">Yes</label>
+                                                            <input type="radio" name="rdbIsNew" value="N" @(!Model.IsNew ? "checked" : "") id="rdbIsNewNo" class="clsRadioNoOption" /><label for='rdbIsNewNo' class="clsRadioLabel">No</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label" for="hdnTemp">Is Petrol <span class="red-req">*</span></label>
+                                                        <div>
+                                                            <input type="radio" name="rdbIsPetrol" value="Y" @(Model.IsPetrol ? "checked" : "") id="rdbIsPetrolYes" /><label for='rdbIsPetrolYes' class="clsRadioLabel">Yes</label>
+                                                            <input type="radio" name="rdbIsPetrol" value="N" @(!Model.IsPetrol ? "checked" : "") id="rdbIsPetrolNo" class="clsRadioNoOption" /><label for='rdbIsPetrolNo' class="clsRadioLabel">No</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>*@
+
+                                            <div class="row mt-20">
+
+                                                <div class="col-md-12">
+                                                    <label class="form-label" for="txtTrim">Description <span class="red-req">*</span></label><br />
+                                                    <textarea class="form-control clsTextArea col-md-12" rows="4" maxlength="5000" style="resize:vertical;" id="txtDescription" asp-for="@Model.Description">@Model.Description</textarea>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12 mt-20">
+                                            <div class="row">
+                                                <div class="float-right">
+                                                    <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
+                                                    <button type="button" id="btnSaveCar" class="btn btn-success" onclick="saveCar1()">Save & Continue</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="tabUpload" class="tab-pane">
+                                        <br>
+                                        <h4>UPLOAD IMAGES</h4>
+
+                                        <div class="row">
+
+                                            <div class="col-md-12 uploadBox mt-5">
+
+
+
+                                                <div class="col-md-3">
+                                                    <input id="files" name="files" type="file" class="file" data-show-preview="false" multiple>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <button type="button" id="btnUpload" class="btn btn-success" style="line-height:25px;" onclick="uploadFiles('files')">Upload</button>
+                                                </div>
+
+                                                <div class="col-md-6"> </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 tab-content-border">
+
+
+                                            <div class="row mt-20" id="divCarImages">
+                                                @await Component.InvokeAsync("Car", new { view = "CarImages", id = Model.Id })
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12 mt-20">
+
+                                            <div class="row">
+                                                <div class="float-right">
+
+                                                    <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
+                                                    <button type="button" id="btnSaveReorder" class="btn btn-success" onclick="reorderImages()">Save & Continue</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div id="tabUploadVideo" class="tab-pane">
+                                        <br>
+                                        <h4>UPLOAD VIDEO</h4>
+
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="col-md-8 tab-content-border">
+
+                                                    <!-- Gallery -->
+
+
+                                                    @{
+                                                        var link = "";
+                                                        @if (Model.Video.Url != null)
+                                                        {
+                                                            var videolink = @Model.Video.Url;
+                                                            var sp = videolink.Replace("/watch?v=", "/embed/");
+                                                            link = sp.Replace("https:", "");
+                                                        }
+                                                    }
+
+                                                    <iframe width="560" height="315" id="video" src="@link" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                                    <!-- Gallery -->
+
+                                                </div>
+
+
+
+                                                <div class="col-md-4 tab-content-border" style=" height: 375px;">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12 mb-10">
+
+                                                            <label class="" for="txtVideoLink">Video Link <span class="red-req">*</span></label>
+                                                            <input type="text" id="txtVideoLink" maxlength="100" class="form-control" value="@Model.Video.Url" onkeypress="removeInvalidClass('txtVideoLink')" />
+
+                                                        </div>
+
+                                                        <div class="col-md-12 mb-10">
+
+                                                            <label class="" for="txtVideoTitle">Video Title <span class="red-req">*</span></label>
+                                                            <input type="text" id="txtVideoTitle" maxlength="100" class="form-control col-md-12" value="@Model.Video.Title" onkeypress="removeInvalidClass('txtVideoTitle')" />
+
+                                                        </div>
+
+                                                        <div class="col-md-12 mb-10">
+
+                                                            <label class="" for="txtVideoDescription"> Video Description <span class="red-req">*</span></label><br />
+                                                            <textarea class="form-control col-md-12" rows="4" maxlength="2000" style="resize:vertical;" id="txtVideoDescription" asp-for="@Model.Video.Description">@Model.Video.Description</textarea>
+
+                                                        </div>
+
+
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="col-md-12 mt-20">
+
+                                                    <div class="row">
+                                                        <div class="float-right">
+
+                                                            <button type="button" class="btn btn-info" onclick="redirectoIndex()">Cancel</button>
+                                                            <button type="button" class="btn btn-success" onclick="saveCar1()">Submit</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vinValidated = false;
+    function redirectoIndex() {
+        window.location.href = "/User/Profile";
+    }
+
+    function defaultSelection() {
+        if ($("#hdnrequestType").val() != null || $("#hdnrequestType").val() == "New") {
+            $("#cmbStatus").val("open");
+            $("#cmbStatus").attr('disabled', 'disabled');
+            $("#statusDiv").hide();
+        }
+        else {
+            $("#statusDiv").show();
+        }
+    }
+
+
+
+    function reorderImages() {
+        if (isReordered) {
+            var imageIds = [];
+            $(".clsImages").each(function (i, v) {
+                console.log(v);
+                var imageId = v.id;
+                imageIds.push(imageId);
+            });
+
+            console.log(imageIds);
+            $.ajax(
+                {
+                    url: "/Car/ReorderImages",
+                    data: { lstImages: imageIds},
+                    type: "POST",
+                    success: function (data) {
+                        if (data.result == false)
+                            showMessage("Error while save the reordered images, Error Details" + data.message, "error");
+                        else {
+                            showMessage("Reordered images updated successfully", "success");
+                            videogo();
+                        }
+                    }
+                });
+        }
+        else {
+            videogo();
+            //showMessage("You have not reordered any images. Please reorder then save", "alert alert-danger");
+        }
+    }
+
+    function uploadFiles(inputId) {
+        var input = document.getElementById(inputId);
+        var files = input.files;
+        var formData = new FormData();
+
+        if (files.length > 0) {
+
+            for (var i = 0; i != files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            var currentImageCount = $(".listitemClass").length;
+
+            formData.append("carId", $("#hdnId").val());
+            formData.append("currentImageCount", currentImageCount);
+
+            $.ajax(
+                {
+                    url: "/Car/UploadCarImages",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.result == false)
+                            showMessage("Error while save the image, Error Details" + data.message, "error");
+                        else {
+                            showMessage("Car Image successfully uploaded", "success");
+                            $('#divCarImages').load("/Car/CarImages?view=CarImages&id=" + encodeURIComponent($("#hdnId").val()) + "");
+                        }
+                        $("#files").val("");
+                    }
+                }
+            );
+        }
+        else {
+            showMessage("Please select the images to upload", "alert alert-danger");
+        }
+    }
+
+    function deleteCarImage(imageId,imageUrl) {
+        if (!confirm("Are you sure want to delete the selected car image?")) {
+            return false;
+        }
+
+        var carId = $("#hdnId").val();
+        $.ajax(
+            {
+                url: "/Car/RemoveCarImage",
+                data: { carImageId: imageId, imageUrl: imageUrl, carId: carId },
+                type: "POST",
+                success: function (data) {
+                    if (data.result == false)
+                        showMessage("Error while delete the car image, Error Details" + data.message, "error");
+                    else {
+                        showMessage("Car Image successfully deleted", "success");
+                        $('#divCarImages').load("/Car/CarImages?view=CarImages&id=" + encodeURIComponent($("#hdnId").val()) + "");
+                    }
+                }
+            });
+    }
+
+    function handleMenuClick() {
+        $("#ulTabMenus li").click(function (e) {
+            if ($(this).attr("id") == "menuItem2") {
+                //if (!vinValidated) {
+                //    showMessage("please enter the valid vin", "error");
+                //    return false;
+                //}
+                //else if (!$("#hdnId").val()) {
+                //    showMessage("please save the car details first", "error");
+                //    return false;
+                //}
+                if ($("#hdnrequestType").val() != "Update") {
+                    showMessage("Please fill all the required fields and save the car details then continue", "error");
+                    return false;
+                }
+            }
+            else {
+                $("#divShowErrorSuccess").hide();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        if ($(".listitemClass").length > 1) {
+            $("#divSaveImagesButton").show();
+        }
+        else {
+            $("#divSaveImagesButton").hide();
+        }
+
+        if ('@Model.Vin' != null && '@Model.Vin' != "") {
+            vinValidated = true;
+
+        }
+        $("#divShowErrorSuccess").hide();
+        stopCharacters();
+        handleMenuClick();
+        $("#menuItem1").click();
+        defaultSelection();
+
+        //$('#txtVin').keydown(function (e) {
+        //    var code = e.keyCode || e.which;
+        //    if (code === 9) {
+        //       // e.preventDefault();
+        //        getVehicleDetails();
+        //    }
+        //});
+
+        $('#txtVin').keyup(function (e) {
+            if ($("#txtVin").val() && $("#txtVin").val().length == 17) {
+                getVehicleDetails();
+            }
+        });
+
+    });
+
+
+    function removeInvalidClass(controlId) {
+        $("#" + controlId).hasClass("is-invalid")
+        {
+            $("#" + controlId).removeClass("is-invalid");
+        }
+    }
+    function removeInvalidComboClass(controlId) {
+        $("#" + controlId).closest("div").hasClass("is-invalid")
+        {
+            $("#" + controlId).closest("div").removeClass("is-invalid");
+        }
+    }
+
+    function stopCharacters() {
+        stopChar('txtMileage');
+        stopChar('txtCarPageId');
+        //stopChar('txtSalePrice');
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetCarProperties() {
+        vinValidated = false;
+        resetMakeDropDown();
+        resetModelDropDown();
+        $('#txtTrim').val("");
+    }
+
+    function bindCarModel(modelId) {
+        if ($("#cmbMake").val() && $("#cmbMake").val() != "0") {
+            var pUrl = "/Car/GetCarModelDetails?carMakeId=" + $("#cmbMake").val();
+            $.ajax({
+                type: "GET",
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            var drpModel = $('#cmbModel');
+                            drpModel.empty();
+                            $.each(data.modelDetails, function (index, item) {
+                                drpModel.append(
+                                    $('<option>', {
+                                        value: item.model_ID,
+                                        text: item.model_Name
+                                    }, '</option>'))
+                            });
+                            if (modelId) {
+                                $('#cmbModel').val(modelId).select2();
+                            }
+                            else {
+                                $('#cmbModel').val(0).select2();
+                            }
+                        }
+                        else {
+                            resetModelDropDown()
+                            showMessage("Error occurred while getting the car model details, ErrorMessage :" + data.errorMessage, "error");
+                        }
+                    }
+                    else {
+                        resetModelDropDown();
+                        showMessage("Error occurred while getting the car model details Please try again later", "error");
+                    }
+                },
+                error: function (error) {
+                    resetModelDropDown();
+                    showMessage("Error occurred while getting the car model details Please try again later", "error");
+                }
+
+            });
+        }
+        else {
+            resetModelDropDown();
+           // showMessage("Please select the car make", "error");
+        }
+    }
+
+    function resetMakeDropDown() {
+        var drpMake = $('#cmbMake');
+        drpMake.empty();
+        drpMake.append(
+            $('<option>', {
+                value: "0",
+                text: "--Select a Make--"
+            }, '</option>'));
+        $('#cmbMake').val(0).select2();
+    }
+
+    function resetModelDropDown() {
+        var drpModel = $('#cmbModel');
+        drpModel.empty();
+        drpModel.append(
+            $('<option>', {
+                value: "0",
+                text: "--Select a Model--"
+            }, '</option>'));
+        $('#cmbModel').val(0).select2();
+    }
+
+    function getVehicleDetails() {
+        var year = 0;
+        if (!$("#cmbYear").val() || $("#cmbYear").val() == "0") {
+            //showMessage("Please enter year first then enter the vin details", "error");
+            //return false;
+        }
+        else {
+            year = parseInt($("#cmbYear").val());
+        }
+        //if (year < 1980) {
+        //    $("#txtStatus").val("open");
+        //}
+        //else   {
+            if ($("#txtVin").val()) {
+                if ($("#txtVin").val().length == 17) {
+                    var pUrl = "/Car/GetVehicleInformation?vinDetail=" + $("#txtVin").val();
+                    $.ajax({
+                        type: "GET",
+                        url: pUrl,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data != null) {
+                                console.log(data);
+                                if (data.result == true) {
+                                    vinValidated = true;
+                                    // $("#cmbMake").val(data.carProperties.make);
+                                    $("#cmbMake").val(data.carProperties.makeID).select2();
+                                    bindCarModel(data.carProperties.modelID);
+                                    // $("#txtModel").val(data.carProperties.model);
+                                    $("#cmbYear").val(data.carProperties.modelYear).select2();
+                                    $("#txtTrim").val(data.carProperties.trim);
+
+                                    var requestType = $("#hdnrequestType").val();
+                                    if (requestType != null && requestType == "Update") {
+
+                                    }
+                                    else {
+                                        $("#txtStatus").val("open");
+                                    }
+
+                                    removeInvalidClass('txtVin');
+                                    removeInvalidComboClass('cmbYear');
+                                    removeInvalidComboClass('cmbMake');
+                                    removeInvalidComboClass('cmbModel');
+                                    removeInvalidComboClass('cmbStatus');
+                                }
+                                else {
+                                    resetCarProperties();
+                                    showMessage("Error occurred while getting the vehicle Details Please try again later, ErrorMessage :" + data.errorMessage, "error");
+                                }
+                            }
+                            else {
+                                resetCarProperties();
+                                showMessage("Error occurred while getting the vehicle Details Please try again later", "error");
+                            }
+                        },
+                        error: function (error) {
+                            resetCarProperties();
+                            showMessage("Error occurred while getting the vehicle Details Please try again later", "error");
+                        }
+
+                    });
+
+                }
+                else {
+                    resetCarProperties();
+                    showMessage("VIN is a 17 characters field please enter the required details then continue", "error");
+                }
+            }
+       // }
+    }
+
+
+    function saveCar() {
+        if (!validateCarSave()) {
+            showMessage("Please fill all required fields", "alert alert-danger")
+        }
+        else {
+            var id = $("#hdnId").val();
+            var requestType = $("#hdnrequestType").val();
+            var messageText = "Video Uploaded"
+            var pUrl = "/Car/EditCar";
+            var vinModified = false;
+            if (requestType != null && requestType == "Update") {
+                pUrl = "/Car/EditCar";
+                messageText = "Video Updated"
+            }
+            var owner = $("#txtOwner").val();
+            var mileage = $("#txtMileage").val();
+            var vin = $("#txtVin").val();
+            var videolink = $("#txtVideoLink").val();
+            videolink = videolink.split('v=')[1];
+            var vidlink = "//www.youtube.com/embed/" + videolink;
+            var videotitle = $("#txtVideoTitle").val();
+            var videodescription = $("#txtVideoDescription").val();
+            var price = $("#txtSalePrice").val();
+            var status = $('#txtStatus option:selected').val();
+            var make = $("#cmbMake option:selected").text();
+            var model = $("#cmbModel option:selected").text();
+            var year = $("#cmbYear").val();
+            var trim = $("#txtTrim").val();
+            //var hasImages = $('input[name="rdbHasImages"]:checked').val() == "Y" ? true : false;
+            //var isAutomatic = $('input[name="rdbIsAutomatic"]:checked').val() == "Y" ? true : false;
+            //var isNew = $('input[name="rdbIsNew"]:checked').val() == "Y" ? true : false;
+            //var isPetrol = $('input[name="rdbIsPetrol"]:checked').val() == "Y" ? true : false;
+            var hasImages = (requestType != null && requestType == "Update") ? $("#hdnHasImagesVin").val() : false;
+            var color = $("#txtColor").val();
+            var description = $("#txtDescription").val();
+
+            var carProperties = { Color: color, Trim: trim }
+
+            var videoDetail = { Url: $("#txtVideoLink").val(), Title: videotitle, Description: videodescription }
+
+            var carDetail = {
+                Id: id, Owner: owner, Mileage: mileage, Vin: vin, Make: make,
+                Model: model, Year: year, Color: color, Deleted: false,
+                SalePrice: price, Status: status, HasImages: hasImages, properties: carProperties, Description: description, VinModified: vinModified,
+                Video: videoDetail
+            }
+            var jStr = "car=" + encodeURIComponent(JSON.stringify(carDetail));
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Car " + messageText + " successfully", "success");
+                            $("#hdnId").val(data.carId);
+  window.location = '@Url.Action("Profile", "User")';
+
+                        }
+                        else {
+                            showMessage("Error occurred while " + messageText + " the car", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while " + messageText + " the car", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while " + messageText + " the car", "error");
+                }
+
+            });
+
+        }
+
+        $("#video")[0].src = "//www.youtube.com/embed/" + videolink;
+        $("#video").show();
+    }
+
+    function saveCar1() {
+        if (!validateCarSave()) {
+            showMessage("Please fill all required fields", "error")
+        }
+        else {
+            var id = $("#hdnId").val();
+            var requestType = $("#hdnrequestType").val();
+            var messageText = "Saved"
+            var pUrl = "/Car/AddCar";
+            var vinModified = false;
+            if (requestType != null && requestType == "Update") {
+                pUrl = "/Car/EditCar";
+                messageText = "Updated"
+            }
+            var owner = $("#txtOwner").val();
+            var mileage = $("#txtMileage").val().replace(/,/g, '');
+            var vin = $("#txtVin").val();
+            var videolink = $("#txtVideoLink").val();
+            videolink = videolink.split('v=')[1];
+            var vidlink = "//www.youtube.com/embed/" + videolink;
+            var videotitle = $("#txtVideoTitle").val();
+            var videodescription = $("#txtVideoDescription").val();
+            var price = $("#txtSalePrice").val();
+            var status = $('#txtStatus option:selected').val();
+            var make = $("#cmbMake option:selected").text();
+            var model = $("#cmbModel option:selected").text();
+            var year = $("#cmbYear").val();
+            var trim = $("#txtTrim").val();
+            var pagePartId = $("#txtCarPageId").val();
+
+            //var hasImages = $('input[name="rdbHasImages"]:checked').val() == "Y" ? true : false;
+            //var isAutomatic = $('input[name="rdbIsAutomatic"]:checked').val() == "Y" ? true : false;
+            //var isNew = $('input[name="rdbIsNew"]:checked').val() == "Y" ? true : false;
+            //var isPetrol = $('input[name="rdbIsPetrol"]:checked').val() == "Y" ? true : false;
+            var hasImages = (requestType != null && requestType == "Update") ? $("#hdnHasImagesVin").val() : false;
+            var color = $("#txtColor").val();
+            var description = $("#txtDescription").val();
+
+            var carProperties = { Color: color, Trim: trim }
+
+            var videoDetail = { Url: $("#txtVideoLink").val(), Title: videotitle, Description: videodescription }
+
+            var carDetail = {
+                Id: id, Owner: owner, Mileage: mileage, Vin: vin, Make: make,
+                Model: model, Year: year, Color: color, Deleted: false,
+                SalePrice: price, Status: status, HasImages: hasImages, properties: carProperties, Description: description, VinModified: vinModified,
+                Video: videoDetail, PagePartId: pagePartId
+            }
+            var jStr = "car=" + encodeURIComponent(JSON.stringify(carDetail));
+
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.result == true) {
+                            showMessage("Car " + messageText + " successfully", "success");
+                            $("#hdnId").val(data.carId);
+                            $("#hdnrequestType").val("Update");
+                            if ($("#ulTabMenus > .active").attr("id") == "menuItem1") {
+                                $('#tabUpload_click').trigger('click');
+                            }
+
+                        }
+                        else {
+                            showMessage("Error occurred while " + messageText + " the car", "error");
+                        }
+                    }
+                    else {
+                        showMessage("Error occurred while " + messageText + " the car", "error");
+                    }
+                },
+                error: function (error) {
+                    showMessage("Error occurred while " + messageText + " the car", "error");
+                }
+
+            });
+
+        }
+
+        $("#video")[0].src = "//www.youtube.com/embed/" + videolink;
+        $("#video").show();
+    }
+
+    function validateCarSave() {
+        var lstInvalidControls = [];
+        var lstInvalidCmbControls = [];
+        //if (!$("#txtOwner").val())
+        //    lstInvalidControls.push('txtOwner');
+        if (!$("#txtMileage").val())
+            lstInvalidControls.push('txtMileage');
+        if (!$("#txtVin").val())
+            lstInvalidControls.push('txtVin');
+        if (!$("#txtSalePrice").val())
+            lstInvalidControls.push('txtSalePrice');
+        //if (!$("#txtMake").val())
+        //    lstInvalidControls.push('txtMake');
+        //if (!$("#txtModel").val())
+        //    lstInvalidControls.push('txtModel');
+        //if (!$("#txtYear").val())
+        //    lstInvalidControls.push('cmbYear');
+        //if (!$("#txtTrim").val())
+        //    lstInvalidControls.push('txtTrim');
+        if ($("#cmbStatus").val() == "0")
+            lstInvalidCmbControls.push('cmbStatus');
+        if ($("#cmbMake").val() == "0")
+            lstInvalidCmbControls.push('cmbMake');
+        if ($("#cmbModel").val() == "0")
+            lstInvalidCmbControls.push('cmbModel');
+        if ($("#cmbYear").val() == "0")
+            lstInvalidCmbControls.push('cmbYear');
+        if (!$("#txtColor").val())
+            lstInvalidControls.push('txtColor');
+        if (!$("#txtDescription").val())
+            lstInvalidControls.push('txtDescription');
+
+
+        if (lstInvalidControls.length > 0 || lstInvalidCmbControls.length > 0) {
+            lstInvalidControls.forEach(function (controlItem) {
+                $("#" + controlItem).addClass("is-invalid");
+            });
+
+            lstInvalidCmbControls.forEach(function (controlItem) {
+                console.log($("#" + controlItem).closest("div"));
+                $("#" + controlItem).closest("div").addClass("is-invalid");
+            });
+
+            return false;
+        }
+        else {
+            if ($("#txtVin").val().length != 17) {
+                showMessage("Vin should be 17 Characters, Please enter a valid VIN", "error");
+                e.preventDefault();
+            }
+            else if (!vinValidated) {
+                showMessage("Please enter a valid VIN", "error");
+                e.preventDefault();
+            }
+        }
+        return true;
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            var self = $(this);
+            self.val(self.val().replace(/[^0-9\.]/g, ''));
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {
+                evt.preventDefault();
+            }
+        });
+    }
+    function videogo() {
+        $('#tabUploadVideo_click').trigger('click');
+    }
+
+    $(document).ready(function () {
+
+        var n = parseInt($(".amountfmt").val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($(".amountfmt").val(n.toLocaleString()))) {
+            $(".amountfmt").val(n.toLocaleString());
+        }
+        else {
+            if ($(".amountfmt").val() == "NaN") {
+                $(".amountfmt").val('');
+            }
+        }
+
+        var n1 = parseInt($(".amountfmt1").val().replace(/\D/g, ''), 10);
+        if (!isNaN($(".amountfmt1").val(n1.toLocaleString()))) {
+            $(".amountfmt1").val(n1.toLocaleString());
+        }
+        else {
+            if ($(".amountfmt1").val() == "NaN") {
+                $(".amountfmt1").val('');
+            }
+        }
+    });
+
+
+    $(".amountfmt").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+
+        if (!isNaN($(this).val(n.toLocaleString()))) {
+            $(this).val(n.toLocaleString());
+        }
+        else {
+            if ($(this).val() == "NaN") {
+                $(this).val('');
+            }
+        }
+
+    });
+
+
+    $(".amountfmt1").on('keyup', function () {
+        var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+        if (!isNaN($(this).val(n.toLocaleString()))) {
+            $(this).val(n.toLocaleString());
+        }
+        else {
+            if ($(this).val() == "NaN") {
+                $(this).val('');
+            }
+        }
+    });
+</script>
+
+
+<!-- Video popup -->
+
+<div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>

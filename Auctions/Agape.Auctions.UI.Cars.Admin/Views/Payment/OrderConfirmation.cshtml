@@ -1,0 +1,67 @@
+﻿@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    string amt = ViewBag.Amount;
+}
+
+<div class="section">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <bold> Order confirmation </bold> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="/Dealers">Home</a><span></span>Order Confirmation</div>
+        </div>
+    </div>
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+                    <div class="alert alert-success">
+                        Thanks For your Your payment amount - @amt has been successfully processed
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

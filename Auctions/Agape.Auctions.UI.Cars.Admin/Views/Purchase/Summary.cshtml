@@ -1,0 +1,317 @@
+﻿@model Agape.Auctions.Models.Cars.Car
+@using System.Globalization;
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+    double advancePrice = 0;
+  //  double tax = 0;
+    int advanceCalculatedPercentage = (int)ViewBag.CarAdvanceAmountPercentage;
+  //  int taxCalculatedPercentage = (int)ViewBag.CarTaxPercentage;
+    int expirtyTimeOfthePage = (int)ViewBag.PurchasePageExpiryTime;
+    double advanceThresholdAmount = (double)ViewBag.AdvanceThresholdAmount;
+
+    if (Model.SalePrice != 0)
+    {
+        advancePrice = (Model.SalePrice * advanceCalculatedPercentage) / 100;
+        if (advancePrice > advanceThresholdAmount)
+            advancePrice = advanceThresholdAmount;
+        //tax = (Model.SalePrice * taxCalculatedPercentage) / 100;
+    }
+}
+
+<style>
+    .modal-content {
+        width: 571px !important;
+        float: left;
+        margin: 100px 35%;
+    }
+
+    .modal {
+        background: #00000073;
+    }
+
+    .new_tab > div {
+        border: none !important;
+    }
+
+    .modal-header {
+        background: #cbb55f;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        color: #1c1c1c;
+    }
+
+        .modal-header h4 {
+            font-weight: bold;
+        }
+
+
+
+    .modal-body label {
+        background: white;
+        @*margin-bottom: -11px;*@
+        padding: 0 3px;
+        float: left;
+        @*margin-left: 17px;*@
+        color: #181c2a;
+        font-weight: bold;
+    }
+
+
+
+    .modal-body .tabs2-wrapper {
+        padding: 15px;
+    }
+
+    .modal-body ul.tabs.clearfix li {
+        margin: 0px;
+        border: 1px solid;
+    }
+
+    span.fuel::before {
+        content: '⛽ ';
+        color: black !important;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    span.Type::before {
+        content: '🚗 ';
+        font-weight: bold;
+        color: black;
+        font-size: 17px;
+    }
+
+    .product-minimal-title.new-title a {
+        font-size: 32px !important;
+    }
+
+    .p-bg {
+        background: black;
+        color: white;
+    }
+    .clsExpiry
+    {
+        background-color : coral;
+    }
+</style>
+
+<div class="top3-wrapper novi-background bg-cover">
+    <div class="container">
+        <div class="top2 clearfix">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4> <b> Purchase Summary </b> </h4>
+                </div>
+
+                <div class="col-md-6 float-right">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="section breadcrumbs1_wrapper novi-background">
+    <div class="container">
+        <div class="breadcrumbs1"><a href="/">Home</a><span></span>Purchase</div>
+    </div>
+</div>
+
+@if (Model != null)
+{
+
+    <div class="section section-md-bottom content novi-background bg-cover">
+        <div class="container">
+            <div class="col" id="divShowErrorSuccess">
+                <div class="col-sm-12" id="divDetailText">
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="row row-fix">
+                <div class="col-sm-12 col-md-12 column-content">
+
+                    <input type="hidden" id="hdnCarId" value="@Model.Id" />
+                    <input type="hidden" id="hdnCarOwner" value="@Model.Owner" />
+
+                    <div class="col-sm-7 product-minimal">
+
+                        <img src="@Model.Thumbnail" style="width: 100%;" />
+
+                        <div class="caption">
+                            <div class="product-minimal-title new-title"><a href="details">@Model.Make</a></div>
+                            <p class="small">REGISTERED @Model.Year</p>
+
+
+                            <div class="info">
+                                <span class="price">@Model.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                <span class=""></span>
+
+                            </div>
+
+                            <p>@Model.Description</p>
+
+                            <div class="info new-span">
+                                <span class="fuel">@(Model.IsPetrol ? "Petrol" : "Diesel")</span>
+                                <span class="Type">@(Model.IsAutomatic ? "Automatic" : "Gear")</span>
+                                <span class="speed">@Model.Mileage KM</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5">
+
+                        <div class="col-sm-12 pt-0 modal-body">
+                            <div class="col-sm-12">
+                                <input type="hidden" id="hdnExpiryTime" value="@expirtyTimeOfthePage" />
+                                <p class="text-center text-white mt-5 p-5 p-bg" id="pExpiry">Your sale will ends in, <span class="countdown"></span></p>
+
+                            </div>
+                            <form>
+                                <div class="col-sm-12">
+                                    <h4 class="mt-5">Purchase Summary</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtCarPrice"> Car Price </label>
+                                        <input type="text" class="form-control" readonly id="txtCarPrice" value="@Model.SalePrice.ToString("C", CultureInfo.CurrentCulture)">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtInitialPayment"> Initial Payment (@advanceCalculatedPercentage%) </label>
+                                        <input type="text" class="form-control" readonly id="txtInitialPayment" value="@advancePrice.ToString("C", CultureInfo.CurrentCulture)">
+                                    </div>
+                                </div>
+
+                                @*<div class="col-sm-12">
+                                    <div class="form-group form-wrap">
+                                        <label for="txtTax"> Estimated Tax (@taxCalculatedPercentage%) </label>
+                                        <input type="text" class="form-control" readonly id="txtTax" value="@tax.ToString("C", CultureInfo.CurrentCulture)">
+                                    </div>
+                                </div>*@
+
+                                
+                                <div class="col-sm-12" style="margin-top:10px;">
+                                    <div class="form-group form-wrap">
+                                        <input type="checkbox" id="chkTermConditions" onchange="enableContinue()" /> <a href="https://en.wikipedia.org/wiki/PDF#/media/File:PDF_file_icon.svg" target="_blank">Accept Terms and conditions</a>
+                                    </div>
+                                </div>
+
+                                <div class="mr-15 float-right">
+                                    <input type="button" class="btn btn-success" value="Continue" id="btnRedirectPayment" onclick="redirectToPayment()" />
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="snackbars" id="form-output-global"></div>
+
+}
+<script src="~/js/bootstrap.min.js"></script>
+
+<script>
+
+    function enableContinue() {
+       
+        if ($("#chkTermConditions").prop('checked') == true) {
+            $("#btnRedirectPayment").prop('disabled', false);
+        }
+        else {
+            $("#btnRedirectPayment").prop('disabled', true);
+        }
+    }
+
+    $(document).ready(function () {
+        $("#btnRedirectPayment").prop('disabled', true);
+        var expiryValue = $("#hdnExpiryTime").val();
+        var delay = 60000 * expiryValue;
+        setTimeout(function ()
+        { window.location = "/"; },
+            delay);
+    });
+
+    var Time_pass;
+
+    function redirectToPayment() {
+        var carId = $("#hdnCarId").val();
+        window.location.href = "/Payment/Summary?carId=" + carId + "&new=" + Time_pass;
+    }
+
+
+
+
+    var timer2 = $('#hdnExpiryTime').val();
+
+    timer2 = timer2 +':00'
+    var interval = setInterval(function () {
+
+
+        var timer = timer2.split(':');
+        //by parsing integer, I avoid all extra string processing
+        var minutes = parseInt(timer[0], 10);
+        var seconds = parseInt(timer[1], 10);
+        --seconds;
+        minutes = (seconds < 0) ? --minutes : minutes;
+        if (minutes < 0) clearInterval(interval);
+        seconds = (seconds < 0) ? 59 : seconds;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+        //minutes = (minutes < 10) ?  minutes : minutes;
+
+        var lblmin;
+       
+        if (minutes < 2) {
+            lblmin = 'min'
+        }
+        else {
+            lblmin = 'mins'
+        }
+
+        if (minutes < 0) {
+            $('.countdown').html('0 ' + lblmin + ' 00 sec');
+        }
+        else {
+            if (seconds <= 10 && (minutes == 0 || minutes == "0")) {
+                $('#pExpiry').addClass("clsExpiry")
+                $("#pExpiry").html("Your page expire soon")
+            }
+            else {
+               
+                $('.countdown').html(minutes + ' ' + lblmin + ' ' + seconds + ' sec');
+            }
+        }
+       
+        timer2 = minutes + ':' + seconds;
+
+        Time_pass = minutes + ':' + seconds;
+
+    }, 1000);
+
+
+    
+
+</script>

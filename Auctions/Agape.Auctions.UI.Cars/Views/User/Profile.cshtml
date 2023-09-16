@@ -1,0 +1,432 @@
+﻿@model dynamic
+@using System.Globalization;
+
+@using Agape.Auctions.Models.Images
+@using Agape.Auctions.Models.Cars
+@using Agape.Auctions.Models.Users
+@{
+    ViewData["Title"] = "Myaccount";
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+    var profilePhotoUrl = "/images/customer-3-104x104.jpg";
+
+    var userProfile = (Agape.Auctions.Models.Users.User)Model.Profile;
+    if (userProfile != null && userProfile.Purchases != null && userProfile.Purchases.Any() && !string.IsNullOrEmpty(userProfile.Purchases[0]))
+        profilePhotoUrl = userProfile.Purchases[0] + "?t=" + new DateTime();
+}
+@*<link href="~/css/gflexslider.css" rel="stylesheet">
+    <link href="~/css/superslides.css" rel="stylesheet">
+    <script src="~/js/jquery.flexslider-min.js"></script>
+    <script src="~/js/jquery.superslides.js"></script>
+    <link href="~/css/additional_css.css" rel="stylesheet" />*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/simplePagination.min.css">*@
+<style>
+    ul.nav.nav-tabs li a {
+        color: #8b8282;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        text-align: center;
+    }
+
+    a.nav-link.active {
+        font-weight: bold !important;
+        color: black;
+        border-bottom: 2px solid;
+    }
+
+    .col-sm-12.new-1 {
+        margin-bottom: 30px;
+    }
+
+        .col-sm-12.new-1 h2 {
+            color: #666666 !important;
+        }
+
+    .new-row li {
+        list-style: none;
+        text-decoration: none;
+    }
+
+    .section {
+        background: whitesmoke;
+    }
+
+    .sectionBlock {
+        background: white;
+        min-height: 564px;
+    }
+
+
+
+
+    .rd-navbar-main-outer {
+        background: white;
+    }
+
+    .sectionContent li a {
+        text-decoration: none !important;
+    }
+
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+    img.client-banner {
+        height: 150px;
+        margin-top: -75px;
+        margin-left: 40px;
+        border: 3px solid white;
+        border-radius: 10px;
+    }
+
+    li.blue {
+        color: #60b5e7;
+        font-weight: bold;
+    }
+
+    .sectionBlock li a {
+        text-decoration: none;
+        /* list-style: none; */
+    }
+
+    .sectionBlock li {
+        list-style: none;
+    }
+
+    .section.pre-footer.novi-background.bg-cover {
+        background: #333333;
+    }
+
+
+    .sectionBlock.new-last li {
+        line-height: 38px;
+        border-bottom: 1px solid #dddddd;
+        margin-right: 50px;
+        font-size: 14px;
+    }
+
+    .product-minimal .caption {
+        padding-top: 5px;
+        border-bottom: 1px solid #eeeeee;
+        padding-bottom: 30px;
+        display: flow-root;
+    }
+
+    select {
+        width: 176px;
+        width: 221px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555555;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+    }
+
+    input[type=file]::file-selector-button {
+        padding: 0.2em 0.4em;
+        border-radius: 0.2em;
+        transition: 1s;
+        height: 30px;
+        font-size: 12px;
+    }
+</style>
+
+
+<div class="section">
+
+
+    <div class="bg-banner"></div>
+
+
+    <div class="container-fluid">
+
+        <div class="row row-fix">
+
+            <div class="col-lg-2 col-md-3 col-sm-12">
+                <div class="col-sm-12 column-content profile-image">
+
+                    <img class="client-banner" id="imgProfile" src="@profilePhotoUrl" style="width:180px;" />
+
+                    <div class="new-row" style="width:250px;">
+
+                        <div class="sectionContent">
+                            
+                            <input type="hidden" id="hdnUserIdp" value="@Model.Profile.Idp" />
+                            <ul>
+                                <li class="blue"> <h3><a href="#"> @Model.Profile.FirstName  @Model.Profile.LastName </a></h3>@Model.Profile.Email </li>
+                            </ul>
+
+                            <ul>
+                                <li> <a href="#"> @Model.Dealer.Address.Street </a> </li>
+
+                                <li> <a href="#"> @Model.Dealer.Address.City </a> </li>
+
+                                <li> <a href="#">@Model.Dealer.Address.State </a> </li>
+
+                                <li> <a href="#"> @Model.Dealer.Phone </a> </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <figure><a href="details.html"><img src="images/listing-1-322x230.jpg" alt="" class="img-responsive"></a></figure>
+
+                </div>
+            </div>
+
+            <div class="col-lg-10 col-md-9 col-sm-12">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 p-0">
+
+                    <div class="col-lg-11 col-md-12 col-sm-12 pl-0 mb-20">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#"><span class="top-a">Posts</span><br /><span class="btm-a">300</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><span class="top-a">Followers</span><br /><span class="btm-a">234k</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><span class="top-a">Photos</span><br /><span class="btm-a">50</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><span class="top-a">Videos</span><br /><span class="btm-a">30</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><span class="top-a">Following</span><br /><span class="btm-a">700k</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="col-sm-12 column-content" id="divShowErrorSuccess">
+                        <div class="col-sm-11" id="divDetailText">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="row column-content">
+
+                        <div class="sectionBlock">
+
+                            <div class="col-sm-12 new-1 p-0" style="border-bottom: 1px solid #dddddd; background: #181c2a;">
+                                <div class="col-lg-8 col-md-8 col-sm-6">
+                                    <h4 class="text-secondary mbl-align-center" style="color: white; margin: 0; padding: 10px;"> My Car </h4>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-6" style="padding: 3px 15px;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 p-0 text-right" style="display: flex; align-content: center; justify-content: space-around; align-items: center;">
+                                        <select id="cmbStatus" onchange="getCombo(this)">
+
+                                            <option value="All">All</option>
+                                            <option value="open">Open</option>
+                                            <option value="Submitted">Submitted</option>
+                                            <option value="Approved">Bid</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="cancelled">Cancelled</option>
+                                            <option value="Sold">Sold</option>
+                                            <option value="PaymentPending">Payment Pending</option>
+                                            <option value="Unsold">Unsold</option>
+                                        </select>
+                                        <input type="hidden" id="stat" value="open" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="Car" class="wrapper">
+
+                            </div>
+
+
+                        </div>
+                        <div id="divPagination"></div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-6 col-xs-12 col-xxs-12 mbl-4 new-mbl">
+                    <!-- ----------------------end left div ------------------------- -->
+
+                    <div class="col-lg-9 col-md-12 column-content">
+
+                        <div class="sectionBlock new-last">
+                            <h4 class="text-secondary" style="border-bottom: 1px solid #dddddd; padding-bottom: 10px; padding-left: 20px;">My Account</h4>
+                            <div class="sectionContent">
+
+                                <ul>
+                                    <li> <a asp-controller="User" asp-action="MyProfile"> My Profile </a> </li>
+                                    <li> <a asp-controller="User" asp-action="MyDealership"> My Dealership </a> </li>
+                                    <li> <a asp-controller="Car" asp-action="Index"> My Car </a> </li>
+                                    <li> <a href="#"> Auction Activity </a> </li>
+                                    <li> <a asp-controller="User" asp-action="PaymentSummary"> Payment History </a> </li>
+                                    <li> <a asp-controller="User" asp-action="PurchaseSummary"> Purchase History </a> </li>
+                                    @*<li> <a asp-controller="User" asp-action="CarBidDetails"> Bid Details </a> </li>*@
+                                    <li> <a href="#"> Update Password </a> </li>
+                                    <li> <a href="#"> Logout </a> </li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+   
+
+
+    $(document).ready(function () {
+        $("#cmbStatus").val("open")
+        var val = $("#stat").val();
+        $("#Car").load("/User/StatusList?view=StatusList&status=" + val, function (responseTxt, statusTxt, xhr) {
+            if (statusTxt == "success") {
+
+                $(".wrapper .item").slice(6).hide();
+                $('#divPagination').pagination({
+
+                    // Total number of items present
+                    // in wrapper class
+                    items: $("#hdn_count").val(),
+
+
+
+                    // Items allowed on a single page
+                    itemsOnPage: 6,
+                    onPageClick: function (noofele) {
+                        $(".wrapper .item").hide()
+                            .slice(6 * (noofele - 1),
+                                6 + 6 * (noofele - 1)).show();
+                    }
+                });
+            }
+
+        });
+
+
+    });
+
+    function getCombo(selectObject) {
+        $('#divPagination').pagination('destroy');
+        var value = selectObject.value;
+        $("#stat").val(value);
+
+        $("#Car").load("/User/StatusList?view=StatusList&status=" + value, function (responseTxt, statusTxt, xhr) {
+            if (statusTxt == "success") {
+
+                var totalItemsCount = $("#hdn_count").val();
+
+                if (parseInt(totalItemsCount) > 0) {
+
+                    $(".wrapper .item").slice(12).hide();
+                    $('#divPagination').pagination({
+                        items: $("#hdn_count").val(),
+
+                        // Items allowed on a single page
+                        itemsOnPage: 12,
+                        onPageClick: function (noofele) {
+                            $(".wrapper .item").hide()
+                                .slice(12 * (noofele - 1),
+                                    12 + 12 * (noofele - 1)).show();
+                        }
+                    });
+                }
+
+            }
+
+        });
+        $("#stat").val(value);
+    }
+    function submitAuction(carId) {
+        window.location.href = "/User/Auction?carId=" + carId + "";
+    }
+
+    function viewCar(carId) {
+        window.location.href = "/Car/View?carId=" + carId + "";
+    }
+
+    function viewBiddingDetails(carId) {
+        window.location.href = "/User/MyBidding?carId=" + carId + "";
+    }
+
+
+    function viewCarOfferDetails(carId) {
+        window.location.href = "/User/OfferDetails?carId=" + carId + "";
+    }
+
+    function viewWatchListDetails(carId) {
+        window.location.href = "/User/WatchListDetails?carId=" + carId + "";
+    }
+
+    function editCar(carId) {
+        window.location.href = "/Car/AddEditCar?carId=" + carId + "";
+    }
+
+    function showMessage(messageText, labelClass) {
+        //$("#divShowErrorSuccess").show();
+        //$("#divDetailText").html("<div class=\"" + labelClass + "\">" + messageText + "</div>");
+        //$(window).scrollTop(0);
+        //$('#divShowErrorSuccess').delay(8000).fadeOut('slow');
+        Command: toastr[labelClass](messageText);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function removeCar(carId) {
+        if (!confirm("Are you sure want to remove the car?")) {
+            return true;
+        }
+
+        var pUrl = "/Car/RemoveCar";
+        $.ajax({
+            type: "POST",
+            url: pUrl,
+            data: { carId: carId },
+            success: function (data) {
+                if (data.saveResult == true) {
+                    showMessage("Car removed successfully", "success");
+                }
+                else {
+                    showMessage("Error occurred while remove the car", "error");
+                }
+            }
+        });
+    }
+
+</script>
+
+
+
+

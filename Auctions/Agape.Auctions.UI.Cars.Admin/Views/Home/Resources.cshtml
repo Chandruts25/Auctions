@@ -1,0 +1,116 @@
+﻿@model List<ServiceReference.Blog>
+
+@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+}
+
+<div class="section">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <b> Resources </b> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="index.html">Home</a><span></span>Resources</div>
+        </div>
+    </div>
+    <div class="content section-md-bottom novi-background bg-cover">
+
+        <div class="container">
+            <div class="row row-fix">
+
+
+
+                <div class="col-sm-12 col-md-3 column-content">
+
+                    <div class="sectionBlock">
+                        <h5 class="stitle">Resources</h5>
+
+                        <div class="sectionContent">
+                            <div class="subgroup">
+                                <div class="col-xs-12">
+
+                                    @*<p>
+                                            As you're <a href="#">placing bids</a>, you may come across items that require specific <a href="#">licenses</a> in order to buy – licenses you may not have. When you try to bid on a vehicle and don't have adequate licenses on file with Copart, you'll get a list of Dealers who can help you. Dealers buy vehicles on your behalf, so you can still purchase the lots you want, even without the appropriate documentation. Remember that when you use a Dealer, you are buying the vehicle through the Dealer and not Copart. As a result, be sure to read and understand the Dealer's additional terms, including payment terms and conditions.
+
+                                            <br><strong>Important Note: </strong>
+
+                                            It's best to <a href="#">find the vehicles</a> you wish to purchase prior to contacting a Dealer. Not all Dealers are eligible to buy vehicles in every state – or every type of vehicle. When you attempt to bid on your selected items, the Dealers who can help facilitate your purchases will be displayed.
+                                        </p>
+
+                                        <h4 class="sub-title">Benefits of a Dealer</h4>
+
+                                        <p>
+                                            In addition to getting access to vehicles you may not otherwise qualify for, Copart Members using Dealers can benefit in other ways too. Dealers are available to answer questions you may have about vehicles and the auction process. Many also provide financing, inspection, parts locating, repair and transportation services if needed.
+
+                                            <br>
+                                            Some Dealers have a physical location, or storefront, for you to visit. You can bid and buy via these Dealers’ computer kiosks, and experienced staff are on hand to assist you every step of the way.
+                                        </p>*@
+                                    @Html.Raw(ViewBag.ResourcePagePart)
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <figure><a href="details.html"><img src="images/listing-1-322x230.jpg" alt="" class="img-responsive"></a></figure>
+
+                </div>
+
+
+
+                <div class="col-sm-12 col-md-9 column-content">
+
+                    @foreach (var item in Model)
+                    {
+                        <h5 class="resourcetitle">@item.Title</h5>
+                        @Html.Raw(item.Body)
+                        <br />
+                    }
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+

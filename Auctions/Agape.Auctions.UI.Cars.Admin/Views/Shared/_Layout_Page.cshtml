@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BADASSCARZ</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700%7COpen+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+          rel="stylesheet" type="text/css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="~/css/jquery-ui.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/bootstrap.css?ver=1.0" rel="stylesheet">
+    @*<link href="~/lib/bootstrap/dist/css/bootstrap.css?ver=1.0" rel="stylesheet" />*@
+    <link href="~/css/font-awesome.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/light-gallery.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/elegant-icons.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/custom.css?ver=1.0" rel="stylesheet">
+
+    <link href="~/css/AdminPages.css?ver=1.4" rel="stylesheet" />
+    <link href="~/css/additional_css.css?ver=1.3" rel="stylesheet" />
+
+    <link href="~/css/animate.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/select2.css?ver=1.0" rel="stylesheet">
+    <link href="~/css/style.css?ver=1.0" rel="stylesheet">
+    <script src="~/js/jquery.js"></script>
+
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/jquery.easing.1.3.js"></script>
+    <script src="~/js/pointer-events.js"></script>
+
+    <script src="~/js/jquery.flexslider-min.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script src="~/js/jquery.superslides.js"></script>
+    <script src="~/js/jquery.sticky.js"></script>
+    <script src="~/js/jquery.appear.js"></script>
+    <script src="~/js/jquery.ui.totop.js"></script>
+    <script src="~/js/jquery.caroufredsel.js"></script>
+    <script src="~/js/jquery.touchSwipe.min.js"></script>
+    <script src="~/js/material-parallax.js"></script>
+    <script src="~/js/owl-carousel.js"></script>
+
+    <script src="~/js/rd-mailform.js"></script>
+    <script src="~/js/rd-navbar.js"></script>
+
+    <script src="~/js/light-gallery.js"></script>
+    <script src="~/js/swiper.js"></script>
+    <script src="~/js/waypoint.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <script src="~/js/jquery.blockUI.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />*@
+    <script src="~/js/toastr.js"></script>
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>  <![endif]-->
+    <link href="~/css/Lobibox.min.css?ver=1.0" rel="stylesheet" />
+    <link href="~/css/jquery.dataTables.css?ver=1.0" rel="stylesheet" />
+    @*<link href="~/css/AdminPages.css?ver=1.0" rel="stylesheet" />*@
+</head>
+
+<body class="front" data-spy="scroll" data-target="#top1" data-offset="96">
+
+    <div id="main">
+        <header class="section page-header" style="display:none;">
+            <!-- RD Navbar-->
+            <div class="rd-navbar-wrap">
+                <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
+                     data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static"
+                     data-lg-device-layout="rd-navbar-static" data-xl-layout="rd-navbar-static"
+                     data-xl-device-layout="rd-navbar-static" data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px"
+                     data-xxl-stick-up-offset="46px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                    <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse">
+                        <span></span>
+                    </div>
+                    <!-- Header -->
+                    @await Component.InvokeAsync("PagePart", new { view = PagePartViewEnum.Header })
+                    <!-- Header End -->
+                    <!-- Navigation -->
+                    @await Component.InvokeAsync("PagePartSnippet", new { view = PagePartViewEnum.Navigation })
+                    <!-- Navigation End-->
+                </nav>
+            </div>
+        </header>
+
+
+
+        <header class="header-dsg2">
+            <div class="rd-navbar-aside-outer rd-navbar-collapse bg-gray-dark toggle-original-elements" id="opn-menu">
+                <div class="rd-navbar-aside">
+                    <div class="block-left">
+                        <ul class="list-inline"><li><div class="unit align-items-center"><div class="unit-left"><span class="icon ei icon_phone novi-icon"></span></div><div class="unit-body"><a href="tel:#">1-800-1234-5670</a></div></div></li><li><div class="unit align-items-center"><div class="unit-left"><span class="icon ei icon_pin novi-icon"></span></div><div class="unit-body"><a href="#">2130 Fulton Street San Diego, CA 94117-1080 USA</a></div></div></li><li><ul class="social-list"><li><a href="#" class="icon fa fa-facebook novi-icon"></a></li><li><a href="#" class="icon fa fa-twitter novi-icon"></a></li><li><a href="#" class="icon fa fa-google-plus novi-icon"></a></li></ul></li></ul>
+                    </div>
+                    <div class="block-right">
+
+
+
+                        <ul>
+
+                            <li><form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
+
+                        </ul>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <nav id="navbar">
+
+
+
+                <div class="logo">
+                    <img src="~/images/logo.png" />
+                </div>
+                <div class="menu">
+                    <ul>
+                        <li id="vsble_signout" style="display:none;"><form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut"><button type="submit" class="btn btn-dark">SIGN OUT</button></form></li>
+                    </ul>
+                </div>
+
+
+
+                <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1 toggle-original" id="clk-opn" data-rd-navbar-toggle=".rd-navbar-collapse">
+                    <span></span>
+                </div>
+            </nav>
+            <section>
+                <div class="leftside">
+
+                </div>
+                <div class="rightside">
+                    <h1 style=" text-transform: uppercase; font-weight: 900;">Welcome Back Admin</h1>
+
+
+
+                </div>
+            </section>
+        </header>
+
+
+        <!-- Main Index -->
+        @RenderBody()
+
+
+
+        <!-- Footer -->
+        @await Component.InvokeAsync("PagePartSnippet", new { view = PagePartViewEnum.Footer })
+        <!-- Footer End-->
+
+
+    </div>
+
+    <div class="modal fade popup-form" id="SignIn" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"> Sign In</h4>
+                    <form class="rd-mailform" data-form-output="form-output-global" data-form-type="forms" method="post"
+                          action="bat/rd-mailform.php">
+                        <div class="row row-fix">
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="singInName">
+                                        Your
+                                        Name
+                                    </label><input type="text" class="form-control" id="singInName" name="name" />
+                                    @*data-constraints='@Required'>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="password">Password</label><input type="password" class="form-control" id="password"
+                                                                                 name="pas" />
+                                    @*data-constraints='@Required'>*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-default btn-form2-submit">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade popup-form" id="register" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"> register</h4>
+                    <form class="rd-mailform" data-form-output="form-output-global" data-form-type="forms" method="post"
+                          action="bat/rd-mailform.php">
+                        <div class="row row-fix">
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="regName">
+                                        Your
+                                        Name
+                                    </label><input type="text" class="form-control" id="regName" name="name" />
+                                    @*data-constraints='@Required'>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="regEmail">Email</label><input type="text" class="form-control" id="regEmail" name="email" />
+                                    @*data-constraints='@Required @Email'>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group form-wrap">
+                                    <label for="passwordReg">Password</label><input type="password" class="form-control" id="passwordReg"
+                                                                                    name="pas" />
+                                    @*data-constraints='@Required'>*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-default btn-form2-submit">Register</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="snackbars" id="form-output-global"></div>
+
+
+    <script>
+        window.onscroll = function () { myFunction() };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky");
+                document.getElementById("vsble_signout").style.display = "block";
+            } else {
+                navbar.classList.remove("sticky");
+                document.getElementById("vsble_signout").style.display = "none";
+            }
+        }
+
+
+
+
+
+        $("#clk-opn").click(function () {
+            //alert();
+
+            $('#opn-menu').slideToggle("slow");
+
+
+            //$("#opn-menu").animate({
+            //    width: "toggle"
+
+            //});
+
+
+
+
+
+
+        });
+
+
+
+
+
+    </script>
+
+
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/lobibox.js"></script>
+    <script src="~/js/jquery.dataTables.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

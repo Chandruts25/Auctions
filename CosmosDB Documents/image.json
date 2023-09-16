@@ -1,0 +1,13 @@
+{
+    "type": "image",
+    "id":"[GUID]",
+    "version": "1",
+    "owner": "[cardId]",
+    "url": "[hd-image-url]",
+    "thumbnailUrl": "[thumbnail-image-url 121x90]",
+    "smallUrl": "[small-image-url 270x150]",
+    "listing": "[322x230]",
+    "listingGrid": "[322x230]",
+    "mediumUrl": "[medium-image-url]",
+    "isProcessed": true
+}

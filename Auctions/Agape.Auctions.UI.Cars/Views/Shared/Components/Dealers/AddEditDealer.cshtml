@@ -1,0 +1,249 @@
+﻿@model Agape.Auctions.UI.Cars.Models.Dealer
+
+<div class="section">
+    <div class="novi-background bg-cover">
+        <div class="container">
+            <div class="row">
+                <h4> <bold> Dealer Details </bold> </h4>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtOwner">Owner <span class="red-req">*</span></label>
+                        <input type="text" id="txtOwner" class="form-control form-control-lg" value="@Model.Owner" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtCompanyName">Company Name <span class="red-req">*</span></label>
+                        <input type="text" id="txtCompanyName" class="form-control form-control-lg" value="@Model.CompanyName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtDealerEmail">Email <span class="red-req">*</span></label>
+                        <input type="text" id="txtDealerEmail" class="form-control form-control-lg" value="@Model.Email" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtPhone">Phone <span class="red-req">*</span> </label>
+                        <input type="text" id="txtPhone" class="form-control form-control-lg" maxlength="10" value="@Model.Phone" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <h4> <bold> Dealer Address </bold> </h4>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtCountry">Country <span class="red-req">*</span></label>
+                        <input type="text" id="txtCountry" class="form-control form-control-lg" value="@Model.Address.Country" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtStreet">Street <span class="red-req">*</span></label>
+                        <input type="text" id="txtStreet" class="form-control form-control-lg" value="@Model.Address.Street" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtCity">City <span class="red-req">*</span></label>
+                        <input type="text" id="txtCity" class="form-control form-control-lg" value="@Model.Address.City" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtState">State <span class="red-req">*</span> </label>
+                        <input type="text" id="txtState" class="form-control form-control-lg" value="@Model.Address.State" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtZip">Zip <span class="red-req">*</span> </label>
+                        <input type="text" id="txtZip" class="form-control form-control-lg" maxlength="10" value="@Model.Address.Zip" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="form-group form-wrap">
+                        <label class="form-label" for="txtLocation">Location <span class="red-req">*</span> </label>
+                        <input type="text" id="txtLocation" class="form-control form-control-lg" value="@Model.Address.Location" />
+                    </div>
+                </div>
+            </div>
+            <div class="row-fix">
+                <div class="col-sm-7">
+                    <div class="col-sm-3">
+                        <button type="button" onclick="editDealer()" class="btn-default btn-form2-submit">Save</button>
+                        <input type="hidden" id="hdnDealerId" value="@Model.Id" />
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" onclick="closePopup()" class="btn-default btn-form2-submit">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        stopCharacters();
+    });
+    function validateUpdate() {
+        var errorMessage = "";
+        var owner = $("#txtOwner").val();
+        var companyName = $("#txtCompanyName").val();
+        var email = $("#txtDealerEmail").val();
+        var phone = $("#txtPhone").val();
+        var country = $("#txtCountry").val();
+        var street = $("#txtStreet").val();
+        var city = $("#txtCity").val();
+        var state = $("#txtState").val();
+        var zip = $("#txtZip").val();
+        var location = $("#txtLocation").val();
+
+        if (!owner)
+            errorMessage = "Please Enter Owner";
+        else if (!companyName)
+            errorMessage = "Please Enter Company Name";
+        else if (!email)
+            errorMessage = "Please Enter Email Address";
+        else if (!phone)
+            errorMessage = "Please Enter Phone";
+        else if (!country)
+            errorMessage = "Please Enter Country";
+        else if (!street)
+            errorMessage = "Please Enter Street";
+        else if (!city)
+            errorMessage = "Please Enter City";
+        else if (!state)
+            errorMessage = "Please Enter State";
+        else if (!zip)
+            errorMessage = "Please Enter Zip";
+        else if (!location)
+            errorMessage = "Please Enter Location";
+
+        return errorMessage;
+    }
+
+    function stopCharacters() {
+        stopChar('txtPhone');
+        stopChar('txtZip');
+    }
+
+    function closePopup() {
+        $("#divEditDealerDialog").dialog('close');
+    }
+
+    function editDealer() {
+        var errorMessage = validateUpdate();
+        if (errorMessage != "") {
+            Lobibox.alert('error', {
+                msg: errorMessage
+            });
+        }
+        else {
+
+            var id = $("#hdnDealerId").val();
+            var finalMessage = "Save";
+            var pUrl = "/Dealers/AddDealer";
+            if (id != null && id != "") {
+                finalMessage = "Update";
+                pUrl = "/Dealers/EditDealer";
+            }
+
+            var owner = $("#txtOwner").val();
+            var companyName = $("#txtCompanyName").val();
+            var email = $("#txtDealerEmail").val();
+            var phone = $("#txtPhone").val();
+            var country = $("#txtCountry").val();
+            var street = $("#txtStreet").val();
+            var city = $("#txtCity").val();
+            var state = $("#txtState").val();
+            var zip = $("#txtZip").val();
+            var location = $("#txtLocation").val();
+
+            var dealerAddress = { Country: country, Street: street, City: city, State: state, Zip: zip, Location: location }
+            var dealer = { Id: id, Owner: owner, CompanyName: companyName, Email: email, Phone: phone, Address: dealerAddress };
+            var jStr = "dealer=" + JSON.stringify(dealer);
+            $.ajax({
+                type: "POST",
+                data: jStr,
+                url: pUrl,
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        if (data.saveResult == true) {
+                            Lobibox.alert('success', {
+                                msg: "Dealer Details " + finalMessage + "successfully",
+                                delayToRemove: 500
+                            });
+                            window.location.href = "/Dealers/Summary"
+                            $("#divEditDealerDialog").dialog('close');
+                        }
+                        else {
+                            Lobibox.alert('error', {
+                                msg: "Error occured while " + finalMessage + " the Dealer Details",
+                                delayToRemove: 200
+                            });
+                        }
+                    }
+                    else {
+                        Lobibox.alert('error', {
+                            msg: "Error occured while " + finalMessage + " the Dealer Details",
+                            delayToRemove: 200
+                        });
+                    }
+                },
+                error: function (error) {
+                    Lobibox.alert('error', {
+                        msg: "Error occured while " + finalMessage + "the Dealer Details",
+                        delayToRemove: 200
+                    });
+                }
+
+            });
+        }
+    }
+
+    function stopChar(elem) {
+        $("#" + elem).keydown(function (event) {
+            // Allow special chars + arrows
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9
+                || event.keyCode == 27 || event.keyCode == 13
+                || (event.keyCode == 65 && event.ctrlKey === true)
+                || (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                // If it's not a number stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+</script>

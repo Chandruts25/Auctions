@@ -1,0 +1,173 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+<div id="favorites" class="section section-md best novi-background bg-cover">
+    <div class="container-full">
+
+        <div class="row row-fix">
+            <div class="col-sm-12 col-md-12">
+                <div class="row">
+                    <div class="col-xxs-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 column-content">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                <div class="product-minimal">
+                                    <div class="thumbnail clearfix">
+                                        <figure class="product-minimal-img" style="position: relative;">
+                                            <a style="cursor:pointer" onclick="viewCar('@item.Id')">
+                                                <img src="@item.Thumbnail" alt="" class="img-responsive" style="height: 215px; margin: 0; ">
+                                            </a>
+                                            <div class="div-bid-time">
+                                                <div class="time-span">
+                                                    <span><i class="fa fa-clock-o"></i></span>
+                                                    <span class="color-bid-time-1">
+                                                        <span class="trip_@item.Status">TIME LEFT : 0d 16h 56m 18s</span>
+                                                    </span>
+                                                </div>
+                                                <div class="bid-amount">
+                                                    <span>Bid&nbsp;</span><span class="color-bid-time-1">$ @item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                </div>
+                                            </div>
+                                        </figure>
+                                        <div class="caption">
+
+                                            <div class="vdoicon">
+                                                <p class="small">REGISTERED @item.Year</p>
+                                            </div>
+
+                                            <div class="product-minimal-title"><a style="cursor:pointer" onclick="viewCar('@item.Id')"> @item.Model @item.Make</a></div>
+                                            <div class="info">
+                                                <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                <span class="speed">@item.Mileage.ToString("N", CultureInfo.CurrentCulture) KM</span>
+                                            </div>
+                                            <!--<div style="margin-top:-13px;margin-bottom:13px;">
+                            <div>
+                                Current Bid : @item.SalePrice.ToString("C", CultureInfo.CurrentCulture)
+                            </div>-->
+                                            @*<div class="trip_2023-05-05"></div>*@
+                                            <!--<div class="trip_@item.Status"></div>
+                            </div>-->
+                                            <ul class="tag-list">
+                                                <li>@(item.IsNew ? "New" : "Used")</li>
+                                                <li>@item.Year</li>
+                                                <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                <li>@item.Color</li>
+                                                <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                                <li><a href="@item.Video.Url" target="_blank"> Video</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-xxs-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 column-sidebar">
+
+                        <div class="row">
+                            
+                            <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-12">
+                                <div class="banner novi-background">
+                                    <figure><a href="#"><img src="/images/banner.jpg" alt="" class="img-responsive"></a></figure>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+@*----------------Video popup #carVideo ---------------------*@
+
+<div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function viewCar(carId) {
+        window.location.href = "/Auctions/Details?carId=" + carId + "";
+    }
+
+    $(document).ready(function () {
+        StartTimeRemaining()
+    });
+
+    function StartTimeRemaining() {
+        TimeRemaining();
+        window.requestAnimationFrame(TimeRemaining);
+    }
+
+    function TimeRemaining() {
+        var els = [...document.querySelectorAll('[class^="trip_"]')];
+        els.forEach(el => {
+            var end_time = el.className.split("_")[1]
+            var deadline = new Date(end_time);
+            var now = new Date();
+            var t = Math.floor(deadline.getTime() - now.getTime());
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((t % (1000 * 60)) / 1000);
+            if (t < 0) {
+
+                var classname = document.getElementsByClassName("trip_" + end_time);
+
+
+                for (var i = 0; i < classname.length; i++) {
+                    document.getElementsByClassName("trip_" + end_time)[i].innerText = 'EXPIRED';
+                }
+
+
+            } else {
+                var classname = document.getElementsByClassName("trip_" + end_time);
+                for (var i = 0; i < classname.length; i++) {
+                    var sec = 0;
+                    if (seconds < 10) {
+                        sec = "0" + seconds;
+                    }
+                    else {
+                        sec = seconds;
+                    }
+                   
+
+                    if (days != 0) {
+                        document.getElementsByClassName("trip_" + end_time)[i].innerText = days + "d " + hours + ":" + minutes + ":" + sec;
+                    }
+                    else {
+                        document.getElementsByClassName("trip_" + end_time)[i].innerText = hours + ":" + minutes + ":" + sec;
+                    }
+
+                    
+                }
+
+
+            }
+        })
+        window.requestAnimationFrame(TimeRemaining);
+    }
+</script>

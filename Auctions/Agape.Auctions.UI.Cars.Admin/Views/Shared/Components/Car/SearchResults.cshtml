@@ -1,0 +1,147 @@
+﻿@model List<Agape.Auctions.Models.Cars.Car>
+@using System.Globalization;
+
+<div id="favorites" class="section section-md best novi-background bg-cover">
+    <div class="container">
+        @*<div class="section-title-md">
+                FAVORITES FROM AUTOCLUB
+            </div>*@
+        <div class="tabs-custom tabs-horizontal tabs-corporate" id="tabs-1">
+            @*<ul class="nav nav-tabs">
+                    <li class="active" role="presentation">
+                        <a href="#tabs-1-1" data-toggle="tab">Most researched manufacturers</a>
+                    </li>
+                </ul>*@
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tabs-1-1">
+                    <div class="row row-fix">
+                        <div class="col-sm-12 col-md-3">
+                            <ul class="product-filter">
+                                <li>
+                                    <a href="#">All manufacturers</a>
+                                </li>
+                                <li>
+                                    <a href="#">ASTON MARTIN</a>
+                                </li>
+                                <li>
+                                    <a href="#">ALPHA ROMEO</a>
+                                </li>
+                                <li>
+                                    <a href="#">AUDI</a>
+                                </li>
+                                <li>
+                                    <a href="#">BMW</a>
+                                </li>
+                                <li>
+                                    <a href="#">LAND ROVER</a>
+                                </li>
+                                <li>
+                                    <a href="#">Mercedes-Benz</a>
+                                </li>
+                                <li>
+                                    <a href="#">PORSCHE</a>
+                                </li>
+                                <li>
+                                    <a href="#">SUZUKI</a>
+                                </li>
+                                <li>
+                                    <a href="#">TOYOTA</a>
+                                </li>
+                                <li>
+                                    <a href="#">VOLVO</a>
+                                </li>
+                                <li>
+                                    <a href="#">VOLKSWAGEN</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-9">
+                            <div class="row">
+
+                                @foreach (var item in Model)
+                                {
+                                    <div class="col-xxs-12 col-xs-6 col-sm-4">
+                                        <div class="product-minimal">
+                                            <div class="thumbnail clearfix">
+                                                <figure class="product-minimal-img">
+                                                    <a style="cursor:pointer" onclick="viewCar('@item.Id')">
+                                                        <img src="@item.Thumbnail" alt="" class="img-responsive" style="width:270px;height:150px;">
+                                                    </a>
+                                                </figure>
+                                                <div class="caption">
+
+                                                    @* <p class="small">REGISTERED @item.properties.ModelYear</p>*@
+
+                                                    <div class="vdoicon">
+                                                        <p class="small">REGISTERED @item.Year</p>
+                                                        @*  <span class="utv">
+                                                                <a href="#" data-toggle="modal" data-target="#carVideo">
+                                                                    <i class="fa fa-video-camera" aria-hidden="true"></i>
+                                                                </a>
+                                                            </span>
+                                                        *@
+                                                    </div>
+
+
+                                                    <div class="product-minimal-title"><a style="cursor:pointer" onclick="viewCar('@item.Id')"> @item.Model @item.Make</a></div>
+                                                    <div class="info">
+                                                        <span class="price">@item.SalePrice.ToString("C", CultureInfo.CurrentCulture)</span>
+                                                        <span class="speed">@item.Mileage.ToString("N", CultureInfo.CurrentCulture) KM</span>
+                                                    </div>
+                                                    <ul class="tag-list">
+                                                        <li>@(item.IsNew ? "New" : "Used")</li>
+                                                        <li>@item.Year</li>
+                                                        <li>@(item.IsAutomatic ? "Automatic" : "Gear")</li>
+                                                        <li>@item.Color</li>
+                                                        <li>@(item.IsPetrol ? "Petrol" : "Diesel")</li>
+                                                        <li><a href="@item.Video.Url" target="_blank"> Video</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*----------------Video popup #carVideo ---------------------*@
+
+<div class="modal fade" id="carVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Video title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vC8LbvYk6es" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function viewCar(carId) {
+        window.location.href = "/Car/details?carId=" + carId + "";
+    }
+</script>

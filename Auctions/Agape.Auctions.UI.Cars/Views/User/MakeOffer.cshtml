@@ -1,0 +1,300 @@
+﻿@{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Layout))
+    {
+        Layout = "~/Views/Shared/" + ViewBag.Layout;
+    }
+    else
+    {
+        Layout = "_Layout_Page";
+    }
+
+
+}
+
+<style>
+    .bg-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cars-header-2018-800x200.jpg);
+        height: 186px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+</style>
+
+<div class="bg-banner"></div>
+
+<div class="row">
+    <div class="top3-wrapper novi-background bg-cover">
+        <div class="container">
+            <div class="top2 clearfix">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h4> <bold> My Offers </bold> </h4>
+                    </div>
+
+                    <div class="col-md-6 float-right">
+
+
+                        <div style="text-align:right;">
+
+                            <div class="txt" style="float:right; padding-top: 10px;">
+
+                                PRINT &nbsp; <a href="#"> <i class="fa fa-print fa-lg"></i> </a>  &nbsp;
+                                EMAIL &nbsp; <a href="#"> <i class="fa fa fa-envelope fa-lg"></i> </a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="breadcrumbs1_wrapper novi-background">
+        <div class="container">
+            <div class="breadcrumbs1"><a href="/Dealers">Home</a><span></span>My Offers</div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid container-fluid pl-75 pr-75 myoffer">
+    <div class="col-sm-2">
+        <div class="col-sm-12 p-0">
+            <div class="product-minimal mb-20">
+                <div class="thumbnail clearfix">
+                    <figure class="product-minimal-img mb-0">
+                        <a style="cursor:pointer" onclick="viewCar('007f9f57-32e7-4e45-b646-21ddbd263e1d')">
+                            <img src="https://badasscarzdev.blob.core.windows.net/car/007f9f57-32e7-4e45-b646-21ddbd263e1d/02-DSCN5241.JPG" alt="" class="img-responsive">
+                        </a>
+                    </figure>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 p-0">
+            <div class="col-sm-12 col-sm-12 product-minimal p-0  mb-10">
+                <div class="thumbnail clearfix">
+
+
+                    <div class="caption p-10">
+
+
+                        <div class="vdoicon">
+                            <p class="small">REGISTERED 1999</p>
+
+                        </div>
+
+
+                        <div class="product-minimal-title"><a style="cursor:pointer" class="fltr" onclick="viewCar('007f9f57-32e7-4e45-b646-21ddbd263e1d')"> F-150 FORD</a></div>
+                        <div class="info">
+                            <span class="price">₹ 70,000.00</span>
+                            <span class="speed">8000 KM</span>
+                        </div>
+                        <ul class="tag-list">
+                            <li><a href="#">Used</a></li>
+                            <li><a href="#">1999</a></li>
+                            <li><a href="#">Gear</a></li>
+                            <li><a href="#">Yellow</a></li>
+                            <li><a href="#">Diesel</a></li>
+                            <li><a href="" target="_blank"> Video</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-7 mbl-table pr-0">
+
+
+        <div class="col-sm-12 col-md-12 p-0">
+
+            <div class="sectionBlock">
+                <h5 class="stitle">My Offers</h5>
+                <div class="sectionContent">
+
+                    <div class="col-xs-12 table">
+
+
+
+                        <table id="table_id" class="display table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Offer Amount</th>
+                                    <th>Date</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>1</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 10.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>2</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 400.00 </td>
+                                    <td>2022-07-01</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 260.00 </td>
+                                    <td>2020-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>4</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 207.00 </td>
+                                    <td>2019-10-01</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 210.00 </td>
+                                    <td>2018-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>6</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 209.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 10.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>8</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 400.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 260.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>10</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 207.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 210.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+
+                                <tr>
+                                    <td>12</td>
+                                    <td>J P S</td>
+                                    <td>35364 565456</td>
+                                    <td>JPS@gmail.com</td>
+                                    <td>$ 209.00 </td>
+                                    <td>2022-10-01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+
+    <div class="col-sm-3 pl-0">
+        <!-- ----------------------end left div ------------------------- -->
+
+        <div class="col-sm-10 column-content">
+
+            <div class="sectionBlock new-last">
+                <h4 class="text-secondary" style="border-bottom: 1px solid #dddddd; padding-bottom: 10px; padding-left: 20px;">My Account</h4>
+                <div class="sectionContent pt-0">
+
+                    <ul>
+                        <li> <a href="/User/MyProfile"> My Profile </a> </li>
+                        <li> <a href="/User/MyDealership"> My Dealership </a> </li>
+                        <li> <a href="/Car"> My Car </a> </li>
+                        <li> <a href="#"> Auction Activity </a> </li>
+                        <li> <a href="/User/PaymentSummary"> Payment History </a> </li>
+                        <li> <a href="/User/PurchaseSummary"> Purchase History </a> </li>
+                        <li> <a href="/User/CarBidDetails"> Bid Details </a> </li>
+                        <li> <a href="#"> Update Password </a> </li>
+                        <li> <a href="#"> Logout </a> </li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+</script>

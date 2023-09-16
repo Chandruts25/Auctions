@@ -1,0 +1,50 @@
+﻿@model List<Agape.Auctions.Models.Images.Image>
+    @*<script src=“https://code.jquery.com/jquery-1.10.2.js”></script>
+    <script src=“https://code.jquery.com/ui/1.10.4/jquery-ui.js”></script>*@
+    <div class="row">
+        <div id="imagelist" class="col-md-12 mb-10">
+            @foreach (var item in Model.OrderBy(i => i.Order))
+            {
+            <div id="@item.Id" class="col-xxs-12 col-xs-6 col-sm-6 col-md-4 col-lg-4 listitemClass ui-sortable-handle" style="height:180px;">
+                <img src="@item.Url" id="@item.Id" class="clsImages" style="width:270px;height:150px;" /><br />
+                <div class="caption">
+
+                </div>
+                <a style="cursor:pointer" class="remove_view" onclick="deleteCarImage('@item.Id', '@item.Url')">Delete</a>
+            </div>
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            if ($(".listitemClass").length > 1) {
+                $("#divSaveImagesButton").show();
+            }
+            else {
+                $("#divSaveImagesButton").hide();
+            }
+        });
+
+        var isReordered = false;
+        $(function () {
+            $("#imagelist").sortable({
+                update: function (event, ui) {
+                    isReordered = true;
+                   // getIdsOfImages();
+                } //end update
+            });
+        });
+
+        function getIdsOfImages() {
+            var values = [];
+            $('.listitemClass').each(function (index) {
+                values.push($(this).attr("id")
+                    .replace("imageNo", ""));
+            });
+            var id = $('#outputvalues').val(values);
+
+        }
+
+
+    </script>
