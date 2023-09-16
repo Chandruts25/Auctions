@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "StorageAccountName": "badasscarzdev",
+    "StorageAccountKey": "M3ceXKzhAbzEScH6IEBW5GUHjP4ppjJ+KLHpNpWuu0qXeEwL6Y/WVWuebABiMvehtuFKRePp+7MAdpZz2bhcew==",
+    "StorageContainer": "car",
+    //"WebAPIBaseUrlCarImage": "https://carimageservicedev.azurewebsites.net/api/CarImage/"
+    //"WebAPIBaseUrlCarImage": "https://localhost:44314/api/CarImage/"
+    "WebAPIBaseUrlCarImage": "https://agapeauctionsapi.azure-api.net/v1/api/Images/"
+
+  },
+  "ConnectionStrings": {
+    "CosmosDbConnectionstring": "AccountEndpoint=https://agcosmosdb.documents.azure.com:443/;AccountKey=BgjavcMtwkD6LyExvTttSMZa89hmL342MiMZ7jRpOR3FIbxeH4JrINb4jM1Mm8oyMy0IKglBhGDpeMCmyRQmJg==;"
+  }
+}

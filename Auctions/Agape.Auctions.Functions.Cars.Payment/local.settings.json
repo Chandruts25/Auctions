@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "WebAPIBaseUrlCar": "https://agapeauctionscars.azurewebsites.net/api/v1/Cars/",
+    "HoldStatusCheckInterval": "3",
+    "PaymentPendingStatusCheckInterval": "5",
+    "SubscriptionKey": "4b079cac94664961af480012fd59c6df"
+  },
+  "ConnectionStrings": {
+    "CosmosDbConnectionstring": "AccountEndpoint=https://agcosmosdb.documents.azure.com:443/;AccountKey=BgjavcMtwkD6LyExvTttSMZa89hmL342MiMZ7jRpOR3FIbxeH4JrINb4jM1Mm8oyMy0IKglBhGDpeMCmyRQmJg==;"
+  }
+}
